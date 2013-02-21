@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="CSC480_HCI521_2013" default="dist" basedir=".">
+    <property name="src" location="src" />
+    <property name="build" location="build" />
+    <property name="dist" location="dist" />
+    <property name="project.jarfile" value="${ant.project.name}.jar" />
+    <property name="jar.mainclass" value="edu.oswego.csc480_hci521_2013.h2owrapper.Main" />
+
+    <path id="project.classpath">
+        <fileset dir="${basedir}/lib">
+            <include name="*.jar"/>
+        </fileset>
+    </path>
+
+    <target name="compile" description="Compile the sources">
+        <mkdir dir="${build}" />
+        <javac destdir="${build}" srcdir="${src}"
+            source="1.7" target="1.7"
+            includeantruntime="false"
+            classpathref="project.classpath" />
+    </target>
+
+    <target name="dist" depends="compile" description="Generate the jarfile">
+        <tstamp prefix='dist'>
+            <format property="NOW" pattern="h:mm aa z" />
+        </tstamp>
+        <mkdir dir="${dist}" />
+
+        <manifestclasspath property="jar.cp" jarfile="${dist}/${project.jarfile}">
+            <classpath refid="project.classpath"/>
+        </manifestclasspath>
+        <jar jarfile="${dist}/${project.jarfile}" basedir="${build}"
+            whenmanifestonly="fail">
+            <manifest>
+                <attribute name="Main-Class" value="${jar.mainclass}" />
+                <attribute name="Class-Path" value="${jar.cp}" />
+                <attribute name="Build-Date" value="${dist.TODAY}" />
+                <attribute name="Build-Time" value="${dist.NOW}" />
+            </manifest>
+        </jar>
+    </target>
+
+    <target name="clean" description="Clean up temporary files">
+        <delete dir="${build}" />
+        <delete dir="${dist}" />
+    </target>
+</project>
