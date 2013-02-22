@@ -4,3 +4,6 @@
 *.jar
 *.war
 *.ear
+/nbproject/
+nbbuild.xml
+manifest.mf
