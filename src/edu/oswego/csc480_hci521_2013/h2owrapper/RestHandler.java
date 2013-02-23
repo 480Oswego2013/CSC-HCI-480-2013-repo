@@ -29,6 +29,9 @@ public class RestHandler
         Gson gson = new Gson();
         JsonParser parser = new JsonParser();
         JsonObject response = parser.parse(json.toString()).getAsJsonObject();
+        if (response.has("error")) {
+            throw new RestException(response.get("error").getAsString());
+        }
         T sv = gson.fromJson(response, responseType);
         return sv;
     }

@@ -1,11 +1,14 @@
 package edu.oswego.csc480_hci521_2013.h2owrapper.urlbuilders;
 
+import java.net.URI;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  *
  */
-public abstract class AbstractBuilder
+abstract class AbstractBuilder
 {
     private static final String PROTOCOL = "http";
     private static final String HOST = "localhost";
@@ -14,6 +17,20 @@ public abstract class AbstractBuilder
     private String protocol = PROTOCOL;
     private String host = HOST;
     private int port = PORT;
+    private String page;
+
+    Map<String, String> args = new HashMap<>();
+
+    protected AbstractBuilder(String page)
+    {
+        this.page = "/" + page;
+    }
+
+    protected AbstractBuilder addArg(String key, String value)
+    {
+        args.put(key, value);
+        return this;
+    }
 
     public String getProtocol()
     {
@@ -48,5 +65,18 @@ public abstract class AbstractBuilder
         return this;
     }
 
-    abstract public URL build() throws Exception;
+    public URL build() throws Exception
+    {
+        String query = null;
+        for (String key: args.keySet()) {
+            String value = args.get(key);
+            if (query == null) {
+                query = key + "=" + value;
+            }
+            else {
+                query += "&" + key + "=" + value;
+            }
+        }
+        return new URI(protocol, null, host, port, page, query, null).toURL();
+    }
 }
