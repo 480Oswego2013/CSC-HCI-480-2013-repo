@@ -124,30 +124,60 @@
     </nav>
 
     <div id="workspace">
-        <div>            
+        <div>
             <h2>Visualization</h2>
             <p id="visual">
                 <script type="text/javascript">
 
                     //Width and height
                     var w = 400;
-                    var h = 300;
+                    var h = 600;
                     var barPadding = 1;
-                    var Node = function (x, y) {
+                    var Node = function (x, y, edgeStartX, edgeStartY, edgeEndX, edgeEndY) {
                         this.x = x;
                         this.y = y;
+                        this.edgeStartX = edgeStartX;
+                        this.edgeStartY = edgeStartY;
+                        this.edgeEndX = edgeEndX;
+                        this.edgeStartX = edgeStartX;
+                        this.edgeEndY = edgeEndY;
                     };
-                    var node1 = new Node(150, 60);
-                    var node2 = new Node(50, 180);
-                    var node3 = new Node(250, 180);
+                    var node1 = new Node(150, 60, 0, 0, 0, 0);
+                    var node2 = new Node(50, 180, 150, 60, 50, 180);
+                    var node3 = new Node(250, 180, 150, 60, 250, 180);
+                    var node4 = new Node(180, 334, 250, 180, 180, 334);
+                    var node5 = new Node(342, 334, 250, 180, 342, 334);
 
-                    var dataset = [node1, node2, node3];
+                    var dataset = [node1, node2, node3, node4, node5];
 
                     //Create SVG element
                     var svg = d3.select("p")
                                 .append("svg")
                                 .attr("width", w)
                                 .attr("height", h);
+
+                    svg.selectAll("line")
+                       .data(dataset)
+                       .enter()
+                       .append("line")
+                       .attr("x1", function (d) {
+                           return d.edgeStartX;
+                       })
+                       .attr("y1", function (d) {
+                           return d.edgeStartY;
+                       })
+                       .attr("x2", function (d) {
+                           return d.edgeEndX;
+                       })
+                       .attr("y2", function (d) {
+                           return d.edgeEndY;
+                       })
+                        .attr("stroke-width", function (d) {
+                            return 5;
+                        })
+                       .attr("stroke", function (d) {
+                           return "black";
+                       });
 
                     svg.selectAll("circle")
                        .data(dataset)
@@ -161,7 +191,7 @@
                        .attr("fill", function (d) {
                            return "rgb(170,204,238)";
                        });
-            </script>
+                </script>
             </p>
         </div>
         <div>
