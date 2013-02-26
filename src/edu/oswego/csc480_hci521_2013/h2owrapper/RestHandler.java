@@ -1,9 +1,11 @@
 package edu.oswego.csc480_hci521_2013.h2owrapper;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import edu.oswego.csc480_hci521_2013.h2owrapper.json.objects.StoreView;
+import edu.oswego.csc480_hci521_2013.h2owrapper.json.deserializers.InspectRowDeserializer;
+import edu.oswego.csc480_hci521_2013.h2owrapper.json.objects.InspectRow;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
@@ -26,7 +28,9 @@ public class RestHandler
 
     public <T> T parse(String json, Class<T> responseType) throws Exception
     {
-        Gson gson = new Gson();
+        GsonBuilder gb = new GsonBuilder();
+        gb.registerTypeAdapter(InspectRow.class, new InspectRowDeserializer());
+        Gson gson = gb.create();
         JsonParser parser = new JsonParser();
         JsonObject response = parser.parse(json.toString()).getAsJsonObject();
         if (response.has("error")) {

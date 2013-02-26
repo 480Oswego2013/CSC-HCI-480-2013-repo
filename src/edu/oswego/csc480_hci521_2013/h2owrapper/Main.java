@@ -1,11 +1,14 @@
 package edu.oswego.csc480_hci521_2013.h2owrapper;
 
 import edu.oswego.csc480_hci521_2013.h2owrapper.json.objects.ImportUrl;
+import edu.oswego.csc480_hci521_2013.h2owrapper.json.objects.Inspect;
 import edu.oswego.csc480_hci521_2013.h2owrapper.json.objects.Parse;
+import edu.oswego.csc480_hci521_2013.h2owrapper.json.objects.ResponseStatus;
 import edu.oswego.csc480_hci521_2013.h2owrapper.json.objects.StoreView;
 import edu.oswego.csc480_hci521_2013.h2owrapper.urlbuilders.ImportUrlBuilder;
 import edu.oswego.csc480_hci521_2013.h2owrapper.urlbuilders.InspectBuilder;
 import edu.oswego.csc480_hci521_2013.h2owrapper.urlbuilders.ParseBuilder;
+import edu.oswego.csc480_hci521_2013.h2owrapper.urlbuilders.ProgressBuilder;
 import edu.oswego.csc480_hci521_2013.h2owrapper.urlbuilders.RFBuilder;
 import edu.oswego.csc480_hci521_2013.h2owrapper.urlbuilders.RFViewBuilder;
 import edu.oswego.csc480_hci521_2013.h2owrapper.urlbuilders.RFTreeViewBuilder;
@@ -25,10 +28,14 @@ public class Main
         RestHandler rest = new RestHandler();
 
         importUrl(rest);
-        parse(rest);
+        ResponseStatus status = parse(rest);
+
+        String job = status.getRedirectRequestArgs().get("job");
+        String key = status.getRedirectRequestArgs().get("destination_key");
+        progress(rest, job, key);
 
         // TODO: create something to monitor the progress
-        Thread.sleep(3000);
+//        Thread.sleep(3000);
 
         inspect(rest);
         rf(rest);
@@ -51,7 +58,7 @@ public class Main
         System.out.println(val);
     }
 
-    private static void parse(RestHandler rest) throws Exception
+    private static ResponseStatus parse(RestHandler rest) throws Exception
     {
         URL url = new ParseBuilder("cars.csv").setHeader(true).setDestinationKey("cars.hex").build();
         System.out.println(url);
@@ -59,6 +66,7 @@ public class Main
         System.out.println(json);
         Parse val = rest.parse(json, Parse.class);
         System.out.println(val);
+        return val.getResponse();
     }
 
     private static void inspect(RestHandler rest) throws Exception
@@ -67,7 +75,8 @@ public class Main
         System.out.println(url);
         String json = rest.fetch(url);
         System.out.println(json);
-        // TODO: parsing
+        Inspect val = rest.parse(json, Inspect.class);
+        System.out.println(val);
     }
 
     private static void rf(RestHandler rest) throws Exception
@@ -101,6 +110,15 @@ public class Main
     private static void rfViewTree(RestHandler rest) throws Exception
     {
         URL url = new RFTreeViewBuilder("cars.hex", "cars.model").setTreeNumber(15).build();
+        System.out.println(url);
+        String json = rest.fetch(url);
+        System.out.println(json);
+        // TODO: parsing
+    }
+
+    private static void progress(RestHandler rest, String job, String key) throws Exception
+    {
+        URL url = new ProgressBuilder(job, key).build();
         System.out.println(url);
         String json = rest.fetch(url);
         System.out.println(json);
