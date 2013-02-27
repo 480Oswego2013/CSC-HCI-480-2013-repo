@@ -3,6 +3,9 @@ package edu.oswego.csc480_hci521_2013.h2owrapper;
 import edu.oswego.csc480_hci521_2013.h2owrapper.json.objects.ImportUrl;
 import edu.oswego.csc480_hci521_2013.h2owrapper.json.objects.Inspect;
 import edu.oswego.csc480_hci521_2013.h2owrapper.json.objects.Parse;
+import edu.oswego.csc480_hci521_2013.h2owrapper.json.objects.Progress;
+import edu.oswego.csc480_hci521_2013.h2owrapper.json.objects.RF;
+import edu.oswego.csc480_hci521_2013.h2owrapper.json.objects.RFView;
 import edu.oswego.csc480_hci521_2013.h2owrapper.json.objects.ResponseStatus;
 import edu.oswego.csc480_hci521_2013.h2owrapper.json.objects.StoreView;
 import edu.oswego.csc480_hci521_2013.h2owrapper.urlbuilders.ImportUrlBuilder;
@@ -16,7 +19,7 @@ import edu.oswego.csc480_hci521_2013.h2owrapper.urlbuilders.StoreViewBuilder;
 import java.net.URL;
 
 /**
- *
+ * Examples of usage
  */
 public class Main
 {
@@ -29,20 +32,9 @@ public class Main
 
         importUrl(rest);
         ResponseStatus status = parse(rest);
-
-        String job = status.getRedirectRequestArgs().get("job");
-        String key = status.getRedirectRequestArgs().get("destination_key");
-        progress(rest, job, key);
-
-        // TODO: create something to monitor the progress
-//        Thread.sleep(3000);
-
+        progress(rest, status);
         inspect(rest);
         rf(rest);
-
-        // TODO: create something to monitor the progress
-        Thread.sleep(3000);
-
         rfView(rest);
         rfViewTree(rest);
         storeView(rest);
@@ -81,11 +73,12 @@ public class Main
 
     private static void rf(RestHandler rest) throws Exception
     {
-        URL url = new RFBuilder("cars.hex").setModelKey("cars.model").build();
+        URL url = new RFBuilder("cars.hex").setModelKey("cars.model").setOutOfBagErrorEstimate(false).build();
         System.out.println(url);
         String json = rest.fetch(url);
         System.out.println(json);
-        // TODO: parsing
+        RF val = rest.parse(json, RF.class);
+        System.out.println(val);
     }
 
     private static void storeView(RestHandler rest) throws Exception
@@ -102,9 +95,20 @@ public class Main
     {
         URL url = new RFViewBuilder("cars.hex", "cars.model").build();
         System.out.println(url);
-        String json = rest.fetch(url);
-        System.out.println(json);
-        // TODO: parsing
+
+        for (;;) {
+            String json = rest.fetch(url);
+            System.out.println(json);
+            RFView val = rest.parse(json, RFView.class);
+            System.out.println(val);
+            if (val.getResponse().isPoll()) {
+                System.out.println("Progress: " + val.getResponse().getProgress());
+                Thread.sleep(500);
+            }
+            else {
+                break;
+            }
+        }
     }
 
     private static void rfViewTree(RestHandler rest) throws Exception
@@ -116,12 +120,29 @@ public class Main
         // TODO: parsing
     }
 
-    private static void progress(RestHandler rest, String job, String key) throws Exception
+    private static void progress(RestHandler rest, ResponseStatus status) throws Exception
     {
+        if (!status.isRedirect() || !status.getRedirectRequest().equals("Progress")) {
+            return;
+        }
+        String job = status.getRedirectRequestArgs().get("job");
+        String key = status.getRedirectRequestArgs().get("destination_key");
+
         URL url = new ProgressBuilder(job, key).build();
         System.out.println(url);
-        String json = rest.fetch(url);
-        System.out.println(json);
-        // TODO: parsing
+        Progress val;
+        for (;;) {
+            String json = rest.fetch(url);
+            System.out.println(json);
+            val = rest.parse(json, Progress.class);
+            System.out.println(val);
+            if (val.getResponse().isPoll()) {
+                System.out.println("Progress: " + val.getResponse().getProgress());
+                Thread.sleep(500);
+            }
+            else {
+                break;
+            }
+        }
     }
 }

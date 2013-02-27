@@ -13,9 +13,8 @@ public class ResponseStatus
     private int time;
     private String redirect_request;
     private Map<String, String> redirect_request_args;
-    //"redirect_request_args" : {
-    //  "destination_key" : "iris-parsed"
-    //}
+    private int progress;
+    private int progress_total;
 
     public String getStatus()
     {
@@ -47,9 +46,29 @@ public class ResponseStatus
         return redirect_request_args;
     }
 
+    public int getProgress()
+    {
+        return progress;
+    }
+
+    public int getProgressTotal()
+    {
+        return progress_total;
+    }
+
+    public boolean isPoll()
+    {
+        return status.equals("poll");
+    }
+
+    public boolean isRedirect()
+    {
+        return status.equals("redirect");
+    }
+
     @Override
     public String toString()
     {
-        return "ResponseStatus{" + "status=" + status + ", h2o=" + h2o + ", node=" + node + ", time=" + time + ", redirect_request=" + redirect_request + ", redirect_request_args=" + redirect_request_args + '}';
+        return "ResponseStatus{" + "status=" + status + ", h2o=" + h2o + ", node=" + node + ", time=" + time + ", redirect_request=" + redirect_request + ", redirect_request_args=" + redirect_request_args + ", progress=" + progress + ", progress_total=" + progress_total + '}';
     }
 }

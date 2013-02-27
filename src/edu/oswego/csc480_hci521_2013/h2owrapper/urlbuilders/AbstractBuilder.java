@@ -2,8 +2,11 @@ package edu.oswego.csc480_hci521_2013.h2owrapper.urlbuilders;
 
 import java.net.URI;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 /**
  *
@@ -19,7 +22,8 @@ abstract class AbstractBuilder
     private int port = PORT;
     private String page;
 
-    Map<String, String> args = new HashMap<>();
+    private Map<String, String> args = new HashMap<>();
+    private List<Arg> multiargs = new ArrayList<>();
 
     protected AbstractBuilder(String page)
     {
@@ -29,6 +33,12 @@ abstract class AbstractBuilder
     protected AbstractBuilder addArg(String key, String value)
     {
         args.put(key, value);
+        return this;
+    }
+
+    protected AbstractBuilder addMultiArg(String key, String value)
+    {
+        multiargs.add(new Arg(key, value));
         return this;
     }
 
@@ -77,6 +87,28 @@ abstract class AbstractBuilder
                 query += "&" + key + "=" + value;
             }
         }
+        for (Arg arg: multiargs) {
+            String key = arg.key;
+            String value = arg.value;
+            if (query == null) {
+                query = key + "=" + value;
+            }
+            else {
+                query += "&" + key + "=" + value;
+            }
+        }
         return new URI(protocol, null, host, port, page, query, null).toURL();
+    }
+
+    private static class Arg
+    {
+        String key;
+        String value;
+
+        public Arg(String key, String value)
+        {
+            this.key = key;
+            this.value = value;
+        }
     }
 }
