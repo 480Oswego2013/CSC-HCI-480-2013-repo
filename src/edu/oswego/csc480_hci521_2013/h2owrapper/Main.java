@@ -5,6 +5,7 @@ import edu.oswego.csc480_hci521_2013.h2owrapper.json.objects.Inspect;
 import edu.oswego.csc480_hci521_2013.h2owrapper.json.objects.Parse;
 import edu.oswego.csc480_hci521_2013.h2owrapper.json.objects.Progress;
 import edu.oswego.csc480_hci521_2013.h2owrapper.json.objects.RF;
+import edu.oswego.csc480_hci521_2013.h2owrapper.json.objects.RFTreeView;
 import edu.oswego.csc480_hci521_2013.h2owrapper.json.objects.RFView;
 import edu.oswego.csc480_hci521_2013.h2owrapper.json.objects.ResponseStatus;
 import edu.oswego.csc480_hci521_2013.h2owrapper.json.objects.StoreView;
@@ -36,7 +37,7 @@ public class Main
         inspect(rest);
         rf(rest);
         rfView(rest);
-        rfViewTree(rest);
+        rfTreeView(rest);
         storeView(rest);
     }
 
@@ -111,13 +112,14 @@ public class Main
         }
     }
 
-    private static void rfViewTree(RestHandler rest) throws Exception
+    private static void rfTreeView(RestHandler rest) throws Exception
     {
         URL url = new RFTreeViewBuilder("cars.hex", "cars.model").setTreeNumber(15).build();
         System.out.println(url);
         String json = rest.fetch(url);
         System.out.println(json);
-        // TODO: parsing
+        RFTreeView val = rest.parse(json, RFTreeView.class);
+        System.out.println(val);
     }
 
     private static void progress(RestHandler rest, ResponseStatus status) throws Exception
