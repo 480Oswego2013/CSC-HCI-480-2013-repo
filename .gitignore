@@ -39,3 +39,18 @@ local.properties
 
 # PDT-specific
 .buildpath
+
+
+#######################
+## Ignore GWT caches ##
+#######################
+
+war/Main/
+gwt-unitCache/
+test-classes/
+war/WEB-INF/deploy/
+war/WEB-INF/classes/
+.gwt
+
+# Allow jars in war lib
+!war/WEB-INF/lib/*.jar
