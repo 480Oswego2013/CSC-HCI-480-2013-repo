@@ -22,12 +22,13 @@
     <property name="src" location="src" />
     <property name="src.h2owrapper" location="${src}/edu/oswego/csc480_hci521_2013/h2owrapper" />
     <property name="src.gwt.client" location="${src}/edu/oswego/csc480_hci521_2013/client" />
+    <property name="webcontent" location="war" />
 
     <!-- build directories -->
     <property name="build" location="build" />
-    <property name="build.gwt" location="war/WEB-INF/classes" />
+    <property name="build.gwt" location="${webcontent}/WEB-INF/classes" />
     <property name="dist" location="dist" />
-    
+
     <!-- declare typedef for maven ant tasks -->
     <path id="maven-ant-tasks.classpath" path="lib/maven-ant-tasks-2.1.3.jar" />
     <typedef resource="org/apache/maven/artifact/ant/antlib.xml"
@@ -35,37 +36,36 @@
         classpathref="maven-ant-tasks.classpath" />
 
     <property name="project.jarfile" value="${ant.project.name}.jar" />
+    <property name="project.warfile" value="${ant.project.name}.war" />
     <property name="jar.mainclass" value="edu.oswego.csc480_hci521_2013.h2owrapper.Main" />
 
-    <path id="project.classpath">
-        <fileset dir="${basedir}/lib">
-            <include name="*.jar"/>
-        </fileset>
-    </path>
-
     <target name="compile" description="Compile the sources"
-        depends="compile-h2owrapper, compile-gwt-gwtc">
-        
-    </target>
+        depends="compile-h2owrapper, compile-gwt-gwtc" />
 
-    <target name="dist" depends="compile" description="Generate the jarfile">
+    <target name="dist" description="Generate the jarfile"
+        depends="dist-h2owrapper, dist-gwt" />
+
+    <target name="dist-h2owrapper" depends="compile-h2owrapper" description="generate the h2o wrapper jar file">
         <tstamp prefix='dist'>
             <format property="NOW" pattern="h:mm aa z" />
         </tstamp>
         <mkdir dir="${dist}" />
 
-        <manifestclasspath property="jar.cp" jarfile="${dist}/${project.jarfile}">
-            <classpath refid="project.classpath"/>
-        </manifestclasspath>
         <jar jarfile="${dist}/${project.jarfile}" basedir="${build}"
             whenmanifestonly="fail">
             <manifest>
-                <attribute name="Main-Class" value="${jar.mainclass}" />
-                <attribute name="Class-Path" value="${jar.cp}" />
                 <attribute name="Build-Date" value="${dist.TODAY}" />
                 <attribute name="Build-Time" value="${dist.NOW}" />
             </manifest>
         </jar>
+    </target>
+
+    <target name="dist-gwt" depends="compile-gwt-gwtc" description="generate the war file">
+        <war destfile="${dist}/${project.warfile}" webxml="${webcontent}/WEB-INF/web.xml">
+            <fileset dir="${webcontent}"/>
+            <lib dir="${webcontent}/WEB-INF/lib"/>
+            <classes dir="${webcontent}/WEB-INF/classes"/>
+        </war>
     </target>
 
     <target name="clean" description="Clean up temporary files">
@@ -76,7 +76,7 @@
 
 
     <!-- Compile H20 Wrapper -->
-    <target name="compile-h2owrapper" description="Compile H2O Wrapper sources">
+    <target name="compile-h2owrapper" description="Compile H2O Wrapper sources" depends="init">
         <mkdir dir="${build}" />
         <javac destdir="${build}" srcdir="${src.h2owrapper}"
             source="1.7" target="1.7"
@@ -85,12 +85,12 @@
     </target>
 
     <!-- Compile GWT sources -->
-    <target name="compile-gwt" description="Compile GWT sources" depends="init-gwt">
+    <target name="compile-gwt" description="Compile GWT sources" depends="init">
         <mkdir dir="${build.gwt}" />
-        <javac destdir="${build.gwt}" srcdir="${src.gwt.client}"
+        <javac destdir="${build.gwt}" srcdir="${src}"
             source="1.7" target="1.7"
             includeantruntime="false"
-            classpathref="gwt.classpath" />
+            classpathref="project.classpath" />
     </target>
 
     <!-- Compile GWT module to JavaScript -->
@@ -98,7 +98,7 @@
         <java failonerror="true" fork="true" classname="com.google.gwt.dev.Compiler">
             <classpath>
                 <pathelement location="${src}"/>
-                <path refid="gwt.classpath"/>
+                <path refid="project.classpath"/>
             </classpath>
             <!-- add jvmarg -Xss16M or similar if you see a StackOverflowError -->
             <jvmarg value="-Xmx256M"/>
@@ -112,7 +112,7 @@
         <java failonerror="true" fork="true" classname="com.google.gwt.dev.HostedMode">
             <classpath>
                 <pathelement location="${src}"/>
-                <path refid="gwt.classpath"/>
+                <path refid="project.classpath"/>
             </classpath>
             <jvmarg value="-Xmx256M"/>
             <arg value="-startupUrl"/>
@@ -123,16 +123,24 @@
     </target>
 
     <!-- Initialize GWT compilation. Create build dir, fetch Maven dependencies -->
-    <target name="init-gwt">
+    <target name="init">
         <mkdir dir="${build.gwt}" />
         <artifact:dependencies pathId="dependency.classpath">
             <dependency groupId="com.google.gwt" artifactId="gwt-user" version="2.5.0" />
             <dependency groupId="com.google.gwt" artifactId="gwt-dev" version="2.5.0" />
+            <dependency groupId="com.google.code.gson" artifactId="gson" version="2.2.2" />
         </artifact:dependencies>
-        <path id="gwt.classpath">
-            <path refid="project.classpath" />
+        <path id="project.classpath">
             <path refid="dependency.classpath" />
         </path>
     </target>
 
+    <target name="run-h2owrapper" depends="dist-h2owrapper" description="run the h2o wrapper sample">
+        <java classname="edu.oswego.csc480_hci521_2013.h2owrapper.Main">
+            <classpath>
+                <pathelement location="${dist}/${project.jarfile}"/>
+                <path refid="project.classpath"/>
+            </classpath>
+        </java>
+    </target>
 </project>

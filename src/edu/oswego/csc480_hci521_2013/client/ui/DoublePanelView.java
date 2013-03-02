@@ -1,20 +1,31 @@
 package edu.oswego.csc480_hci521_2013.client.ui;
 
+import com.google.gwt.core.client.GWT;
 import java.util.Arrays;
 
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.TextColumn;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TabPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import edu.oswego.csc480_hci521_2013.client.services.H2OService;
+import edu.oswego.csc480_hci521_2013.client.services.H2OServiceAsync;
+import java.util.List;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class DoublePanelView extends Composite implements PanelView {
 
 	private Presenter presenter;
+    static final Logger logger = Logger.getLogger(DoublePanelView.class.getName());
+    private final H2OServiceAsync h2oService = GWT.create(H2OService.class);
 
 	TabPanel tpData, tpVis;
 	int imgNum = 0;
@@ -24,11 +35,52 @@ public class DoublePanelView extends Composite implements PanelView {
 
 	}
 
-	@Override
+    private void addInspectDataTab()
+    {
+        final String datakey = "iris1.hex";
+        // NOTE: gwt requires the redundant type argument and fails on diamond operator
+        final CellTable<Map<String, String>> cellTable = new CellTable<Map<String, String>>();
+        cellTable.setSize("100%", Window.getClientHeight() - 40 - 100 + "px");
+
+        h2oService.getParsedData(datakey, new AsyncCallback<List<Map<String, String>>>() {
+            @Override
+            public void onFailure(Throwable caught)
+            {
+                logger.log(Level.SEVERE, caught.toString());
+                tpData.add(new HTML(caught.getMessage()), datakey, false);
+            }
+
+            @Override
+            public void onSuccess(List<Map<String, String>> result)
+            {
+                if (result.isEmpty()) {
+                    tpData.add(new HTML("No Data Found"), datakey, false);
+                }
+                else {
+                    for (final String key: result.get(0).keySet()) {
+                        cellTable.addColumn(new TextColumn<Map<String, String>>() {
+                            @Override
+                            public String getValue(Map<String, String> row) {
+                                return row.get(key);
+                            }
+                        }, key);
+                    }
+                    cellTable.setRowData(result);
+                    tpData.add(cellTable, datakey, false);
+                }
+            }
+        });
+    }
+
+    @Override
 	public void addDataTab(String title) {
-		CellTable<String> cellTable = new CellTable<String>();
+        if (title.equals("Data")) {
+            addInspectDataTab();
+            return;
+        }
+        CellTable<String> cellTable = new CellTable<String>();
 		cellTable.setSize("100%", Window.getClientHeight() - 40 - 100 + "px");
-		for (int i = 0; i < 5; i++)
+        for (int i = 0; i < 5; i++)
 			cellTable.addColumn(new TextColumn<String>() {
 				@Override
 				public String getValue(String object) {
@@ -51,7 +103,7 @@ public class DoublePanelView extends Composite implements PanelView {
 		img.setSize("500px", "300px");
 		panel.add(img);
 		tpVis.add(panel, title, false);
-		
+
 		imgNum++;
 	}
 
@@ -93,7 +145,7 @@ public class DoublePanelView extends Composite implements PanelView {
 		tpVis.setAnimationEnabled(true);
 		rightPanel.add(tpVis);
 
-		addDataTab("Tab 1");
+		addDataTab("Data");
 		addDataTab("Tab 2");
 		addDataTab("Tab 3");
 		addVisTab("Tab 1");
