@@ -36,7 +36,6 @@ public class RFViewTreeProperties {
 
 	@Override
 	public String toString(){
-		return "trees{ number_built=" + number_built + ", depth_min=" + getDepthMin() + ", depth_mean=" + getDepthMean() + ", depth_max=" + getDepthMax() + ", leaves_min=" + getLeavesMin() + ", leaves_mean=" + getLeavesMean() + ", leaves_max=" + getLeavesMax() + "}";
+		return "trees{ number_built=" + number_built + ", depth=" + depth + ", leaves=" + leaves + "}";
 	}
-
 }
