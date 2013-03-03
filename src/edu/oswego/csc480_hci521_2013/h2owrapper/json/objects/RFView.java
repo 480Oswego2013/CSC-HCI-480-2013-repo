@@ -11,6 +11,8 @@ public class RFView
     private int ntree;
     private int mtry;
     private String confusion_key;
+    private ConfusionMatrix confusion_matrix;
+    private RFViewTreeProperties trees;
 
     // TODO: finish deserialization
 //  "confusion_matrix" : {
@@ -46,6 +48,7 @@ public class RFView
     @Override
     public String toString()
     {
-        return "RFView{" + "data_key=" + data_key + ", model_key=" + model_key + ", response_variable=" + response_variable + ", ntree=" + ntree + ", mtry=" + mtry + ", confusion_key=" + confusion_key + ", response=" + response + '}';
+        return "RFView{" + "data_key=" + data_key + ", model_key=" + model_key + ", response_variable=" + response_variable + ", ntree=" + ntree + ", mtry=" + mtry + ", confusion_key=" + confusion_key + ", confusion_matrix=" + confusion_matrix + ", trees=" + trees + ", response=" + response + '}';
     }
+
 }
