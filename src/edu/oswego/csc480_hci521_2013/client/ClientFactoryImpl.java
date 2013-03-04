@@ -13,7 +13,7 @@ public class ClientFactoryImpl implements ClientFactory {
 
 	private static final EventBus eventBus = new SimpleEventBus();
 	private static final PlaceController placeController = new PlaceController(eventBus);
-	
+
 	private static MenuView mainView;
 	private static DoublePanelView  doublePanelView;
 
@@ -21,7 +21,7 @@ public class ClientFactoryImpl implements ClientFactory {
 	public EventBus getEventBus() {
 		return eventBus;
 	}
-	
+
 	@Override
 	public PlaceController getPlaceController() {
 		return placeController;
@@ -29,12 +29,18 @@ public class ClientFactoryImpl implements ClientFactory {
 
 	@Override
 	public MenuView getMainView() {
-		return mainView != null ? mainView : new BasicMenuView();
+        if (mainView == null) {
+            mainView = new BasicMenuView();
+        }
+		return mainView;
 	}
-	
+
 	@Override
 	public PanelView getDoublePanelView() {
-		return doublePanelView != null ? doublePanelView : new DoublePanelView(); 
+        if (doublePanelView == null) {
+            doublePanelView = new DoublePanelView();
+        }
+		return doublePanelView;
 	}
 
 }

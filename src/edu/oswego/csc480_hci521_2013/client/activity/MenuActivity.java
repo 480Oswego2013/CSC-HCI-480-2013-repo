@@ -7,11 +7,12 @@ import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 
 import edu.oswego.csc480_hci521_2013.client.ClientFactory;
+import edu.oswego.csc480_hci521_2013.client.events.MenuClickEvent;
 import edu.oswego.csc480_hci521_2013.client.place.MenuPlace;
 import edu.oswego.csc480_hci521_2013.client.ui.MenuView;
 
 public class MenuActivity extends AbstractActivity implements MenuView.Presenter {
-	
+
 	private ClientFactory clientFactory;
 
 	public MenuActivity(MenuPlace place, ClientFactory clientFactory) {
@@ -23,7 +24,7 @@ public class MenuActivity extends AbstractActivity implements MenuView.Presenter
 		MenuView menuView = clientFactory.getMainView();
 		menuView.setPresenter(this);
 		menuView.buildGui();
-		
+
 		containerWidget.setWidget(menuView.asWidget());
 	}
 
@@ -32,8 +33,8 @@ public class MenuActivity extends AbstractActivity implements MenuView.Presenter
 //		return "Please don't leave me.";
 		return null;
 	}
-	
-	
+
+
 	// Presenter methods
 
 	@Override
@@ -42,11 +43,11 @@ public class MenuActivity extends AbstractActivity implements MenuView.Presenter
 	}
 
 	@Override
-	public Command getMenuCommand() {
+	public Command getMenuCommand(final String value) {
 		return new Command() {
 			@Override
 			public void execute() {
-				System.out.println();
+                clientFactory.getEventBus().fireEvent(new MenuClickEvent(value));
 			}
 		};
 	}

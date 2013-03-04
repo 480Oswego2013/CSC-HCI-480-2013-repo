@@ -7,7 +7,7 @@ import com.google.gwt.user.client.ui.IsWidget;
 /**
  * View interface. Extends IsWidget so a view impl can easily provide its
  * container widget.
- * 
+ *
  * @author drfibonacci
  */
 public interface MenuView extends IsWidget {
@@ -15,7 +15,7 @@ public interface MenuView extends IsWidget {
 	void buildGui();
 
 	public interface Presenter {
-		Command getMenuCommand();
+		Command getMenuCommand(String value);
 		void goTo(Place place);
 	}
 }
