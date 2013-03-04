@@ -1,4 +1,4 @@
-package edu.oswego.csc480_hci521_2013.h2owrapper.json.objects;
+package edu.oswego.csc480_hci521_2013.shared.h2o.json;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
 import java.util.List;

@@ -16,6 +16,7 @@ import com.google.gwt.user.client.ui.TabPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import edu.oswego.csc480_hci521_2013.client.services.H2OService;
 import edu.oswego.csc480_hci521_2013.client.services.H2OServiceAsync;
+import edu.oswego.csc480_hci521_2013.shared.h2o.json.TreeNode;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -123,6 +124,30 @@ public class DoublePanelView extends Composite implements PanelView {
 		imgNum++;
 	}
 
+	public void addVisTab2(String title) {
+		final HorizontalPanel panel = new HorizontalPanel();
+        final String datakey = "iris1.hex";
+        final String modelkey = "iris1.model";
+        h2oService.getTree(datakey, modelkey, imgNum, new AsyncCallback<TreeNode>() {
+            @Override
+            public void onFailure(Throwable caught)
+            {
+                logger.log(Level.SEVERE, caught.toString());
+                panel.add(new HTML(caught.getMessage()));
+            }
+
+            @Override
+            public void onSuccess(TreeNode result)
+            {
+                logger.log(Level.INFO, result.toString());
+                panel.add(new HTML(result.toString()));
+            }
+        });
+		tpVis.add(panel, modelkey + " tree " + imgNum, false);
+
+		imgNum++;
+	}
+
 	@Override
 	public void setPresenter(Presenter presenter) {
 		this.presenter = presenter;
@@ -166,6 +191,7 @@ public class DoublePanelView extends Composite implements PanelView {
 		addDataTab("Tab 3");
 		addVisTab("Tab 1");
 		addVisTab("Tab 2");
+		addVisTab2("Tab 3");
 		tpData.selectTab(0);
 		tpVis.selectTab(0);
 

@@ -13,30 +13,6 @@ public class RFView
     private String confusion_key;
     private ConfusionMatrix confusion_matrix;
     private RFViewTreeProperties trees;
-
-    // TODO: finish deserialization
-//  "confusion_matrix" : {
-//    "type" : "full scoring",
-//    "classification_error" : 0.0,
-//    "rows_skipped" : 0,
-//    "rows" : 150,
-//    "header" : [ "Iris-setosa", "Iris-versicolor", "Iris-virginica" ],
-//    "scores" : [ [ 50, 0, 0 ], [ 0, 50, 0 ], [ 0, 0, 50 ] ],
-//    "used_trees" : 50
-//  },
-//  "trees" : {
-//    "number_built" : 50,
-//    "depth" : {
-//      "min" : 4.0,
-//      "mean" : 5.84,
-//      "max" : 8.0
-//    },
-//    "leaves" : {
-//      "min" : 5.0,
-//      "mean" : 9.08,
-//      "max" : 13.0
-//    }
-//  },
     private ResponseStatus response;
 
 

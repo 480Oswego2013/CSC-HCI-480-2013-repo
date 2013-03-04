@@ -10,12 +10,13 @@ import edu.oswego.csc480_hci521_2013.h2owrapper.RestHandler;
 import edu.oswego.csc480_hci521_2013.h2owrapper.json.objects.ColumnDef;
 import edu.oswego.csc480_hci521_2013.h2owrapper.json.objects.Inspect;
 import edu.oswego.csc480_hci521_2013.h2owrapper.json.objects.InspectRow;
-import edu.oswego.csc480_hci521_2013.h2owrapper.json.objects.RFTreeView;
 import edu.oswego.csc480_hci521_2013.h2owrapper.json.objects.StoreView;
 import edu.oswego.csc480_hci521_2013.h2owrapper.json.objects.StoreViewRow;
 import edu.oswego.csc480_hci521_2013.h2owrapper.urlbuilders.InspectBuilder;
 import edu.oswego.csc480_hci521_2013.h2owrapper.urlbuilders.RFTreeViewBuilder;
 import edu.oswego.csc480_hci521_2013.h2owrapper.urlbuilders.StoreViewBuilder;
+import edu.oswego.csc480_hci521_2013.shared.h2o.json.RFTreeView;
+import edu.oswego.csc480_hci521_2013.shared.h2o.json.TreeNode;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -30,7 +31,6 @@ public class H2OServiceImpl extends RemoteServiceServlet implements H2OService
 {
     RestHandler rest = new RestHandler();
 
-    @Override
     public List<String> getParsedDataKeys() throws Exception
     {
         try {
@@ -51,7 +51,6 @@ public class H2OServiceImpl extends RemoteServiceServlet implements H2OService
         }
     }
 
-    @Override
     public List<Map<String, String>> getParsedData(String key) throws Exception
     {
         try {
@@ -73,7 +72,6 @@ public class H2OServiceImpl extends RemoteServiceServlet implements H2OService
         }
     }
 
-    @Override
     public String getTreeAsJson(String dataKey, String modelKey, int index) throws Exception
     {
         try {
@@ -88,6 +86,18 @@ public class H2OServiceImpl extends RemoteServiceServlet implements H2OService
                 throw new RestException(response.get("error").getAsString());
             }
             return gson.toJson(response.get("tree"));
+        } catch (Exception e) {
+            throw new IllegalStateException(e);
+        }
+    }
+
+    public TreeNode getTree(String dataKey, String modelKey, int index) throws Exception
+    {
+        try {
+            URL url = new RFTreeViewBuilder(dataKey, modelKey).setTreeNumber(index).build();
+            String json = rest.fetch(url);
+            RFTreeView val = rest.parse(json, RFTreeView.class);
+            return val.getTree();
         } catch (Exception e) {
             throw new IllegalStateException(e);
         }
