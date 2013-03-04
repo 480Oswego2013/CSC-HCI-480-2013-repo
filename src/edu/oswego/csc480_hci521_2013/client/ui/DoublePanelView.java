@@ -95,14 +95,30 @@ public class DoublePanelView extends Composite implements PanelView {
 
 	@Override
 	public void addVisTab(String title) {
-		HorizontalPanel panel = new HorizontalPanel();
-		panel.setHorizontalAlignment(HorizontalPanel.ALIGN_CENTER);
-		panel.setVerticalAlignment(HorizontalPanel.ALIGN_MIDDLE);
-		panel.setSize("100%", Window.getClientHeight() - 40 - 100 + "px");
-		Image img = imgNum == 0 ? new Image("img0.jpg") : new Image("img1.png");
-		img.setSize("500px", "300px");
-		panel.add(img);
-		tpVis.add(panel, title, false);
+		final HorizontalPanel panel = new HorizontalPanel();
+        final String datakey = "iris1.hex";
+        final String modelkey = "iris1.model";
+        h2oService.getTreeAsJson(datakey, modelkey, imgNum, new AsyncCallback<String>() {
+            @Override
+            public void onFailure(Throwable caught)
+            {
+                logger.log(Level.SEVERE, caught.toString());
+                panel.add(new HTML(caught.getMessage()));
+            }
+
+            @Override
+            public void onSuccess(String result)
+            {
+                logger.log(Level.INFO, result);
+                if (result.isEmpty()) {
+                    panel.add(new HTML("No Data Found"));
+                }
+                else {
+                    panel.add(new HTML(result));
+                }
+            }
+        });
+		tpVis.add(panel, modelkey + " tree " + imgNum, false);
 
 		imgNum++;
 	}

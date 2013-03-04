@@ -1,14 +1,20 @@
 package edu.oswego.csc480_hci521_2013.server;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import edu.oswego.csc480_hci521_2013.client.services.H2OService;
+import edu.oswego.csc480_hci521_2013.h2owrapper.RestException;
 import edu.oswego.csc480_hci521_2013.h2owrapper.RestHandler;
 import edu.oswego.csc480_hci521_2013.h2owrapper.json.objects.ColumnDef;
 import edu.oswego.csc480_hci521_2013.h2owrapper.json.objects.Inspect;
 import edu.oswego.csc480_hci521_2013.h2owrapper.json.objects.InspectRow;
+import edu.oswego.csc480_hci521_2013.h2owrapper.json.objects.RFTreeView;
 import edu.oswego.csc480_hci521_2013.h2owrapper.json.objects.StoreView;
 import edu.oswego.csc480_hci521_2013.h2owrapper.json.objects.StoreViewRow;
 import edu.oswego.csc480_hci521_2013.h2owrapper.urlbuilders.InspectBuilder;
+import edu.oswego.csc480_hci521_2013.h2owrapper.urlbuilders.RFTreeViewBuilder;
 import edu.oswego.csc480_hci521_2013.h2owrapper.urlbuilders.StoreViewBuilder;
 import java.net.URL;
 import java.util.ArrayList;
@@ -62,6 +68,26 @@ public class H2OServiceImpl extends RemoteServiceServlet implements H2OService
                 }
             }
             return data;
+        } catch (Exception e) {
+            throw new IllegalStateException(e);
+        }
+    }
+
+    @Override
+    public String getTreeAsJson(String dataKey, String modelKey, int index) throws Exception
+    {
+        try {
+            URL url = new RFTreeViewBuilder(dataKey, modelKey).setTreeNumber(index).build();
+            String json = rest.fetch(url);
+            RFTreeView val = rest.parse(json, RFTreeView.class);
+
+            Gson gson = new Gson();
+            JsonParser parser = new JsonParser();
+            JsonObject response = parser.parse(json.toString()).getAsJsonObject();
+            if (response.has("error")) {
+                throw new RestException(response.get("error").getAsString());
+            }
+            return gson.toJson(response.get("tree"));
         } catch (Exception e) {
             throw new IllegalStateException(e);
         }

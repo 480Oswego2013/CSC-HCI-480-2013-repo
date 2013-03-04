@@ -23,6 +23,41 @@ public class ConfusionMatrix
     private List<List<Integer>> scores;
     private int used_trees;
 
+    public String getType()
+    {
+        return type;
+    }
+
+    public float getClassificationError()
+    {
+        return classification_error;
+    }
+
+    public int getRowsSkipped()
+    {
+        return rows_skipped;
+    }
+
+    public int getRows()
+    {
+        return rows;
+    }
+
+    public List<String> getHeader()
+    {
+        return header;
+    }
+
+    public List<List<Integer>> getScores()
+    {
+        return scores;
+    }
+
+    public int getUsedTrees()
+    {
+        return used_trees;
+    }
+
     @Override
     public String toString()
     {

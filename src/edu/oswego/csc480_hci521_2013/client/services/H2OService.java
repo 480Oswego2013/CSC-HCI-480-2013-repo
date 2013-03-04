@@ -13,4 +13,6 @@ public interface H2OService extends RemoteService
 {
     List<String> getParsedDataKeys() throws Exception;
     List<Map<String, String>> getParsedData(String key) throws Exception;
+
+    String getTreeAsJson(String dataKey, String modelKey, int index) throws Exception;
 }

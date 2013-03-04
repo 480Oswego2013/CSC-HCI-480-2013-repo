@@ -11,4 +11,6 @@ public interface H2OServiceAsync
 {
     void getParsedDataKeys(AsyncCallback<List<String>> callback);
     void getParsedData(String key, AsyncCallback<List<Map<String, String>>> callback);
+
+    void getTreeAsJson(String dataKey, String modelKey, int index, AsyncCallback<String> callback);
 }
