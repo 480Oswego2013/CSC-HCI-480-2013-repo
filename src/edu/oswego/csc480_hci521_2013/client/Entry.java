@@ -53,6 +53,6 @@ public class Entry implements EntryPoint {
 	}
 
   public static native void callSigma(String jsonTree) /*-{
-    $wnd.init();
+    $wnd.init(jsonTree);
   }-*/;
 }
