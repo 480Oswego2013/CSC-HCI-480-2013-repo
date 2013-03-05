@@ -17,14 +17,14 @@ import edu.oswego.csc480_hci521_2013.client.place.DoublePanelPlace;
 import edu.oswego.csc480_hci521_2013.client.place.MenuPlace;
 
 public class Entry implements EntryPoint {
-	
+
 	private Place defaultPlace = new MenuPlace();
 	private SimplePanel menuPanel = new SimplePanel();
 	private SimplePanel panelPanel = new SimplePanel();
 
 	@Override
 	public void onModuleLoad() {
-		
+
 		// Create ClientFactory using deferred binding (just because I say so)
 		ClientFactory clientFactory = GWT.create(ClientFactory.class);
 		EventBus eventBus = clientFactory.getEventBus();
@@ -34,11 +34,11 @@ public class Entry implements EntryPoint {
 		ActivityMapper mainActivityMapper = new MenuActivityMapper(clientFactory);
 		ActivityManager mainActivityManager = new ActivityManager(mainActivityMapper, eventBus);
 		mainActivityManager.setDisplay(menuPanel);
-		
+
 		ActivityMapper panelActivityMapper = new PanelActivityMapper(clientFactory);
 		ActivityManager panelActivityManager = new ActivityManager(panelActivityMapper, eventBus);
 		panelActivityManager.setDisplay(panelPanel);
-		
+
 		// Start PlaceHistoryHandler with our PlaceHistoryMapper
 		AppPlaceHistoryMapper historyMapper = GWT.create(AppPlaceHistoryMapper.class);
 		PlaceHistoryHandler historyHandler = new PlaceHistoryHandler(historyMapper);
@@ -49,10 +49,10 @@ public class Entry implements EntryPoint {
 		RootPanel.get().add(panelPanel);
 		historyHandler.handleCurrentHistory();
 		placeController.goTo(new DoublePanelPlace());
-		
+
 	}
 
-  public static native void callSigma(String jsonTree) /*-{
-    $wnd.init();
+  public static native void callSigma(String canvas, String jsonTree) /*-{
+    $wnd.init(canvas, jsonTree);
   }-*/;
 }

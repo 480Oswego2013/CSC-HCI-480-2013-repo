@@ -209,10 +209,11 @@ public class DoublePanelView extends Composite implements PanelView
             @Override
             public void onSuccess(String result)
             {
-                logger.log(Level.INFO, result.toString());
-                // TODO: Render tree here!!!
-                panel.add(new HTML(result.toString()));
-                Entry.callSigma(result);
+                logger.log(Level.INFO, result);
+                String canvas = (datakey + "__" + modelkey + "__" + tree).replaceAll("\\.", "_");
+                // FIXME: we dont want to have a fixed size but it wont work without it at this point.
+                panel.add(new HTML("<div id=\"" + canvas + "\" class=\"sigma-expand\" style=\"width:800px;height:1000px;\"></div>"));
+                Entry.callSigma(canvas, result);
             }
         });
         tpVis.add(panel, datakey + "<br>" + modelkey + "<br>tree " + (tree + 1), true);
