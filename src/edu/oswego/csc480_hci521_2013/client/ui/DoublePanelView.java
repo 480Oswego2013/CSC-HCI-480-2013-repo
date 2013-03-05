@@ -4,6 +4,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.Scheduler;
 import java.util.Arrays;
 
+import edu.oswego.csc480_hci521_2013.client.Entry;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.TextColumn;
 import com.google.gwt.user.client.Command;
@@ -211,6 +212,7 @@ public class DoublePanelView extends Composite implements PanelView
                 logger.log(Level.INFO, result.toString());
                 // TODO: Render tree here!!!
                 panel.add(new HTML(result.toString()));
+                Entry.callSigma(result);
             }
         });
         tpVis.add(panel, datakey + "<br>" + modelkey + "<br>tree " + (tree + 1), true);
