@@ -5,8 +5,8 @@ import com.google.gwt.user.client.ui.IsWidget;
 
 public interface PanelView extends IsWidget {
 	void buildGui();
-	void addDataTab(String title);
-	void addVisTab(String title);
+	void addDataTab(String key);
+	void addVisTab(String datakey, String modelkey, int tree);
 
 	void setPresenter(Presenter listener);
 
