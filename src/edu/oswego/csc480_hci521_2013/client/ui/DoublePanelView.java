@@ -197,7 +197,7 @@ public class DoublePanelView extends Composite implements PanelView
     public void addVisTab(final String datakey, final String modelkey, final int tree)
     {
         final HorizontalPanel panel = new HorizontalPanel();
-        h2oService.getTreeAsJson(datakey, modelkey, imgNum, new AsyncCallback<String>()
+        h2oService.getTreeAsJson(datakey, modelkey, tree, new AsyncCallback<String>()
         {
             @Override
             public void onFailure(Throwable caught)
