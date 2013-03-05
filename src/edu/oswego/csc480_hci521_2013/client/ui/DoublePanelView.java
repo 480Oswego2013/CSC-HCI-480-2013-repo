@@ -19,6 +19,7 @@ import com.google.gwt.user.client.ui.MenuBar;
 import com.google.gwt.user.client.ui.MenuItem;
 import com.google.gwt.user.client.ui.TabPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.ScrollPanel;
 import edu.oswego.csc480_hci521_2013.client.services.H2OService;
 import edu.oswego.csc480_hci521_2013.client.services.H2OServiceAsync;
 import edu.oswego.csc480_hci521_2013.shared.h2o.json.RFView;
@@ -149,7 +150,6 @@ public class DoublePanelView extends Composite implements PanelView
                     visbar.addItem(generate);
                     dataPanel.add(visbar);
                     CellTable<Map<String, String>> cellTable = new CellTable<Map<String, String>>();
-                    cellTable.setSize("100%", Window.getClientHeight() - 40 - 100 + "px");
                     for (final String key : result.get(0).keySet()) {
                         cellTable.addColumn(new TextColumn<Map<String, String>>()
                         {
@@ -161,7 +161,10 @@ public class DoublePanelView extends Composite implements PanelView
                         }, key);
                     }
                     cellTable.setRowData(result);
-                    dataPanel.add(cellTable);
+                    ScrollPanel scroll = new ScrollPanel();
+                    scroll.setSize((Window.getClientWidth() - 60)/2 + "px", Window.getClientHeight() - 40 - 100 + "px");
+                    scroll.add(cellTable);
+                    dataPanel.add(scroll);
                     tpData.add(dataPanel, datakey, false);
                     tpData.selectTab(tpData.getWidgetCount() - 1);
                     if (dummyDataLabel != null) {
@@ -252,13 +255,13 @@ public class DoublePanelView extends Composite implements PanelView
         mainPanel.setSpacing(10);
 
         VerticalPanel leftPanel = new VerticalPanel();
-        leftPanel.setSize("100%", "100%");
+        leftPanel.setSize((Window.getClientWidth() - 60)/2 + "px", Window.getClientHeight() - 40 - 100 + "px");
         leftPanel.setHorizontalAlignment(VerticalPanel.ALIGN_CENTER);
         leftPanel.setVerticalAlignment(VerticalPanel.ALIGN_TOP);
         mainPanel.add(leftPanel);
 
         VerticalPanel rightPanel = new VerticalPanel();
-        rightPanel.setSize("100%", "100%");
+        rightPanel.setSize((Window.getClientWidth() - 60)/2 + "px", Window.getClientHeight() - 40 - 100 + "px");
         rightPanel.setHorizontalAlignment(VerticalPanel.ALIGN_CENTER);
         rightPanel.setVerticalAlignment(VerticalPanel.ALIGN_TOP);
         mainPanel.add(rightPanel);
