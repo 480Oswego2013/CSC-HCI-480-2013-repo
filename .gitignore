@@ -57,3 +57,10 @@ war/WEB-INF/classes/
 
 # Allow jars in war lib
 !war/WEB-INF/lib/*.jar
+
+
+
+#######################
+##  Ignore OS Files  ##
+#######################
+*.DS_Store
