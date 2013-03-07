@@ -1,23 +1,23 @@
 package edu.oswego.csc480_hci521_2013.h2owrapper;
 
-import edu.oswego.csc480_hci521_2013.h2owrapper.json.objects.ImportUrl;
-import edu.oswego.csc480_hci521_2013.h2owrapper.json.objects.Inspect;
-import edu.oswego.csc480_hci521_2013.h2owrapper.json.objects.Parse;
-import edu.oswego.csc480_hci521_2013.h2owrapper.json.objects.Progress;
-import edu.oswego.csc480_hci521_2013.h2owrapper.json.objects.RF;
-import edu.oswego.csc480_hci521_2013.h2owrapper.json.objects.RFTreeView;
-import edu.oswego.csc480_hci521_2013.h2owrapper.json.objects.RFView;
-import edu.oswego.csc480_hci521_2013.h2owrapper.json.objects.ResponseStatus;
-import edu.oswego.csc480_hci521_2013.h2owrapper.json.objects.StoreView;
-import edu.oswego.csc480_hci521_2013.h2owrapper.urlbuilders.ImportUrlBuilder;
-import edu.oswego.csc480_hci521_2013.h2owrapper.urlbuilders.InspectBuilder;
-import edu.oswego.csc480_hci521_2013.h2owrapper.urlbuilders.ParseBuilder;
-import edu.oswego.csc480_hci521_2013.h2owrapper.urlbuilders.ProgressBuilder;
-import edu.oswego.csc480_hci521_2013.h2owrapper.urlbuilders.RFBuilder;
-import edu.oswego.csc480_hci521_2013.h2owrapper.urlbuilders.RFViewBuilder;
-import edu.oswego.csc480_hci521_2013.h2owrapper.urlbuilders.RFTreeViewBuilder;
-import edu.oswego.csc480_hci521_2013.h2owrapper.urlbuilders.StoreViewBuilder;
-import java.net.URL;
+import edu.oswego.csc480_hci521_2013.server.RestHandler;
+import edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders.ImportUrlBuilder;
+import edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders.InspectBuilder;
+import edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders.ParseBuilder;
+import edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders.ProgressBuilder;
+import edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders.RFBuilder;
+import edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders.RFViewBuilder;
+import edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders.RFTreeViewBuilder;
+import edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders.StoreViewBuilder;
+import edu.oswego.csc480_hci521_2013.shared.h2o.json.ImportUrl;
+import edu.oswego.csc480_hci521_2013.shared.h2o.json.Inspect;
+import edu.oswego.csc480_hci521_2013.shared.h2o.json.Parse;
+import edu.oswego.csc480_hci521_2013.shared.h2o.json.Progress;
+import edu.oswego.csc480_hci521_2013.shared.h2o.json.RF;
+import edu.oswego.csc480_hci521_2013.shared.h2o.json.RFTreeView;
+import edu.oswego.csc480_hci521_2013.shared.h2o.json.RFView;
+import edu.oswego.csc480_hci521_2013.shared.h2o.json.ResponseStatus;
+import edu.oswego.csc480_hci521_2013.shared.h2o.json.StoreView;
 
 /**
  * Examples of usage
@@ -43,7 +43,7 @@ public class Main
 
     private static void importUrl(RestHandler rest) throws Exception
     {
-        URL url = new ImportUrlBuilder("https://raw.github.com/0xdata/h2o/master/smalldata/cars.csv").setKey("cars.csv").build();
+        String url = new ImportUrlBuilder("https://raw.github.com/0xdata/h2o/master/smalldata/cars.csv").setKey("cars.csv").build();
         System.out.println(url);
         String json = rest.fetch(url);
         System.out.println(json);
@@ -53,7 +53,7 @@ public class Main
 
     private static ResponseStatus parse(RestHandler rest) throws Exception
     {
-        URL url = new ParseBuilder("cars.csv").setHeader(true).setDestinationKey("cars.hex").build();
+        String url = new ParseBuilder("cars.csv").setHeader(true).setDestinationKey("cars.hex").build();
         System.out.println(url);
         String json = rest.fetch(url);
         System.out.println(json);
@@ -64,7 +64,7 @@ public class Main
 
     private static void inspect(RestHandler rest) throws Exception
     {
-        URL url = new InspectBuilder("cars.hex").build();
+        String url = new InspectBuilder("cars.hex").build();
         System.out.println(url);
         String json = rest.fetch(url);
         System.out.println(json);
@@ -74,7 +74,7 @@ public class Main
 
     private static void rf(RestHandler rest) throws Exception
     {
-        URL url = new RFBuilder("cars.hex").setModelKey("cars.model").setOutOfBagErrorEstimate(false).build();
+        String url = new RFBuilder("cars.hex").setModelKey("cars.model").setOutOfBagErrorEstimate(false).build();
         System.out.println(url);
         String json = rest.fetch(url);
         System.out.println(json);
@@ -84,7 +84,7 @@ public class Main
 
     private static void storeView(RestHandler rest) throws Exception
     {
-        URL url = new StoreViewBuilder().build();
+        String url = new StoreViewBuilder().build();
         System.out.println(url);
         String json = rest.fetch(url);
         System.out.println(json);
@@ -94,7 +94,7 @@ public class Main
 
     private static void rfView(RestHandler rest) throws Exception
     {
-        URL url = new RFViewBuilder("cars.hex", "cars.model").build();
+        String url = new RFViewBuilder("cars.hex", "cars.model").build();
         System.out.println(url);
 
         for (;;) {
@@ -114,7 +114,7 @@ public class Main
 
     private static void rfTreeView(RestHandler rest) throws Exception
     {
-        URL url = new RFTreeViewBuilder("cars.hex", "cars.model").setTreeNumber(15).build();
+        String url = new RFTreeViewBuilder("cars.hex", "cars.model").setTreeNumber(15).build();
         System.out.println(url);
         String json = rest.fetch(url);
         System.out.println(json);
@@ -130,7 +130,7 @@ public class Main
         String job = status.getRedirectRequestArgs().get("job");
         String key = status.getRedirectRequestArgs().get("destination_key");
 
-        URL url = new ProgressBuilder(job, key).build();
+        String url = new ProgressBuilder(job, key).build();
         System.out.println(url);
         Progress val;
         for (;;) {

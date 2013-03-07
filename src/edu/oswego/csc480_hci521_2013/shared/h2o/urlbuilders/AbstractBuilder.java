@@ -1,7 +1,6 @@
-package edu.oswego.csc480_hci521_2013.h2owrapper.urlbuilders;
+package edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders;
 
-import java.net.URI;
-import java.net.URL;
+import com.google.gwt.user.client.rpc.IsSerializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -10,7 +9,7 @@ import java.util.Map;
 /**
  *
  */
-abstract class AbstractBuilder
+abstract class AbstractBuilder implements IsSerializable
 {
     private static final String PROTOCOL = "http";
     private static final String HOST = "localhost";
@@ -21,8 +20,12 @@ abstract class AbstractBuilder
     private int port = PORT;
     private String page;
 
-    private Map<String, String> args = new HashMap<>();
-    private List<Arg> multiargs = new ArrayList<>();
+    private Map<String, String> args = new HashMap<String, String>();
+    private List<Arg> multiargs = new ArrayList<Arg>();
+
+    protected AbstractBuilder()
+    {
+    }
 
     protected AbstractBuilder(String page)
     {
@@ -41,20 +44,10 @@ abstract class AbstractBuilder
         return this;
     }
 
-    public String getProtocol()
-    {
-        return protocol;
-    }
-
     public AbstractBuilder setProtocol(String protocol)
     {
         this.protocol = protocol;
         return this;
-    }
-
-    public String getHost()
-    {
-        return host;
     }
 
     public AbstractBuilder setHost(String host)
@@ -63,18 +56,13 @@ abstract class AbstractBuilder
         return this;
     }
 
-    public int getPort()
-    {
-        return port;
-    }
-
     public AbstractBuilder setPort(int port)
     {
         this.port = port;
         return this;
     }
 
-    public URL build() throws Exception
+    public String build()
     {
         String query = null;
         for (String key: args.keySet()) {
@@ -96,10 +84,14 @@ abstract class AbstractBuilder
                 query += "&" + key + "=" + value;
             }
         }
-        return new URI(protocol, null, host, port, page, query, null).toURL();
+        String url = protocol + "://" + host + ":" + port + page;
+        if (query != null) {
+            url += "?" + query;
+        }
+        return url;
     }
 
-    private static class Arg
+    private static class Arg implements IsSerializable
     {
         String key;
         String value;

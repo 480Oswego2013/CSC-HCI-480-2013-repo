@@ -1,4 +1,4 @@
-package edu.oswego.csc480_hci521_2013.h2owrapper.urlbuilders;
+package edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders;
 
 /**
  *

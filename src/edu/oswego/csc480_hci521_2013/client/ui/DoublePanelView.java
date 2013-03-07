@@ -22,6 +22,7 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import edu.oswego.csc480_hci521_2013.client.services.H2OService;
 import edu.oswego.csc480_hci521_2013.client.services.H2OServiceAsync;
+import edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders.RFBuilder;
 import edu.oswego.csc480_hci521_2013.shared.h2o.json.RFView;
 import edu.oswego.csc480_hci521_2013.shared.h2o.json.ResponseStatus;
 import java.util.List;
@@ -76,7 +77,7 @@ public class DoublePanelView extends Composite implements PanelView
                         public void execute()
                         {
                             logger.log(Level.INFO, "Generating Forest");
-                            h2oService.generateRandomForest(datakey, new AsyncCallback<String>() {
+                            h2oService.generateRandomForest(new RFBuilder(datakey), new AsyncCallback<String>() {
                                 @Override
                                 public void onFailure(Throwable thrwbl)
                                 {
