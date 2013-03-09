@@ -1,40 +1,28 @@
 package edu.oswego.csc480_hci521_2013.shared.h2o.json;
 
-import com.google.gwt.user.client.rpc.IsSerializable;
-
 /**
  *
  */
-public class RFTreeView implements IsSerializable
-{
+public class RFTreeView extends H2OResponse {
+
     private int depth;
     private int leaves;
     private TreeNode tree;
-    private ResponseStatus response;
 
-    public int getDepth()
-    {
+    public int getDepth() {
         return depth;
     }
 
-    public int getLeaves()
-    {
+    public int getLeaves() {
         return leaves;
     }
 
-    public TreeNode getTree()
-    {
+    public TreeNode getTree() {
         return tree;
     }
 
-    public ResponseStatus getResponse()
-    {
-        return response;
-    }
-
     @Override
-    public String toString()
-    {
-        return "RFTreeView{" + "depth=" + depth + ", leaves=" + leaves + ", tree=" + tree + ", response=" + response + '}';
+    public String toString() {
+        return "RFTreeView{" + "depth=" + depth + ", leaves=" + leaves + ", tree=" + tree + '}';
     }
 }

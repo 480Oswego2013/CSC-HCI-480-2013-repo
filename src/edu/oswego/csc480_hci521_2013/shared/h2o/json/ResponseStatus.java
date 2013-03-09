@@ -8,6 +8,11 @@ import java.util.Map;
  */
 public class ResponseStatus implements IsSerializable
 {
+    public static final String STATUS_POLL = "poll";
+    public static final String STATUS_REDIRECT = "redirect";
+    public static final String STATUS_ERROR = "error";
+    public static final String STATUS_DONE = "done";
+
     private String status;
     private String h2o;
     private String node;
@@ -59,12 +64,17 @@ public class ResponseStatus implements IsSerializable
 
     public boolean isPoll()
     {
-        return status.equals("poll");
+        return status.equals(STATUS_POLL);
     }
 
     public boolean isRedirect()
     {
-        return status.equals("redirect");
+        return status.equals(STATUS_REDIRECT);
+    }
+
+    public boolean isError()
+    {
+        return status.equals(STATUS_ERROR);
     }
 
     @Override

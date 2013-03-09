@@ -1,7 +1,9 @@
-function init(canvas, json) {
+function init(canvas, json, depth, leaves) {
   // Instanciate sigma.js and customize rendering :
   console.log("canvas id: " + canvas);
   console.log("json: " + json);
+  console.log("depth: " + depth);
+  console.log("leaves: " + leaves);
 
   var sigInst = sigma.init(document.getElementById(canvas)).drawingProperties({
     edgeColor: '000',
@@ -26,7 +28,7 @@ function init(canvas, json) {
   function traverse(parent, node, level, index){
 
     //Print node to console (leaf)
-    if (node.hasOwnProperty('label')) {
+    if (node.label !== null) {
       console.log(node.label);
     }
     else {  //Print node to console (internal)
@@ -34,7 +36,7 @@ function init(canvas, json) {
     }
 
     //Create node (leaf)
-    if (node.hasOwnProperty('label')){
+    if (node.label !== null){
       //Construct ID, increment leafCount
       leafID = "l-"+node.label+leafCount+"-l";
       leafCount++;
@@ -63,7 +65,7 @@ function init(canvas, json) {
 
     //Create edge
     if(parent != null){
-      if(node.hasOwnProperty('label')){
+      if(node.label !== null){
         var parentID = "n-"+parent.indexDispX+"-"+parent.levelDispY+"-n";
         var edgeID = parentID + "-e-" + leafID;
         console.log("LEdge: "+edgeID);
@@ -77,10 +79,9 @@ function init(canvas, json) {
       }
     }
 
-    if (typeof node.children != 'undefined') {
+    if (node.children !== null) {
       for (var i = 0; i < node.children.length; i++) {
         if(i == 0){
-
           traverse(node,node.children[i],level+1,index-1);
         }
         else if (i == 1){
@@ -100,7 +101,7 @@ function init(canvas, json) {
 
       node.levelDispY = level;
 
-      if(node.hasOwnProperty('children') && node.children[0] != null){
+      if(node.children !== null){
 
         level++;
 
@@ -111,7 +112,7 @@ function init(canvas, json) {
 
      tempI++;
 
-     if(node.hasOwnProperty('children') && node.children[1] != null){
+     if(node.children !== null){
         setLI(node.children[1],level);
      }
     }
@@ -140,8 +141,8 @@ function init(canvas, json) {
 }
 
 
-if (document.addEventListener) {
-  document.addEventListener("DOMContentLoaded", init, false);
-} else {
-  window.onload = init;
-}
+//if (document.addEventListener) {
+//  document.addEventListener("DOMContentLoaded", init, false);
+//} else {
+//  window.onload = init;
+//}

@@ -1,34 +1,23 @@
 package edu.oswego.csc480_hci521_2013.shared.h2o.json;
 
-import com.google.gwt.user.client.rpc.IsSerializable;
-
 /**
  *
  */
-public class ImportUrl implements IsSerializable
-{
+public class ImportUrl extends H2OResponse {
+
     private String key;
     private String url;
-    private ResponseStatus response;
 
-    public String getKey()
-    {
+    public String getKey() {
         return key;
     }
 
-    public String getUrl()
-    {
+    public String getUrl() {
         return url;
     }
 
-    public ResponseStatus getResponse()
-    {
-        return response;
-    }
-
     @Override
-    public String toString()
-    {
-        return "ImportUrl{" + "key=" + key + ", url=" + url + ", response=" + response + '}';
+    public String toString() {
+        return "ImportUrl{" + "key=" + key + ", url=" + url + '}';
     }
 }

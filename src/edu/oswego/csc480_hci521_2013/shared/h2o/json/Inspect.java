@@ -1,13 +1,12 @@
 package edu.oswego.csc480_hci521_2013.shared.h2o.json;
 
-import com.google.gwt.user.client.rpc.IsSerializable;
 import java.util.ArrayList;
 
 /**
  *
  */
-public class Inspect implements IsSerializable
-{
+public class Inspect extends H2OResponse {
+
     private String type;
     private String key;
     private int num_rows;
@@ -16,56 +15,41 @@ public class Inspect implements IsSerializable
     private int value_size_bytes;
     private ArrayList<ColumnDef> cols;
     private ArrayList<InspectRow> rows;
-    private ResponseStatus response;
 
-    public String getType()
-    {
+    public String getType() {
         return type;
     }
 
-    public String getKey()
-    {
+    public String getKey() {
         return key;
     }
 
-    public int getNumRows()
-    {
+    public int getNumRows() {
         return num_rows;
     }
 
-    public int getNumCols()
-    {
+    public int getNumCols() {
         return num_cols;
     }
 
-    public int getRowSize()
-    {
+    public int getRowSize() {
         return row_size;
     }
 
-    public int getValueSizeBytes()
-    {
+    public int getValueSizeBytes() {
         return value_size_bytes;
     }
 
-    public ArrayList<ColumnDef> getCols()
-    {
+    public ArrayList<ColumnDef> getCols() {
         return cols;
     }
 
-    public ArrayList<InspectRow> getRows()
-    {
+    public ArrayList<InspectRow> getRows() {
         return rows;
     }
 
-    public ResponseStatus getResponse()
-    {
-        return response;
-    }
-
     @Override
-    public String toString()
-    {
-        return "Inspect{" + "type=" + type + ", key=" + key + ", num_rows=" + num_rows + ", num_cols=" + num_cols + ", row_size=" + row_size + ", value_size_bytes=" + value_size_bytes + ", cols=" + cols + ", rows=" + rows + ", response=" + response + '}';
+    public String toString() {
+        return "Inspect{" + "type=" + type + ", key=" + key + ", num_rows=" + num_rows + ", num_cols=" + num_cols + ", row_size=" + row_size + ", value_size_bytes=" + value_size_bytes + ", cols=" + cols + ", rows=" + rows + '}';
     }
 }

@@ -51,8 +51,4 @@ public class Entry implements EntryPoint {
 		placeController.goTo(new DoublePanelPlace());
 
 	}
-
-  public static native void callSigma(String canvas, String jsonTree) /*-{
-    $wnd.init(canvas, jsonTree);
-  }-*/;
 }

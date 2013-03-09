@@ -1,14 +1,6 @@
 package edu.oswego.csc480_hci521_2013.h2owrapper;
 
 import edu.oswego.csc480_hci521_2013.server.RestHandler;
-import edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders.ImportUrlBuilder;
-import edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders.InspectBuilder;
-import edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders.ParseBuilder;
-import edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders.ProgressBuilder;
-import edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders.RFBuilder;
-import edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders.RFViewBuilder;
-import edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders.RFTreeViewBuilder;
-import edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders.StoreViewBuilder;
 import edu.oswego.csc480_hci521_2013.shared.h2o.json.ImportUrl;
 import edu.oswego.csc480_hci521_2013.shared.h2o.json.Inspect;
 import edu.oswego.csc480_hci521_2013.shared.h2o.json.Parse;
@@ -18,6 +10,14 @@ import edu.oswego.csc480_hci521_2013.shared.h2o.json.RFTreeView;
 import edu.oswego.csc480_hci521_2013.shared.h2o.json.RFView;
 import edu.oswego.csc480_hci521_2013.shared.h2o.json.ResponseStatus;
 import edu.oswego.csc480_hci521_2013.shared.h2o.json.StoreView;
+import edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders.ImportUrlBuilder;
+import edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders.InspectBuilder;
+import edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders.ParseBuilder;
+import edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders.ProgressBuilder;
+import edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders.RFBuilder;
+import edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders.RFViewBuilder;
+import edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders.RFTreeViewBuilder;
+import edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders.StoreViewBuilder;
 
 /**
  * Examples of usage
@@ -119,7 +119,9 @@ public class Main
         String json = rest.fetch(url);
         System.out.println(json);
         RFTreeView val = rest.parse(json, RFTreeView.class);
-        System.out.println(val);
+        System.out.println("value: " + val);
+
+        System.out.println(val.getTree().toJson());
     }
 
     private static void progress(RestHandler rest, ResponseStatus status) throws Exception

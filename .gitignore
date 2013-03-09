@@ -8,6 +8,7 @@
 nbbuild.xml
 manifest.mf
 /build/
+/dist/
 
 # Allow maven ant task library
 !/lib/maven-ant-tasks-2.1.3.jar

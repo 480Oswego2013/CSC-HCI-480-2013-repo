@@ -4,7 +4,6 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.Scheduler;
 import java.util.Arrays;
 
-import edu.oswego.csc480_hci521_2013.client.Entry;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.TextColumn;
 import com.google.gwt.user.client.Command;
@@ -20,8 +19,10 @@ import com.google.gwt.user.client.ui.MenuItem;
 import com.google.gwt.user.client.ui.TabPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.ScrollPanel;
+import edu.oswego.csc480_hci521_2013.client.overlay.Sigma;
 import edu.oswego.csc480_hci521_2013.client.services.H2OService;
 import edu.oswego.csc480_hci521_2013.client.services.H2OServiceAsync;
+import edu.oswego.csc480_hci521_2013.shared.h2o.json.RFTreeView;
 import edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders.RFBuilder;
 import edu.oswego.csc480_hci521_2013.shared.h2o.json.RFView;
 import edu.oswego.csc480_hci521_2013.shared.h2o.json.ResponseStatus;
@@ -53,8 +54,7 @@ public class DoublePanelView extends Composite implements PanelView
     {
         // FIXME: nesting!
         logger.log(Level.INFO, "adding data tab: " + datakey);
-        h2oService.getParsedData(datakey, new AsyncCallback<List<Map<String, String>>>()
-        {
+        h2oService.getParsedData(datakey, new AsyncCallback<List<Map<String, String>>>() {
             @Override
             public void onFailure(Throwable caught)
             {
@@ -201,23 +201,24 @@ public class DoublePanelView extends Composite implements PanelView
     public void addVisTab(final String datakey, final String modelkey, final int tree)
     {
         final HorizontalPanel panel = new HorizontalPanel();
-        h2oService.getTreeAsJson(datakey, modelkey, tree, new AsyncCallback<String>()
-        {
+        h2oService.getTreeView(datakey, modelkey, tree, new AsyncCallback<RFTreeView>() {
+
             @Override
-            public void onFailure(Throwable caught)
-            {
-                logger.log(Level.SEVERE, caught.toString());
-                panel.add(new HTML(caught.getMessage()));
+            public void onFailure(Throwable thrwbl) {
+                logger.log(Level.SEVERE, thrwbl.toString());
+                panel.add(new HTML(thrwbl.getMessage()));
             }
 
             @Override
-            public void onSuccess(String result)
-            {
-                logger.log(Level.INFO, result);
+            public void onSuccess(RFTreeView treeview) {
+                logger.log(Level.INFO, treeview.toString());
                 String canvas = (datakey + "__" + modelkey + "__" + tree).replaceAll("\\.", "_");
                 // FIXME: we dont want to have a fixed size but it wont work without it at this point.
                 panel.add(new HTML("<div id=\"" + canvas + "\" class=\"sigma-expand\" style=\"width:800px;height:1000px;\"></div>"));
-                Entry.callSigma(canvas, result);
+
+                String json = treeview.getTree().toJson();
+                logger.log(Level.INFO, json);
+                Sigma.callSigma(canvas, json, treeview.getDepth(), treeview.getLeaves());
             }
         });
         tpVis.add(panel, datakey + "<br>" + modelkey + "<br>tree " + (tree + 1), true);

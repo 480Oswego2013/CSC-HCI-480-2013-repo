@@ -6,11 +6,6 @@ import com.google.gson.JsonParser;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import edu.oswego.csc480_hci521_2013.client.services.H2OService;
 import edu.oswego.csc480_hci521_2013.shared.h2o.RestException;
-import edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders.InspectBuilder;
-import edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders.RFBuilder;
-import edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders.RFTreeViewBuilder;
-import edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders.RFViewBuilder;
-import edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders.StoreViewBuilder;
 import edu.oswego.csc480_hci521_2013.shared.h2o.json.ColumnDef;
 import edu.oswego.csc480_hci521_2013.shared.h2o.json.Inspect;
 import edu.oswego.csc480_hci521_2013.shared.h2o.json.InspectRow;
@@ -18,8 +13,11 @@ import edu.oswego.csc480_hci521_2013.shared.h2o.json.RF;
 import edu.oswego.csc480_hci521_2013.shared.h2o.json.RFTreeView;
 import edu.oswego.csc480_hci521_2013.shared.h2o.json.RFView;
 import edu.oswego.csc480_hci521_2013.shared.h2o.json.StoreView;
-import edu.oswego.csc480_hci521_2013.shared.h2o.json.StoreViewRow;
-import edu.oswego.csc480_hci521_2013.shared.h2o.json.TreeNode;
+import edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders.InspectBuilder;
+import edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders.RFBuilder;
+import edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders.RFTreeViewBuilder;
+import edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders.RFViewBuilder;
+import edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders.StoreViewBuilder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -31,13 +29,12 @@ import java.util.logging.Logger;
  *
  */
 @SuppressWarnings("serial")
-public class H2OServiceImpl extends RemoteServiceServlet implements H2OService
-{
+public class H2OServiceImpl extends RemoteServiceServlet implements H2OService {
+
     static final Logger logger = Logger.getLogger(H2OServiceImpl.class.getName());
     RestHandler rest = new RestHandler();
 
-    public List<String> getParsedDataKeys() throws Exception
-    {
+    public List<String> getParsedDataKeys() throws Exception {
         try {
             String url = new StoreViewBuilder().build();
             logger.log(Level.INFO, url.toString());
@@ -46,22 +43,43 @@ public class H2OServiceImpl extends RemoteServiceServlet implements H2OService
             StoreView val = rest.parse(json, StoreView.class);
 
             List<String> keys = new ArrayList<String>();
-            for (StoreViewRow row: val.getKeys()) {
-                // NOTE: there is no way to know for sure if it is parsed data but the .hex naming convention is what h2o tends to use
+            for (StoreView.Row row : val.getKeys()) {
+                // NOTE: there is no way to know from this if it is parsed or not,
+                //       but the naming convention is that parsed data ends in .hex.
+                //       we could possibly do an inspect call on each piece to check if it is parsed or not...
                 if (row.getKey().endsWith(".hex")) {
                     keys.add(row.getKey());
                 }
             }
             return keys;
         } catch (RestException e) {
+            logger.log(Level.SEVERE, e.getMessage(), e);
             throw e;
         } catch (Exception e) {
+            logger.log(Level.SEVERE, e.getMessage(), e);
             throw new IllegalStateException(e);
         }
     }
 
-    public List<Map<String, String>> getParsedData(String key) throws Exception
-    {
+    public String inspect(InspectBuilder builder) throws Exception {
+        try {
+            String url = builder.build();
+            logger.log(Level.INFO, url.toString());
+            String json = rest.fetch(url);
+            logger.log(Level.INFO, json);
+            Inspect val = rest.parse(json, Inspect.class);
+            logger.log(Level.INFO, val.toString());
+            return json;
+        } catch (RestException e) {
+            logger.log(Level.SEVERE, e.getMessage(), e);
+            throw e;
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, e.getMessage(), e);
+            throw new IllegalStateException(e);
+        }
+    }
+
+    public List<Map<String, String>> getParsedData(String key) throws Exception {
         try {
             String url = new InspectBuilder(key).build();
             logger.log(Level.INFO, url.toString());
@@ -71,23 +89,24 @@ public class H2OServiceImpl extends RemoteServiceServlet implements H2OService
             logger.log(Level.INFO, val.toString());
 
             List<Map<String, String>> data = new ArrayList<Map<String, String>>();
-            for (InspectRow row: val.getRows()) {
+            for (InspectRow row : val.getRows()) {
                 Map<String, String> rowMap = new HashMap<String, String>();
                 data.add(rowMap);
-                for (ColumnDef column: val.getCols()) {
-                    rowMap.put(column.getName(), row.getData(column.getName()));
+                for (ColumnDef column : val.getCols()) {
+                    rowMap.put(column.getName(), row.getData(column.getName()).toString());
                 }
             }
             return data;
         } catch (RestException e) {
+            logger.log(Level.SEVERE, e.getMessage(), e);
             throw e;
         } catch (Exception e) {
+            logger.log(Level.SEVERE, e.getMessage(), e);
             throw new IllegalStateException(e);
         }
     }
 
-    public String getTreeAsJson(String dataKey, String modelKey, int index) throws Exception
-    {
+    public String getTreeAsJson(String dataKey, String modelKey, int index) throws Exception {
         try {
             String url = new RFTreeViewBuilder(dataKey, modelKey).setTreeNumber(index).build();
             logger.log(Level.INFO, url.toString());
@@ -102,14 +121,15 @@ public class H2OServiceImpl extends RemoteServiceServlet implements H2OService
             }
             return gson.toJson(response.get("tree"));
         } catch (RestException e) {
+            logger.log(Level.SEVERE, e.getMessage(), e);
             throw e;
         } catch (Exception e) {
+            logger.log(Level.SEVERE, e.getMessage(), e);
             throw new IllegalStateException(e);
         }
     }
 
-    public TreeNode getTree(String dataKey, String modelKey, int index) throws Exception
-    {
+    public RFTreeView getTreeView(String dataKey, String modelKey, int index) throws Exception {
         try {
             String url = new RFTreeViewBuilder(dataKey, modelKey).setTreeNumber(index).build();
             logger.log(Level.INFO, url.toString());
@@ -117,16 +137,17 @@ public class H2OServiceImpl extends RemoteServiceServlet implements H2OService
             logger.log(Level.INFO, json);
             RFTreeView val = rest.parse(json, RFTreeView.class);
             logger.log(Level.INFO, val.toString());
-            return val.getTree();
+            return val;
         } catch (RestException e) {
+            logger.log(Level.SEVERE, e.getMessage(), e);
             throw e;
         } catch (Exception e) {
+            logger.log(Level.SEVERE, e.getMessage(), e);
             throw new IllegalStateException(e);
         }
     }
 
-    public String generateRandomForest(RFBuilder builder) throws Exception
-    {
+    public String generateRandomForest(RFBuilder builder) throws Exception {
         try {
             String url = builder.build();
             logger.log(Level.INFO, url.toString());
@@ -136,14 +157,15 @@ public class H2OServiceImpl extends RemoteServiceServlet implements H2OService
             logger.log(Level.INFO, val.toString());
             return val.getModelKey();
         } catch (RestException e) {
+            logger.log(Level.SEVERE, e.getMessage(), e);
             throw e;
         } catch (Exception e) {
+            logger.log(Level.SEVERE, e.getMessage(), e);
             throw new IllegalStateException(e);
         }
     }
 
-    public RFView getRandomForestView(String dataKey, String modelKey) throws Exception
-    {
+    public RFView getRandomForestView(String dataKey, String modelKey) throws Exception {
         try {
             String url = new RFViewBuilder(dataKey, modelKey).build();
             logger.log(Level.INFO, url.toString());
@@ -153,8 +175,10 @@ public class H2OServiceImpl extends RemoteServiceServlet implements H2OService
             logger.log(Level.INFO, val.toString());
             return val;
         } catch (RestException e) {
+            logger.log(Level.SEVERE, e.getMessage(), e);
             throw e;
         } catch (Exception e) {
+            logger.log(Level.SEVERE, e.getMessage(), e);
             throw new IllegalStateException(e);
         }
     }
