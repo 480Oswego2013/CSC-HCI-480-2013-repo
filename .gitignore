@@ -4,8 +4,7 @@
 *.jar
 *.war
 *.ear
-/nbproject/
-nbbuild.xml
+/nbproject/private
 manifest.mf
 /build/
 /dist/
