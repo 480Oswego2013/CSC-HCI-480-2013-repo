@@ -5,7 +5,7 @@ import com.google.gwt.event.shared.EventHandler;
 /**
  *
  */
-public interface MenuClickEventHandler extends EventHandler
-{
-    void onMenuClick(MenuClickEvent e);
+public interface RFProgressEventHandler extends EventHandler {
+
+    void onDataUpdate(RFProgressEvent e);
 }

@@ -1,8 +1,11 @@
 package edu.oswego.csc480_hci521_2013.client;
 
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.SimpleEventBus;
 import com.google.gwt.place.shared.PlaceController;
-import com.google.web.bindery.event.shared.EventBus;
+import edu.oswego.csc480_hci521_2013.client.services.H2OService;
+import edu.oswego.csc480_hci521_2013.client.services.H2OServiceAsync;
 
 import edu.oswego.csc480_hci521_2013.client.ui.DoublePanelView;
 import edu.oswego.csc480_hci521_2013.client.ui.MenuView;
@@ -13,6 +16,7 @@ public class ClientFactoryImpl implements ClientFactory {
 
 	private static final EventBus eventBus = new SimpleEventBus();
 	private static final PlaceController placeController = new PlaceController(eventBus);
+    private static final H2OServiceAsync h2oService = GWT.create(H2OService.class);
 
 	private static MenuView mainView;
 	private static DoublePanelView  doublePanelView;
@@ -42,5 +46,10 @@ public class ClientFactoryImpl implements ClientFactory {
         }
 		return doublePanelView;
 	}
+
+    @Override
+    public H2OServiceAsync getH2OService() {
+        return h2oService;
+    }
 
 }

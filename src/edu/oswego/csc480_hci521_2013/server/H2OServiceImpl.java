@@ -28,7 +28,7 @@ import java.util.logging.Logger;
 /**
  *
  */
-@SuppressWarnings("serial")
+//@SuppressWarnings("serial")
 public class H2OServiceImpl extends RemoteServiceServlet implements H2OService {
 
     static final Logger logger = Logger.getLogger(H2OServiceImpl.class.getName());
@@ -36,7 +36,8 @@ public class H2OServiceImpl extends RemoteServiceServlet implements H2OService {
 
     public List<String> getParsedDataKeys() throws Exception {
         try {
-            String url = new StoreViewBuilder().build();
+            // FIXME: there is a default view of 20 rows on this...
+            String url = new StoreViewBuilder().setFilter(".hex").setView(1024).build();
             logger.log(Level.INFO, url.toString());
             String json = rest.fetch(url);
             logger.log(Level.INFO, json);
@@ -52,24 +53,6 @@ public class H2OServiceImpl extends RemoteServiceServlet implements H2OService {
                 }
             }
             return keys;
-        } catch (RestException e) {
-            logger.log(Level.SEVERE, e.getMessage(), e);
-            throw e;
-        } catch (Exception e) {
-            logger.log(Level.SEVERE, e.getMessage(), e);
-            throw new IllegalStateException(e);
-        }
-    }
-
-    public String inspect(InspectBuilder builder) throws Exception {
-        try {
-            String url = builder.build();
-            logger.log(Level.INFO, url.toString());
-            String json = rest.fetch(url);
-            logger.log(Level.INFO, json);
-            Inspect val = rest.parse(json, Inspect.class);
-            logger.log(Level.INFO, val.toString());
-            return json;
         } catch (RestException e) {
             logger.log(Level.SEVERE, e.getMessage(), e);
             throw e;
@@ -147,7 +130,7 @@ public class H2OServiceImpl extends RemoteServiceServlet implements H2OService {
         }
     }
 
-    public String generateRandomForest(RFBuilder builder) throws Exception {
+    public RF generateRandomForest(RFBuilder builder) throws Exception {
         try {
             String url = builder.build();
             logger.log(Level.INFO, url.toString());
@@ -155,7 +138,7 @@ public class H2OServiceImpl extends RemoteServiceServlet implements H2OService {
             logger.log(Level.INFO, json);
             RF val = rest.parse(json, RF.class);
             logger.log(Level.INFO, val.toString());
-            return val.getModelKey();
+            return val;
         } catch (RestException e) {
             logger.log(Level.SEVERE, e.getMessage(), e);
             throw e;

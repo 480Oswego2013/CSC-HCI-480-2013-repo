@@ -1,39 +1,25 @@
 package edu.oswego.csc480_hci521_2013.client.ui;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.core.client.Scheduler;
 import java.util.Arrays;
 
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.TextColumn;
-import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
+import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.MenuBar;
-import com.google.gwt.user.client.ui.MenuItem;
 import com.google.gwt.user.client.ui.TabPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
-import com.google.gwt.user.client.ui.ScrollPanel;
-import edu.oswego.csc480_hci521_2013.client.overlay.Sigma;
 import edu.oswego.csc480_hci521_2013.client.services.H2OService;
 import edu.oswego.csc480_hci521_2013.client.services.H2OServiceAsync;
-import edu.oswego.csc480_hci521_2013.shared.h2o.json.RFTreeView;
-import edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders.RFBuilder;
-import edu.oswego.csc480_hci521_2013.shared.h2o.json.RFView;
-import edu.oswego.csc480_hci521_2013.shared.h2o.json.ResponseStatus;
-import java.util.List;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class DoublePanelView extends Composite implements PanelView
 {
-
     private Presenter presenter;
     static final Logger logger = Logger.getLogger(DoublePanelView.class.getName());
     private final H2OServiceAsync h2oService = GWT.create(H2OService.class);
@@ -44,137 +30,20 @@ public class DoublePanelView extends Composite implements PanelView
     Label dummyDataLabel = new Label("dummy tab", false);
     Label dummyVisLabel = new Label("dummy tab", false);
 
-    // Add all widgets to the view
     public DoublePanelView()
     {
     }
 
     @Override
-    public void addDataTab(final String datakey)
+    public void addDataTab(IsWidget panel, String title)
     {
-        // FIXME: nesting!
-        logger.log(Level.INFO, "adding data tab: " + datakey);
-        h2oService.getParsedData(datakey, new AsyncCallback<List<Map<String, String>>>() {
-            @Override
-            public void onFailure(Throwable caught)
-            {
-                logger.log(Level.SEVERE, caught.toString());
-                tpData.add(new HTML(caught.getMessage()), datakey, false);
-            }
-
-            @Override
-            public void onSuccess(List<Map<String, String>> result)
-            {
-                if (result.isEmpty()) {
-                    tpData.add(new HTML("No Data Found"), datakey, false);
-                }
-                else {
-                    VerticalPanel dataPanel = new VerticalPanel();
-                    final MenuBar visbar = new MenuBar(false);
-                    final MenuItem generate = new MenuItem("Generate Forest", new Command()
-                    {
-                        @Override
-                        public void execute()
-                        {
-                            logger.log(Level.INFO, "Generating Forest");
-                            h2oService.generateRandomForest(new RFBuilder(datakey), new AsyncCallback<String>() {
-                                @Override
-                                public void onFailure(Throwable thrwbl)
-                                {
-                                    logger.log(Level.SEVERE, thrwbl.toString());
-                                }
-
-                                @Override
-                                public void onSuccess(final String modelkey)
-                                {
-                                    logger.log(Level.INFO, "Forest Started");
-                                    visbar.clearItems();
-                                    final MenuBar treebar = new MenuBar(true);
-                                    final MenuItem trees = new MenuItem("Trees", treebar);
-                                    trees.setEnabled(false);
-                                    visbar.addItem(trees);
-
-                                    Scheduler.get().scheduleFixedPeriod(new Scheduler.RepeatingCommand() {
-                                        boolean isFinished = false;
-                                        @Override
-                                        public boolean execute()
-                                        {
-                                            logger.log(Level.INFO, "Polling forest generation progress");
-                                            if (isFinished) {
-                                                return false;
-                                            }
-
-                                            h2oService.getRandomForestView(datakey, modelkey, new AsyncCallback<RFView>() {
-                                                @Override
-                                                public void onFailure(Throwable thrwbl)
-                                                {
-                                                    logger.log(Level.SEVERE, thrwbl.toString());
-                                                }
-
-                                                @Override
-                                                public void onSuccess(RFView rfview)
-                                                {
-                                                    logger.log(Level.INFO, rfview.toString());
-                                                    ResponseStatus status = rfview.getResponse();
-                                                    if (status.isPoll()) {
-                                                        int done = status.getProgress();
-                                                        int total = status.getProgressTotal();
-                                                        logger.log(Level.INFO, "Trees generated " + done + " of " + total);
-                                                        trees.setHTML("Trees: Generated " + done + " of " + total);
-                                                    }
-                                                    else {
-                                                        logger.log(Level.INFO, "Forest finished");
-                                                        trees.setHTML("Trees");
-                                                        trees.setEnabled(true);
-                                                        isFinished = true;
-                                                        int total = rfview.getNtree();
-                                                        for (int i = 0; i < total; i++) {
-                                                            final int index = i;
-                                                            treebar.addItem(String.valueOf(i + 1), new Command() {
-                                                                @Override
-                                                                public void execute()
-                                                                {
-                                                                    addVisTab(datakey, modelkey, index);
-                                                                }
-                                                            });
-                                                        }
-                                                    }
-                                                }
-                                            });
-                                            return true;
-                                        }
-                                    }, 1000);
-                                }
-                            });
-                        }
-                    });
-                    visbar.addItem(generate);
-                    dataPanel.add(visbar);
-                    CellTable<Map<String, String>> cellTable = new CellTable<Map<String, String>>();
-                    for (final String key : result.get(0).keySet()) {
-                        cellTable.addColumn(new TextColumn<Map<String, String>>()
-                        {
-                            @Override
-                            public String getValue(Map<String, String> row)
-                            {
-                                return row.get(key);
-                            }
-                        }, key);
-                    }
-                    cellTable.setRowData(result);
-                    ScrollPanel scroll = new ScrollPanel();
-                    scroll.setSize((Window.getClientWidth() - 60)/2 + "px", Window.getClientHeight() - 40 - 100 + "px");
-                    scroll.add(cellTable);
-                    dataPanel.add(scroll);
-                    tpData.add(dataPanel, datakey, false);
-                    tpData.selectTab(tpData.getWidgetCount() - 1);
-                    if (dummyDataLabel != null) {
-                        tpData.remove(0);
-                        dummyDataLabel = null;
-                    }
-                }
-            }
-        });
+        logger.log(Level.INFO, "adding data tab: " + title);
+        tpData.add(panel, title, false);
+        tpData.selectTab(tpData.getWidgetCount() - 1);
+        if (dummyDataLabel != null) {
+            tpData.remove(0);
+            dummyDataLabel = null;
+        }
     }
 
     private void addDummyDataTab()
@@ -198,30 +67,9 @@ public class DoublePanelView extends Composite implements PanelView
     }
 
     @Override
-    public void addVisTab(final String datakey, final String modelkey, final int tree)
-    {
-        final HorizontalPanel panel = new HorizontalPanel();
-        h2oService.getTreeView(datakey, modelkey, tree, new AsyncCallback<RFTreeView>() {
-
-            @Override
-            public void onFailure(Throwable thrwbl) {
-                logger.log(Level.SEVERE, thrwbl.toString());
-                panel.add(new HTML(thrwbl.getMessage()));
-            }
-
-            @Override
-            public void onSuccess(RFTreeView treeview) {
-                logger.log(Level.INFO, treeview.toString());
-                String canvas = (datakey + "__" + modelkey + "__" + tree).replaceAll("\\.", "_");
-                // FIXME: we dont want to have a fixed size but it wont work without it at this point.
-                panel.add(new HTML("<div id=\"" + canvas + "\" class=\"sigma-expand\" style=\"width:800px;height:1000px;\"></div>"));
-
-                String json = treeview.getTree().toJson();
-                logger.log(Level.INFO, json);
-                Sigma.callSigma(canvas, json, treeview.getDepth(), treeview.getLeaves());
-            }
-        });
-        tpVis.add(panel, datakey + "<br>" + modelkey + "<br>tree " + (tree + 1), true);
+    public void addVisTab(IsWidget panel, String title) {
+        logger.log(Level.INFO, "adding vis tab: " + title);
+        tpVis.add(panel, title, true);
         tpVis.selectTab(tpVis.getWidgetCount() - 1);
         if (dummyVisLabel != null) {
             tpVis.remove(0);

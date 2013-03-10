@@ -7,7 +7,7 @@ import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 
 import edu.oswego.csc480_hci521_2013.client.ClientFactory;
-import edu.oswego.csc480_hci521_2013.client.events.MenuClickEvent;
+import edu.oswego.csc480_hci521_2013.client.events.InspectDataEvent;
 import edu.oswego.csc480_hci521_2013.client.place.MenuPlace;
 import edu.oswego.csc480_hci521_2013.client.ui.MenuView;
 
@@ -47,7 +47,7 @@ public class MenuActivity extends AbstractActivity implements MenuView.Presenter
 		return new Command() {
 			@Override
 			public void execute() {
-                clientFactory.getEventBus().fireEvent(new MenuClickEvent(value));
+                clientFactory.getEventBus().fireEvent(new InspectDataEvent(value));
 			}
 		};
 	}
