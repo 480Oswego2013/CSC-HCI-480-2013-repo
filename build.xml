@@ -64,6 +64,19 @@
             classpathref="project.classpath" />
     </target>
 
+    <target name="compile-tests" description="Compile test sources" depends="compile-gwt">
+        <mkdir dir="${build}/test" />
+        <!-- NOTE: source set to 1.6 for gwt compatability -->
+        <javac destdir="${build}/test" srcdir="test"
+            source="1.6" target="1.7"
+            includeantruntime="false">
+            <classpath>
+                <pathelement location="${build.gwt}"/>
+                <path refid="project.classpath"/>
+            </classpath>
+        </javac>
+    </target>
+
     <!-- Compile GWT module to JavaScript -->
     <target name="compile-gwt-gwtc" depends="compile-gwt" description="GWT compile to JavaScript">
         <java failonerror="true" fork="true" classname="com.google.gwt.dev.Compiler">
@@ -100,6 +113,7 @@
             <dependency groupId="com.google.gwt" artifactId="gwt-user" version="2.5.0" />
             <dependency groupId="com.google.gwt" artifactId="gwt-dev" version="2.5.0" />
             <dependency groupId="com.google.code.gson" artifactId="gson" version="2.2.2" />
+            <dependency groupId="junit" artifactId="junit" version="4.11" />
         </artifact:dependencies>
         <path id="project.classpath">
             <path refid="dependency.classpath" />
@@ -113,5 +127,21 @@
                 <path refid="project.classpath"/>
             </classpath>
         </java>
+    </target>
+
+    <target name="test" depends="compile-tests" description="Run unit tests">
+        <junit fork="true" haltonfailure="yes">
+            <batchtest>
+                <fileset dir="${build}/test">
+                    <include name="**/*Test.class" />
+                </fileset>
+            </batchtest>
+            <formatter type="plain" usefile="false"/>
+            <classpath>
+                <pathelement location="${build.gwt}"/>
+                <pathelement location="${build}/test"/>
+                <path refid="project.classpath"/>
+            </classpath>
+        </junit>
     </target>
 </project>
