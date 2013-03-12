@@ -5,18 +5,42 @@ function init(canvas, json, depth, leaves) {
   console.log("depth: " + depth);
   console.log("leaves: " + leaves);
 
+  var minNS = 0;
+  var maxNS = 0;
+  var maxR = 0;
+  var lth = 0;
+
+  if(depth <= 10){
+    minNS = .5;
+    maxNS = 3;
+    maxR = 16
+    lth = 6;
+  }
+  else if(depth <= 45){
+    minNS = .5;
+    maxNS = 1;
+    maxR = 32
+    lth = 3
+  }
+  else{
+    minNS = .05;
+    maxNS = .1;
+    maxR = 1240;
+    lth = 1;
+  }
+
   var sigInst = sigma.init(document.getElementById(canvas)).drawingProperties({
     edgeColor: '000',
-    labelThreshold: 12,
+    labelThreshold: lth,
     //defaultEdgeType: 'curve',
     defaultLabelColor: '#fff'
   }).graphProperties({
-    minNodeSize: .5,
-    maxNodeSize: 3,
+    minNodeSize: minNS,
+    maxNodeSize: maxNS,
     minEdgeSize: 2,
     maxEdgeSize: 3
   }).mouseProperties({
-    maxRatio: 32
+    maxRatio: maxR
   });
 
   var tempI = 0;
