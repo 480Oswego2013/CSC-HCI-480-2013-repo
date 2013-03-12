@@ -24,7 +24,6 @@ import edu.oswego.csc480_hci521_2013.client.ui.PanelView;
 import edu.oswego.csc480_hci521_2013.client.ui.TreePanel;
 import edu.oswego.csc480_hci521_2013.shared.h2o.json.RF;
 import edu.oswego.csc480_hci521_2013.shared.h2o.json.RFTreeView;
-import edu.oswego.csc480_hci521_2013.shared.h2o.json.RFView;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -97,15 +96,8 @@ public class DoublePanelActivity extends AbstractActivity implements PanelView.P
             @Override
             public void onSuccess(List<Map<String, String>> result)
             {
-                // TODO: inject this...
-                DataPanelPresenter.View view = new DataPanelViewImpl(result);
-                DataPanelPresenter presenter = new DataPanelPresenterImpl(
-                    clientFactory.getEventBus(),
-                    view,
-                    clientFactory.getH2OService(),
-                    datakey
-                );
-                clientFactory.getDoublePanelView().addDataTab(view, datakey);
+                DataPanelPresenter presenter = new DataPanelPresenterImpl(clientFactory, datakey, result);
+                clientFactory.getDoublePanelView().addDataTab(presenter.getView(), datakey);
             }
         });
     }
@@ -131,11 +123,10 @@ public class DoublePanelActivity extends AbstractActivity implements PanelView.P
         });
     }
 
+    @Override
     public void addConfusionMatrixTab(RF rf) {
-        // TODO: inject these here...
-        ConfusionMatrixPresenter.View view = new ConfusionMatrixViewImpl();
-        ConfusionMatrixPresenter presenter = new ConfusionMatrixPresenterImpl(view, clientFactory.getEventBus(), rf);
+        ConfusionMatrixPresenter presenter = new ConfusionMatrixPresenterImpl(clientFactory, rf);
         String title = "Confusion Matrix<br>" + rf.getDataKey() + "<br>" + rf.getModelKey();
-        clientFactory.getDoublePanelView().addVisTab(view, title);
+        clientFactory.getDoublePanelView().addVisTab(presenter.getView(), title);
     }
 }

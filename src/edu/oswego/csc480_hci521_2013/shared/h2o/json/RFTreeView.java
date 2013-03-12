@@ -23,6 +23,6 @@ public class RFTreeView extends H2OResponse {
 
     @Override
     public String toString() {
-        return "RFTreeView{" + "depth=" + depth + ", leaves=" + leaves + ", tree=" + tree + '}';
+        return "RFTreeView{" + "depth=" + depth + ", leaves=" + leaves + ", tree=" + tree + " " + super.toString() + '}';
     }
 }

@@ -1,59 +1,116 @@
 package edu.oswego.csc480_hci521_2013.client.ui;
 
+import com.google.gwt.user.client.DOM;
+import com.google.gwt.user.client.Element;
+import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.HTML;
-import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 import edu.oswego.csc480_hci521_2013.client.presenters.ConfusionMatrixPresenter;
+import edu.oswego.csc480_hci521_2013.shared.h2o.json.ConfusionMatrix;
 import edu.oswego.csc480_hci521_2013.shared.h2o.json.RFView;
+import java.util.List;
 
 /**
  *
  */
 public class ConfusionMatrixViewImpl extends Composite implements ConfusionMatrixPresenter.View {
 
-    ConfusionMatrixPresenter presenter;
+    private ConfusionMatrixPresenter presenter;
+    private FlowPanel mainFrame;
+    private FlexTable matrixTable;
+    private Grid treesTable;
+    private Label treesGenerated = new Label();
+    private Element progress;
+    private Anchor progressAnchor;
 
-    // TODO: we should use layout panels if we can... not sure if they will work with the
-    //       current DoublePanelView. This would be a good thing for a second view impl
-    VerticalPanel mainFrame;
+    private Label type = new Label();
+    private Label responseVariable = new Label();
+    private Label ntree = new Label();
+    private Label mtry = new Label();
+    private Label rows = new Label();
+    private Label classificationError = new Label();
 
-    // TODO: these are the ui elements that we have right now.... we need to figure out a good layout
-    //       - data key - can we link back to the originating raw data, maybe make that tab the selected tab?
-    //       - model key - useful for linking to trees, not sure if it is important to display
-    //       response variable - dont know what this is...
-    //       number of trees
-    //       mtry - dont know what this is
-    //       out of bag error estimates/full scoring - this is important to show
-    //       - confusion key - useful for redisplaying this confusion matrix again
-    //       confusion matrix - this will be a table/grid
-    //       classification errors
-    //       used/skipped rows
-    //       average tree information min/mean/max for leaves and depth
-    //
-    // NOTE: the data will change so the view needs to be dynamic.
-    //       we need to make it obvious if trees are currently being generated or if the process is finished
+    public ConfusionMatrixViewImpl() {
+    }
 
-    public ConfusionMatrixViewImpl() { }
-
+    @Override
     public void buildUi() {
-        mainFrame = new VerticalPanel();
+        mainFrame = new FlowPanel();
         // TODO: figure out what makes sense for layout
         mainFrame.setSize("100%", "100%");
-        mainFrame.setHorizontalAlignment(VerticalPanel.ALIGN_CENTER);
-        mainFrame.setVerticalAlignment(VerticalPanel.ALIGN_TOP);
-        mainFrame.setSpacing(10);
+
+        progress = DOM.createElement("progress");
+        progress.setAttribute(DEBUG_ID_PREFIX, DEBUG_ID_PREFIX);
+        progress.setAttribute("max", "100");
+        progress.setAttribute("value", "0");
+        progressAnchor = Anchor.wrap(progress);
+        mainFrame.add(progressAnchor);
 
         // TODO: add more widgets
+        addPair(new Label("Confusion Matrix - "), type);
+
+        addPair(new Label("Response Variable:"), responseVariable);
+        addPair(new Label("Number of Trees:"), ntree);
+        addPair(new Label("mtry:"), mtry);
+        addPair(new Label("Rows Used/Skipped:"), rows);
+        addPair(new Label("Classification Error:"), classificationError);
+
+        matrixTable = new FlexTable();
+        mainFrame.add(matrixTable);
+
+        mainFrame.add(new HTML("Trees"));
+
+        addPair(new Label("Trees Generated:"), treesGenerated);
+
+        treesTable = new Grid(3, 4);
+        treesTable.setText(0, 1, "Min");
+        treesTable.setText(0, 2, "Mean");
+        treesTable.setText(0, 3, "Max");
+        treesTable.setText(1, 0, "Leaves");
+        treesTable.setText(2, 0, "Depth");
+        mainFrame.add(treesTable);
 
         initWidget(mainFrame);
     }
 
+    private void addPair(Label label, Label value) {
+        // TODO: i dont want to use horizontal panel if i dont have to
+        HorizontalPanel panel = new HorizontalPanel();
+        panel.add(label);
+        panel.add(value);
+        mainFrame.add(panel);
+    }
+
     @Override
     public void setData(RFView data) {
-        // TODO: update the widgets with new data...
-        mainFrame.add(new HTML("<h1>TODO: Implement me!</h1>"));
-        mainFrame.add(new HTML(data.toString()));
+        if (data.getResponse().isPoll()) {
+            Double percent = ((double)data.getTrees().getNumberBuilt() * 100) / (double)data.getNtree();
+            progress.setAttribute("value", percent.toString());
+        }
+        else {
+            mainFrame.remove(progressAnchor);
+        }
+
+        responseVariable.setText(Integer.toString(data.getResponseVariable()));
+        ntree.setText(Integer.toString(data.getNtree()));
+        mtry.setText(Integer.toString(data.getMtry()));
+
+        updateConfusionMatrix(data.getConfusionMatrix());
+
+        treesGenerated.setText(Integer.toString(data.getTrees().getNumberBuilt()));
+
+        treesTable.setText(1, 1, Double.toString(data.getTrees().getLeaves().getMin()));
+        treesTable.setText(1, 2, Double.toString(data.getTrees().getLeaves().getMean()));
+        treesTable.setText(1, 3, Double.toString(data.getTrees().getLeaves().getMax()));
+        treesTable.setText(2, 1, Double.toString(data.getTrees().getDepth().getMin()));
+        treesTable.setText(2, 2, Double.toString(data.getTrees().getDepth().getMean()));
+        treesTable.setText(2, 3, Double.toString(data.getTrees().getDepth().getMax()));
     }
 
     @Override
@@ -64,5 +121,57 @@ public class ConfusionMatrixViewImpl extends Composite implements ConfusionMatri
     @Override
     public Widget asWidget() {
         return this;
+    }
+
+    private void updateConfusionMatrix(ConfusionMatrix confusionMatrix) {
+        // NOTE: sometimes it is not included in the response, maybe because it hasnt changed? not sure why
+        if (confusionMatrix == null) {
+            return;
+        }
+        type.setText(confusionMatrix.getType());
+        rows.setText(confusionMatrix.getRows() + "/" + confusionMatrix.getRowsSkipped());
+    	classificationError.setText(Double.toString(confusionMatrix.getClassificationError()));
+
+        List<String> header = confusionMatrix.getHeader();
+
+        // TODO: we really only need to set the labels once...
+        matrixTable.setText(0, 0, "Actual/Predicted");
+        /* Set Column Labels */
+        for (int x = 0; x < header.size(); x++) {
+            matrixTable.setText(0, x + 1, header.get(x));
+        }
+        matrixTable.setText(0, header.size() + 1, "Error");
+
+        /* Set Row Labels */
+        for (int x = 0; x < header.size(); x++) {
+            matrixTable.setText(x + 1, 0, header.get(x));
+        }
+        matrixTable.setText(header.size() + 1, 0, "Totals");
+
+        updateConfusionScores(confusionMatrix.getScores());
+    }
+
+    private void updateConfusionScores(List<List<Integer>> scores) {
+        /* For All Header Values, Position Offset=1 */
+        // TODO: errors...
+        int[] totals = new int[scores.size()];
+        for (int i = 0; i < scores.size(); i++) {
+            List<Integer> row = scores.get(i);
+            int total = 0;
+            int errors = 0;
+            for (int j = 0; j < row.size(); j++) {
+                matrixTable.setText(i + 1, j + 1, row.get(j).toString());
+                totals[j] += row.get(j);
+                if (i != j) {
+                    errors += row.get(j);
+                }
+                total += row.get(j);
+            }
+            // TODO: add the scores for the errors.
+            matrixTable.setText(i + 1, row.size() + 1, errors + "/" + total);
+        }
+        for (int i = 0; i < totals.length; i++) {
+            matrixTable.setText(scores.size() + 1, i + 1, Integer.toString(totals[i]));
+        }
     }
 }

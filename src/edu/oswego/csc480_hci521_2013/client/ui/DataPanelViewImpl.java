@@ -2,7 +2,6 @@ package edu.oswego.csc480_hci521_2013.client.ui;
 
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.TextColumn;
-import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTML;
@@ -26,16 +25,15 @@ public class DataPanelViewImpl extends Composite implements DataPanelPresenter.V
     private List<Map<String, String>> data;
     private DataPanelPresenter presenter;
 
-    public DataPanelViewImpl(List<Map<String, String>> data) {
-        this.data = data;
+    public DataPanelViewImpl() {
     }
 
+    @Override
     public void buildUi() {
         dataPanel = new VerticalPanel();
         if (data.isEmpty()) {
             dataPanel.add(new HTML("No Data Found"));
-        }
-        else {
+        } else {
             visbar = new MenuBar(false);
             MenuItem generate = new MenuItem("Generate Forest", presenter.getGenerateCommand());
             visbar.addItem(generate);
@@ -43,18 +41,16 @@ public class DataPanelViewImpl extends Composite implements DataPanelPresenter.V
 
             CellTable<Map<String, String>> cellTable = new CellTable<Map<String, String>>();
             for (final String key : data.get(0).keySet()) {
-                cellTable.addColumn(new TextColumn<Map<String, String>>()
-                {
+                cellTable.addColumn(new TextColumn<Map<String, String>>() {
                     @Override
-                    public String getValue(Map<String, String> row)
-                    {
+                    public String getValue(Map<String, String> row) {
                         return row.get(key);
                     }
                 }, key);
             }
             cellTable.setRowData(data);
             ScrollPanel scroll = new ScrollPanel();
-            scroll.setSize((Window.getClientWidth() - 60)/2 + "px", Window.getClientHeight() - 40 - 100 + "px");
+            scroll.setSize((Window.getClientWidth() - 60) / 2 + "px", Window.getClientHeight() - 40 - 100 + "px");
             scroll.add(cellTable);
             dataPanel.add(scroll);
         }
@@ -88,5 +84,10 @@ public class DataPanelViewImpl extends Composite implements DataPanelPresenter.V
             treebar.addItem(String.valueOf(i + 1), presenter.getTreeVisCommand(index));
         }
         trees.setEnabled(true);
+    }
+
+    @Override
+    public void setData(List<Map<String, String>> data) {
+        this.data = data;
     }
 }

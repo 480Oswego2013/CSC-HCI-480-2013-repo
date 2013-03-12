@@ -10,10 +10,14 @@ public interface ConfusionMatrixPresenter {
 
     void setData(RFView data);
 
+    View getView();
+
     public interface View extends IsWidget {
 
         void buildUi();
+
         void setData(RFView data);
+
         void setPresenter(ConfusionMatrixPresenter presenter);
     }
 }

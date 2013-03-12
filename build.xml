@@ -48,6 +48,8 @@
     <target name="clean" description="Clean up temporary files">
         <delete dir="${build}" />
         <delete dir="${build.gwt}" />
+        <delete dir="${webcontent}/Main" />
+        <delete dir="${webcontent}/WEB-INF/deploy" />
         <delete dir="${dist}" />
     </target>
 

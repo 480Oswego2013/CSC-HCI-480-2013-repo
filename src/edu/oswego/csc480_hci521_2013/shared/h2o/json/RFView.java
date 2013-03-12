@@ -1,5 +1,7 @@
 package edu.oswego.csc480_hci521_2013.shared.h2o.json;
 
+import com.google.gwt.user.client.rpc.IsSerializable;
+
 /**
  *
  */
@@ -48,6 +50,57 @@ public class RFView extends H2OResponse {
 
     @Override
     public String toString() {
-        return "RFView{" + "data_key=" + data_key + ", model_key=" + model_key + ", response_variable=" + response_variable + ", ntree=" + ntree + ", mtry=" + mtry + ", confusion_key=" + confusion_key + ", confusion_matrix=" + confusion_matrix + ", trees=" + trees + '}';
+        return "RFView{" + "data_key=" + data_key + ", model_key=" + model_key
+            + ", response_variable=" + response_variable + ", ntree=" + ntree
+            + ", mtry=" + mtry + ", confusion_key=" + confusion_key
+            + ", confusion_matrix=" + confusion_matrix + ", trees=" + trees
+            + " " + super.toString() + '}';
+    }
+
+    public static class TreeProperties implements IsSerializable {
+
+        private int number_built;
+        private MinMeanMax depth;
+        private MinMeanMax leaves;
+
+        public int getNumberBuilt() {
+            return number_built;
+        }
+
+        public MinMeanMax getDepth() {
+            return depth;
+        }
+
+        public MinMeanMax getLeaves() {
+            return leaves;
+        }
+
+        @Override
+        public String toString() {
+            return "TreeProperties{ number_built=" + number_built + ", depth=" + depth + ", leaves=" + leaves + "}";
+        }
+
+        public static class MinMeanMax implements IsSerializable {
+            private double min;
+            private double mean;
+            private double max;
+
+            public double getMin() {
+                return min;
+            }
+
+            public double getMean() {
+                return mean;
+            }
+
+            public double getMax() {
+                return max;
+            }
+
+            @Override
+            public String toString() {
+                return "MinMeanMax{" + "min=" + min + ", mean=" + mean + ", max=" + max + '}';
+            }
+        }
     }
 }

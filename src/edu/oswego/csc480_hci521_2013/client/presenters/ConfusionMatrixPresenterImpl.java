@@ -1,6 +1,7 @@
 package edu.oswego.csc480_hci521_2013.client.presenters;
 
 import com.google.web.bindery.event.shared.EventBus;
+import edu.oswego.csc480_hci521_2013.client.ClientFactory;
 import edu.oswego.csc480_hci521_2013.client.events.RFProgressEvent;
 import edu.oswego.csc480_hci521_2013.client.events.RFProgressEventHandler;
 import edu.oswego.csc480_hci521_2013.shared.h2o.json.RF;
@@ -14,9 +15,9 @@ public class ConfusionMatrixPresenterImpl implements ConfusionMatrixPresenter {
     EventBus eventbus;
     View view;
 
-    public ConfusionMatrixPresenterImpl(View view, EventBus eventbus, RF randomForest) {
-        this.view = view;
-        this.eventbus = eventbus;
+    public ConfusionMatrixPresenterImpl(ClientFactory factory, RF randomForest) {
+        this.view = factory.getConfusionMatrixPresenterView();
+        this.eventbus = factory.getEventBus();
         this.randomForest = randomForest;
 
         view.setPresenter(this);
@@ -46,5 +47,10 @@ public class ConfusionMatrixPresenterImpl implements ConfusionMatrixPresenter {
     @Override
     public void setData(RFView data) {
         view.setData(data);
+    }
+
+    @Override
+    public View getView() {
+        return view;
     }
 }
