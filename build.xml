@@ -82,6 +82,7 @@
         <java failonerror="true" fork="true" classname="com.google.gwt.dev.Compiler">
             <classpath>
                 <pathelement location="${src}"/>
+                <pathelement location="${build.gwt}"/>
                 <path refid="project.classpath"/>
             </classpath>
             <!-- add jvmarg -Xss16M or similar if you see a StackOverflowError -->
@@ -96,6 +97,7 @@
         <java failonerror="true" fork="true" classname="com.google.gwt.dev.HostedMode">
             <classpath>
                 <pathelement location="${src}"/>
+                <pathelement location="${build.gwt}"/>
                 <path refid="project.classpath"/>
             </classpath>
             <jvmarg value="-Xmx256M"/>

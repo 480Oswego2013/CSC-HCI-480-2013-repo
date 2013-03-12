@@ -1,15 +1,20 @@
 package edu.oswego.csc480_hci521_2013.client;
 
+import java.util.List;
+import java.util.Map;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.SimpleEventBus;
 import com.google.gwt.place.shared.PlaceController;
+
+import edu.oswego.csc480_hci521_2013.client.presenters.DataPanelPresenter;
 import edu.oswego.csc480_hci521_2013.client.services.H2OService;
 import edu.oswego.csc480_hci521_2013.client.services.H2OServiceAsync;
-
+import edu.oswego.csc480_hci521_2013.client.ui.BasicMenuView;
+import edu.oswego.csc480_hci521_2013.client.ui.DataPanelViewImpl;
 import edu.oswego.csc480_hci521_2013.client.ui.DoublePanelView;
 import edu.oswego.csc480_hci521_2013.client.ui.MenuView;
-import edu.oswego.csc480_hci521_2013.client.ui.BasicMenuView;
 import edu.oswego.csc480_hci521_2013.client.ui.PanelView;
 
 public class ClientFactoryImpl implements ClientFactory {
@@ -18,8 +23,11 @@ public class ClientFactoryImpl implements ClientFactory {
 	private static final PlaceController placeController = new PlaceController(eventBus);
     private static final H2OServiceAsync h2oService = GWT.create(H2OService.class);
 
-	private static MenuView mainView;
-	private static DoublePanelView  doublePanelView;
+	private MenuView menuView;
+	private DataPanelPresenter.View dataPanelView;
+	private DoublePanelView doublePanelView;
+	
+	
 
 	@Override
 	public EventBus getEventBus() {
@@ -33,10 +41,10 @@ public class ClientFactoryImpl implements ClientFactory {
 
 	@Override
 	public MenuView getMainView() {
-        if (mainView == null) {
-            mainView = new BasicMenuView();
+        if (menuView == null) {
+            menuView = new BasicMenuView();
         }
-		return mainView;
+		return menuView;
 	}
 
 	@Override
@@ -45,6 +53,14 @@ public class ClientFactoryImpl implements ClientFactory {
             doublePanelView = new DoublePanelView();
         }
 		return doublePanelView;
+	}
+	
+	@Override
+	public DataPanelPresenter.View getDataPanelView() {
+        if (dataPanelView == null) {
+            dataPanelView = new DataPanelViewImpl();
+        }
+		return dataPanelView;
 	}
 
     @Override

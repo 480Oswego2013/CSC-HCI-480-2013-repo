@@ -15,7 +15,7 @@ public class MenuActivity extends AbstractActivity implements MenuView.Presenter
 
 	private ClientFactory clientFactory;
 
-	public MenuActivity(MenuPlace place, ClientFactory clientFactory) {
+	public MenuActivity(Place place, ClientFactory clientFactory) {
 		this.clientFactory = clientFactory;
 	}
 
@@ -23,7 +23,6 @@ public class MenuActivity extends AbstractActivity implements MenuView.Presenter
 	public void start(AcceptsOneWidget containerWidget, EventBus eventBus) {
 		MenuView menuView = clientFactory.getMainView();
 		menuView.setPresenter(this);
-		menuView.buildGui();
 
 		containerWidget.setWidget(menuView.asWidget());
 	}

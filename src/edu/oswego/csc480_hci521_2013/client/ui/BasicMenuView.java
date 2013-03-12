@@ -19,7 +19,7 @@ public class BasicMenuView extends Composite implements MenuView {
     private final H2OServiceAsync h2oService = GWT.create(H2OService.class);
 
 	public BasicMenuView() {
-
+		buildGui();
 	}
 
 	@Override

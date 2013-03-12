@@ -30,8 +30,8 @@ public class DoublePanelView extends Composite implements PanelView
     Label dummyDataLabel = new Label("dummy tab", false);
     Label dummyVisLabel = new Label("dummy tab", false);
 
-    public DoublePanelView()
-    {
+    public DoublePanelView() {
+    	buildGui();
     }
 
     @Override
