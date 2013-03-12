@@ -6,6 +6,7 @@ import com.google.gwt.event.shared.SimpleEventBus;
 import com.google.gwt.place.shared.PlaceController;
 import edu.oswego.csc480_hci521_2013.client.presenters.ConfusionMatrixPresenter;
 import edu.oswego.csc480_hci521_2013.client.presenters.DataPanelPresenter;
+import edu.oswego.csc480_hci521_2013.client.presenters.RfParametersPresenter;
 import edu.oswego.csc480_hci521_2013.client.services.H2OService;
 import edu.oswego.csc480_hci521_2013.client.services.H2OServiceAsync;
 
@@ -14,6 +15,7 @@ import edu.oswego.csc480_hci521_2013.client.ui.MenuView;
 import edu.oswego.csc480_hci521_2013.client.ui.BasicMenuView;
 import edu.oswego.csc480_hci521_2013.client.ui.ConfusionMatrixViewImpl;
 import edu.oswego.csc480_hci521_2013.client.ui.DataPanelViewImpl;
+import edu.oswego.csc480_hci521_2013.client.ui.RfParametersViewImpl;
 import edu.oswego.csc480_hci521_2013.client.ui.PanelView;
 
 public class ClientFactoryImpl implements ClientFactory {
@@ -63,5 +65,11 @@ public class ClientFactoryImpl implements ClientFactory {
     @Override
     public ConfusionMatrixPresenter.View getConfusionMatrixPresenterView() {
         return new ConfusionMatrixViewImpl();
+    }
+
+
+    @Override
+    public RfParametersPresenter.View getRfParametersPresenterView() {
+        return new RfParametersViewImpl();
     }
 }

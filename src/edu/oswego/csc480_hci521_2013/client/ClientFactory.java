@@ -4,6 +4,7 @@ import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.place.shared.PlaceController;
 import edu.oswego.csc480_hci521_2013.client.presenters.ConfusionMatrixPresenter;
 import edu.oswego.csc480_hci521_2013.client.presenters.DataPanelPresenter;
+import edu.oswego.csc480_hci521_2013.client.presenters.RfParametersPresenter;
 import edu.oswego.csc480_hci521_2013.client.services.H2OServiceAsync;
 
 import edu.oswego.csc480_hci521_2013.client.ui.MenuView;
@@ -24,4 +25,6 @@ public interface ClientFactory {
     DataPanelPresenter.View getDataPanelPresenterView();
 
     ConfusionMatrixPresenter.View getConfusionMatrixPresenterView();
+    
+    RfParametersPresenter.View getRfParametersPresenterView();
 }

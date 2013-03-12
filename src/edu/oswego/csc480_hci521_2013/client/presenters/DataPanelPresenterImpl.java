@@ -30,12 +30,15 @@ public class DataPanelPresenterImpl implements DataPanelPresenter {
     H2OServiceAsync h2oService;
     String datakey;
     RF randomForest;
+    ClientFactory factory;
 
     public DataPanelPresenterImpl(ClientFactory factory, String datakey, List<Map<String, String>> data) {
         this.eventbus = factory.getEventBus();
         this.view = factory.getDataPanelPresenterView();
         this.h2oService = factory.getH2OService();
         this.datakey = datakey;
+
+        this.factory = factory;
 
         view.setPresenter(this);
         view.setData(data);
@@ -80,6 +83,10 @@ public class DataPanelPresenterImpl implements DataPanelPresenter {
             @Override
             public void execute() {
                 logger.log(Level.INFO, "Generating Forest");
+                RfParametersPresenter popUp = new RfParametersPresenterImpl(factory);
+                popUp.getView().showPopUp();
+
+/*
                 h2oService.generateRandomForest(new RFBuilder(datakey).setNtree(1000), new AsyncCallback<RF>() {
                     @Override
                     public void onFailure(Throwable thrwbl) {
@@ -98,6 +105,7 @@ public class DataPanelPresenterImpl implements DataPanelPresenter {
                         startRFViewPoller();
                     }
                 });
+                */
             }
         };
     }
