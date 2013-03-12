@@ -11,7 +11,6 @@ import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.gwt.user.client.ui.IsWidget;
-import com.google.gwt.user.client.ui.Label;
 
 import edu.oswego.csc480_hci521_2013.client.ClientFactory;
 import edu.oswego.csc480_hci521_2013.client.events.InspectDataEvent;
@@ -23,6 +22,7 @@ import edu.oswego.csc480_hci521_2013.client.events.RFProgressEventHandler;
 import edu.oswego.csc480_hci521_2013.client.events.TreeVisEvent;
 import edu.oswego.csc480_hci521_2013.client.place.DoublePanelPlace;
 import edu.oswego.csc480_hci521_2013.client.place.DoublePanelPlace.Location;
+import edu.oswego.csc480_hci521_2013.client.place.PopoutPanelPlace;
 import edu.oswego.csc480_hci521_2013.client.presenters.DataPanelPresenter;
 import edu.oswego.csc480_hci521_2013.client.services.H2OServiceAsync;
 import edu.oswego.csc480_hci521_2013.shared.h2o.json.RF;
@@ -36,24 +36,34 @@ public class DataPanelActivity extends AbstractPanelActivity implements
 	static final Logger logger = Logger.getLogger(DataPanelActivity.class
 			.getName());
 	private ClientFactory clientFactory;
-	private DoublePanelPlace place;
 	private RF randomForest;
 
 	EventBus eventBus;
 	View view;
 	H2OServiceAsync h2oService;
+	
 	String dataKey;
+	
+	boolean isPopout = false;
 
 	public DataPanelActivity(Location loc, DoublePanelPlace place,
 			ClientFactory clientFactory) {
 		super(loc);
-		this.place = place;
 		this.clientFactory = clientFactory;
 
 		eventBus = clientFactory.getEventBus();
 		h2oService = clientFactory.getH2OService();
 		dataKey = place.getDataKey();
 	}
+	
+	public DataPanelActivity(PopoutPanelPlace place, ClientFactory clientFactory) {
+        	this.clientFactory = clientFactory;
+        
+        	eventBus = clientFactory.getEventBus();
+        	h2oService = clientFactory.getH2OService();
+        	dataKey = place.getDataKey();
+        	isPopout = true;
+        }
 
 	// Activity lifecycle methods
 
@@ -63,6 +73,8 @@ public class DataPanelActivity extends AbstractPanelActivity implements
 		view.setPresenter(this);
 		panel.setWidget(view);
 		bind();
+		
+		if(isPopout) addDataTab(dataKey);
 	}
 
 	@Override
@@ -175,15 +187,8 @@ public class DataPanelActivity extends AbstractPanelActivity implements
 
 					@Override
 					public void onSuccess(List<Map<String, String>> result) {
-						// TODO: inject this...
-//						DataPanelPresenter.TabPanelView view = new DataPanelViewImpl_old(
-//								result);
-//						DataPanelPresenter presenter = new DataPanelPresenterImpl(
-//								clientFactory.getEventBus(), view,
-//								clientFactory.getH2OService(), datakey);
-//						clientFactory.getDoublePanelView().addDataTab(view,
-//								datakey);
 						view.addDataTab(dataKey, result);
+						popout(null, null);
 					}
 				});
 	}

@@ -20,13 +20,19 @@ public abstract class AbstractPanelActivity extends AbstractActivity {
 		this.loc = loc;
 	}
 	
+	public AbstractPanelActivity() {
+	    loc = null;
+	}
+	
 	public Location getLocation() {
 		return loc;
 	}
 	
-	public void popout(IsWidget widget, Place place) {
-		
-		Window.open("popup.html#"+"", "_blank", null);
+	public void popout(IsWidget widget, String token) {
+		//Window.open("../Popout.html#Popout:datakey=cars.hex", "_blank", null);
+
+		Window.open("../Popout.html#datakey=cars.hex", "_blank", null);
+		popPanel(widget);
 	}
 	
 	public void popin(IsWidget widget) {

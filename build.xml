@@ -89,6 +89,7 @@
             <jvmarg value="-Xmx256M"/>
             <!-- Additional arguments like -style PRETTY or -logLevel DEBUG -->
             <arg value="edu.oswego.csc480_hci521_2013.Main"/>
+            <arg value="edu.oswego.csc480_hci521_2013.Popout"/>
         </java>
     </target>
 
@@ -105,6 +106,8 @@
             <arg value="Main.html"/>
             <!-- Additional arguments like -style PRETTY or -logLevel DEBUG -->
             <arg value="edu.oswego.csc480_hci521_2013.Main"/>
+            <arg value="Popout.html"/>
+            <arg value="edu.oswego.csc480_hci521_2013.Popout"/>
         </java>
     </target>
 
