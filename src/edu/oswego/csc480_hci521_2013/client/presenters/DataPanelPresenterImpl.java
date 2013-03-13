@@ -14,6 +14,8 @@ import edu.oswego.csc480_hci521_2013.shared.h2o.json.RF;
 import edu.oswego.csc480_hci521_2013.shared.h2o.json.RFView;
 import edu.oswego.csc480_hci521_2013.shared.h2o.json.ResponseStatus;
 import edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders.RFBuilder;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -83,10 +85,26 @@ public class DataPanelPresenterImpl implements DataPanelPresenter {
             @Override
             public void execute() {
                 logger.log(Level.INFO, "Generating Forest");
-                RfParametersPresenter popUp = new RfParametersPresenterImpl(factory);
+                final RfParametersPresenter popUp = new RfParametersPresenterImpl(factory);
+                
+                //Call H2OService.getColumnHeaders
+                h2oService.getColumnHeaders(datakey, new AsyncCallback<ArrayList<String>>() {
+                    @Override
+                    public void onFailure(Throwable thrwbl) {
+                        logger.log(Level.SEVERE, thrwbl.toString());
+                        // FIXME: do a message box or something...
+                    }
+
+                    @Override
+                    public void onSuccess(ArrayList<String> columnHeaders) {
+                        logger.log(Level.INFO, "Headers received");
+                        popUp.setHeaders(columnHeaders);
+                    }
+                });
+
                 popUp.getView().showPopUp();
 
-/*
+                /*
                 h2oService.generateRandomForest(new RFBuilder(datakey).setNtree(1000), new AsyncCallback<RF>() {
                     @Override
                     public void onFailure(Throwable thrwbl) {

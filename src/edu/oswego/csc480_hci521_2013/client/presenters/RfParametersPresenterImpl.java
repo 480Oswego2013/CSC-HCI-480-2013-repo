@@ -1,6 +1,7 @@
 package edu.oswego.csc480_hci521_2013.client.presenters;
+import java.util.List;
+
 import edu.oswego.csc480_hci521_2013.client.ClientFactory;
-import edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders.RFBuilder;
 
 public class RfParametersPresenterImpl implements RfParametersPresenter {
     View view;
@@ -10,6 +11,11 @@ public class RfParametersPresenterImpl implements RfParametersPresenter {
 
         view.setPresenter(this);
         view.buildUi();
+    }
+
+    //The headers are passed forward to the view.
+    public void setHeaders(List<String> headers){
+       view.setHeaders(headers);
     }
 
     @Override
