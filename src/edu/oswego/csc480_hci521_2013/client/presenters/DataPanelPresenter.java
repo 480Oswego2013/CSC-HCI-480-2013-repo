@@ -13,12 +13,18 @@ public interface DataPanelPresenter {
 
     Command getGenerateCommand();
     Command getTreeVisCommand(int index);
+    Command getPopOutCommand();
+    Command getCloseCommand();
+    boolean isPopout();
 
     public interface View extends IsWidget {
         void buildUi();
         void setPresenter(DataPanelPresenter presenter);
         void addDataTab(String title, List<Map<String, String>> data);
+        void addDataTab(String title, TabView tab);
+        void removeDataTab(TabView tab);
         TabView getActivePanel();
+        String getTabTitle(TabView tab);
     }
     
     public interface TabView extends IsWidget {
@@ -27,5 +33,6 @@ public interface DataPanelPresenter {
         void forestStarted();
         void setForestStatus(int done, int total);
         void forestFinish(int count);
+        String getTabTitle();
     }
 }

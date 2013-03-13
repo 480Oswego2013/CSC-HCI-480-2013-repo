@@ -6,7 +6,7 @@ import com.google.gwt.place.shared.Place;
 
 import edu.oswego.csc480_hci521_2013.client.ClientFactory;
 import edu.oswego.csc480_hci521_2013.client.activity.MenuActivity;
-import edu.oswego.csc480_hci521_2013.client.place.MenuPlace;
+import edu.oswego.csc480_hci521_2013.client.place.PopoutPanelPlace;
 
 public class MenuActivityMapper implements ActivityMapper {
 
@@ -19,11 +19,16 @@ public class MenuActivityMapper implements ActivityMapper {
 
 	@Override
 	public Activity getActivity(Place place) {
-
-		currentActivity = new MenuActivity(place, clientFactory);
-//			
-//		else if(place instanceof Blah2Place)
-//			return new Blah2Activity((Blah2Place) place, clientFactory);
+		
+		if(place instanceof PopoutPanelPlace)
+			currentActivity = null;
+		else {
+			if(currentActivity == null)
+				currentActivity = new MenuActivity(place, clientFactory);
+			else
+				currentActivity = currentActivity.getClass() == MenuActivity.class ?
+					currentActivity : new MenuActivity(place, clientFactory);
+		}
 
 		return currentActivity;
 	}

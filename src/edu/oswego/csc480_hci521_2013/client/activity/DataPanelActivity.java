@@ -22,6 +22,7 @@ import edu.oswego.csc480_hci521_2013.client.events.RFProgressEventHandler;
 import edu.oswego.csc480_hci521_2013.client.events.TreeVisEvent;
 import edu.oswego.csc480_hci521_2013.client.place.DoublePanelPlace;
 import edu.oswego.csc480_hci521_2013.client.place.DoublePanelPlace.Location;
+import edu.oswego.csc480_hci521_2013.client.place.PopoutPanelPlace.PanelType;
 import edu.oswego.csc480_hci521_2013.client.place.PopoutPanelPlace;
 import edu.oswego.csc480_hci521_2013.client.presenters.DataPanelPresenter;
 import edu.oswego.csc480_hci521_2013.client.services.H2OServiceAsync;
@@ -74,17 +75,22 @@ public class DataPanelActivity extends AbstractPanelActivity implements
 		panel.setWidget(view);
 		bind();
 		
-		if(isPopout) addDataTab(dataKey);
+		if(isPopout()) addDataTab(dataKey);
 	}
-
+	
 	@Override
-	public void addPanel(IsWidget widget) {
-
+	public boolean isPopout() {
+		return isPopout;
 	}
-
+	
 	@Override
-	public void popPanel(IsWidget widget) {
-
+	public void popPanel(IsWidget panel) {
+		view.removeDataTab(view.getActivePanel());
+	}
+	
+	@Override
+	public void addPanel(IsWidget panel, String title) {
+		view.addDataTab(title, (TabView)panel);
 	}
 
 	// Presenter methods
@@ -127,8 +133,31 @@ public class DataPanelActivity extends AbstractPanelActivity implements
 			}
 		};
 	}
+	
+	@Override
+	public Command getPopOutCommand() {
+		return new Command() {
+			@Override
+			public void execute() {
+				PopoutPanelPlace place = new PopoutPanelPlace();
+				place.setType(PanelType.DATA);
+				place.setDataKey(dataKey);
+				popout(place, view.getActivePanel(), view.getTabTitle(view.getActivePanel()));
+			}
+		};
+	}
+	
+	@Override
+	public Command getCloseCommand() {
+		return new Command() {
+			@Override
+			public void execute() {
+				view.removeDataTab(view.getActivePanel());
+			}
+		};
+	}
 
-	//
+	// Utility methods
 
 	private void bind() {
 		EventBus eventbus = clientFactory.getEventBus();
@@ -188,7 +217,6 @@ public class DataPanelActivity extends AbstractPanelActivity implements
 					@Override
 					public void onSuccess(List<Map<String, String>> result) {
 						view.addDataTab(dataKey, result);
-						popout(null, null);
 					}
 				});
 	}

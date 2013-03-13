@@ -25,10 +25,12 @@ public class DataPanelTabViewImpl extends Composite implements DataPanelPresente
     private MenuBar treebar;
     private MenuItem trees;
     private List<Map<String, String>> data;
+    private String title;
     private DataPanelPresenter presenter;
 
-    public DataPanelTabViewImpl(List<Map<String, String>> data) {
+    public DataPanelTabViewImpl(List<Map<String, String>> data, String title) {
         this.data = data;
+        this.title = title;
     }
 
     public void buildUi() {
@@ -40,6 +42,12 @@ public class DataPanelTabViewImpl extends Composite implements DataPanelPresente
             visbar = new MenuBar(false);
             MenuItem generate = new MenuItem("Generate Forest", presenter.getGenerateCommand());
             visbar.addItem(generate);
+            if(!presenter.isPopout()) {
+            	MenuItem popout = new MenuItem("Pop Out", presenter.getPopOutCommand());
+            	MenuItem close = new MenuItem("Close", presenter.getCloseCommand());
+            	visbar.addItem(popout);
+            	visbar.addItem(close);
+            }
             dataPanel.add(visbar);
 
             CellTable<Map<String, String>> cellTable = new CellTable<Map<String, String>>();
@@ -55,10 +63,14 @@ public class DataPanelTabViewImpl extends Composite implements DataPanelPresente
             }
             cellTable.setRowData(data);
             ScrollPanel scroll = new ScrollPanel();
-            scroll.setSize((Window.getClientWidth() - 60)/2 + "px", Window.getClientHeight() - 40 - 100 + "px");
+            if(presenter.isPopout())
+            	scroll.setSize((Window.getClientWidth() - 10) + "px", Window.getClientHeight() - 100 - 10 + "px");
+            else
+            	scroll.setSize((Window.getClientWidth() - 60)/2 + "px", Window.getClientHeight() - 40 - 100 + "px");
             scroll.add(cellTable);
             dataPanel.add(scroll);
         }
+        
         initWidget(dataPanel);
     }
 
@@ -90,4 +102,9 @@ public class DataPanelTabViewImpl extends Composite implements DataPanelPresente
         }
         trees.setEnabled(true);
     }
+
+	@Override
+	public String getTabTitle() {
+		return title;
+	}
 }

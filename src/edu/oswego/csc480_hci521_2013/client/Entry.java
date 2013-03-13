@@ -4,30 +4,30 @@ import com.google.gwt.activity.shared.ActivityManager;
 import com.google.gwt.activity.shared.ActivityMapper;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.place.shared.Place;
 import com.google.gwt.place.shared.PlaceController;
 import com.google.gwt.place.shared.PlaceHistoryHandler;
-import com.google.gwt.user.client.ui.DockLayoutPanel;
-import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.HeaderPanel;
+import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.RootLayoutPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.web.bindery.event.shared.EventBus;
 
 import edu.oswego.csc480_hci521_2013.client.activity.mapper.EastPanelActivityMapper;
 import edu.oswego.csc480_hci521_2013.client.activity.mapper.MenuActivityMapper;
+import edu.oswego.csc480_hci521_2013.client.activity.mapper.PopoutPanelActivityMapper;
 import edu.oswego.csc480_hci521_2013.client.activity.mapper.WestPanelActivityMapper;
 import edu.oswego.csc480_hci521_2013.client.place.DoublePanelPlace;
-import edu.oswego.csc480_hci521_2013.client.place.MenuPlace;
 
 public class Entry implements EntryPoint {
 
-	private Place defaultPlace = new MenuPlace();
+	private static AppPlaceHistoryMapper historyMapper;
+	private static final Place defaultPlace = new DoublePanelPlace();
 	
 	private ClientFactory clientFactory;
 	private EventBus eventBus;
 	private PlaceController placeController;
-	private SimplePanel northPanel, eastPanel, westPanel;
+	private SimplePanel northPanel, eastPanel, westPanel, popoutPanel;
 
 	@Override
 	public void onModuleLoad() {
@@ -38,25 +38,34 @@ public class Entry implements EntryPoint {
 		ActivityManager northActivityManager = new ActivityManager(northActivityMapper, eventBus);
 		northActivityManager.setDisplay(northPanel);
 		
-		// Create ActivityManager for east panel (data)
-		ActivityMapper eastActivityMapper = new EastPanelActivityMapper(clientFactory);
-		ActivityManager eastActivityManager = new ActivityManager(eastActivityMapper, eventBus);
-		eastActivityManager.setDisplay(eastPanel);
-		
-		// Create ActivityManager for west panel (visualization)
+		// Create ActivityManager for west panel (data)
 		ActivityMapper westActivityMapper = new WestPanelActivityMapper(clientFactory);
 		ActivityManager westActivityManager = new ActivityManager(westActivityMapper, eventBus);
 		westActivityManager.setDisplay(westPanel);
 		
+		// Create ActivityManager for east panel (visualization)
+		ActivityMapper eastActivityMapper = new EastPanelActivityMapper(clientFactory);
+		ActivityManager eastActivityManager = new ActivityManager(eastActivityMapper, eventBus);
+		eastActivityManager.setDisplay(eastPanel);
+		
+		// Create ActivityManager for popout panel (only visible with specific place)
+		ActivityMapper popoutActivityMapper = new PopoutPanelActivityMapper(clientFactory);
+		ActivityManager popoutActivityManager = new ActivityManager(popoutActivityMapper, eventBus);
+		popoutActivityManager.setDisplay(popoutPanel);
+		
 
-		AppPlaceHistoryMapper historyMapper = GWT.create(AppPlaceHistoryMapper.class);
+		historyMapper = GWT.create(AppPlaceHistoryMapper.class);
 		PlaceHistoryHandler historyHandler = new PlaceHistoryHandler(historyMapper);
 		historyHandler.register(placeController, eventBus, defaultPlace);
 
 		buildGui();
 		historyHandler.handleCurrentHistory();
-		placeController.goTo(new DoublePanelPlace());
+//		placeController.goTo(defaultPlace);
 
+	}
+	
+	public static AppPlaceHistoryMapper getPlaceHistoryMapper() {
+		return historyMapper;
 	}
 	
 	private void init() {
@@ -68,16 +77,23 @@ public class Entry implements EntryPoint {
 		northPanel = new SimplePanel();
 		eastPanel = new SimplePanel();
 		westPanel = new SimplePanel();
+		popoutPanel = new SimplePanel();
 	}
 	
 	private  void buildGui() {
-		DockLayoutPanel container = new DockLayoutPanel(Unit.PX);
-		container.addEast(eastPanel, 500);
-		container.addWest(westPanel, 500);
-		eastPanel.add(new Label("TeSt!"));
+		HorizontalPanel contents = new HorizontalPanel();
+		contents.add(popoutPanel);
+		contents.add(westPanel);
+		contents.add(eastPanel);
+		contents.setCellWidth(westPanel, "50%");
+		contents.setCellWidth(eastPanel, "50%");
+		contents.setWidth("100%");
 		
-		RootPanel.get().add(northPanel);
-		RootPanel.get().add(eastPanel);
+		HeaderPanel container = new HeaderPanel();
+		container.setHeaderWidget(northPanel);
+		container.setContentWidget(contents);;
+		
+		RootLayoutPanel.get().add(container);
 	}
 	
 	

@@ -8,7 +8,6 @@ import com.google.gwt.user.client.ui.AcceptsOneWidget;
 
 import edu.oswego.csc480_hci521_2013.client.ClientFactory;
 import edu.oswego.csc480_hci521_2013.client.events.InspectDataEvent;
-import edu.oswego.csc480_hci521_2013.client.place.MenuPlace;
 import edu.oswego.csc480_hci521_2013.client.ui.MenuView;
 
 public class MenuActivity extends AbstractActivity implements MenuView.Presenter {

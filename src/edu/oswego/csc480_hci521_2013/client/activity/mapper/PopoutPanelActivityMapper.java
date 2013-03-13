@@ -27,7 +27,7 @@ public class PopoutPanelActivityMapper implements ActivityMapper {
 	@Override
 	public Activity getActivity(Place place) {
 	    
-	    	logger.log(Level.INFO, "Mapping popout activity...");
+	    	logger.log(Level.INFO, "Mapping popout activity..."+place.getClass().getName());
 
 		// PopoutPanelPlace
 		if(place instanceof PopoutPanelPlace) {
@@ -52,6 +52,8 @@ public class PopoutPanelActivityMapper implements ActivityMapper {
 							currentActivity : new DataPanelActivity(ppp, clientFactory);
 			}
 			
+		} else {
+			currentActivity = null;
 		}
 
 		return currentActivity;
