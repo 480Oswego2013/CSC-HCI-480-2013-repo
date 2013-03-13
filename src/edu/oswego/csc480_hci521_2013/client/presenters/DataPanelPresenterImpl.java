@@ -141,7 +141,7 @@ public class DataPanelPresenterImpl implements DataPanelPresenter {
                 });
                 return true;
             }
-        }, 1000);
+        }, 2000);
     }
 
     @Override
