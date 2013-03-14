@@ -1,14 +1,13 @@
 package edu.oswego.csc480_hci521_2013.client.ui;
 
-import com.google.gwt.user.client.DOM;
-import com.google.gwt.user.client.Element;
-import com.google.gwt.user.client.ui.Anchor;
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.dom.client.Element;
+import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlexTable;
-import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Grid;
-import com.google.gwt.user.client.ui.HTML;
-import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 import edu.oswego.csc480_hci521_2013.client.presenters.ConfusionMatrixPresenter;
@@ -21,70 +20,35 @@ import java.util.List;
  */
 public class ConfusionMatrixViewImpl extends Composite implements ConfusionMatrixPresenter.View {
 
-    private ConfusionMatrixPresenter presenter;
-    private FlowPanel mainFrame;
-    private FlexTable matrixTable;
-    private Grid treesTable;
-    private Label treesGenerated = new Label();
-    private Element progress;
-    private Anchor progressAnchor;
+    interface Style extends CssResource {
+        String tableHeader();
+        String cfmatrixHighlight();
+    }
 
-    private Label type = new Label();
-    private Label responseVariable = new Label();
-    private Label ntree = new Label();
-    private Label mtry = new Label();
-    private Label rows = new Label();
-    private Label classificationError = new Label();
+    interface Binder extends UiBinder<Widget, ConfusionMatrixViewImpl> {}
+    private static Binder uiBinder = GWT.create(Binder.class);
+
+    private ConfusionMatrixPresenter presenter;
+
+    @UiField Style style;
+
+    @UiField Element progress;
+    @UiField FlexTable matrixTable;
+    @UiField Grid treesTable;
+    @UiField Element treesGenerated;
+    @UiField Element type;
+    @UiField Element responseVariable;
+    @UiField Element ntree;
+    @UiField Element mtry;
+    @UiField Element rows;
+    @UiField Element classificationError;
 
     public ConfusionMatrixViewImpl() {
+        initWidget(uiBinder.createAndBindUi(this));
     }
 
     @Override
     public void buildUi() {
-        mainFrame = new FlowPanel();
-        // TODO: figure out what makes sense for layout
-        mainFrame.setSize("100%", "100%");
-
-        progress = DOM.createElement("progress");
-        progress.setAttribute(DEBUG_ID_PREFIX, DEBUG_ID_PREFIX);
-        progress.setAttribute("max", "100");
-        progress.setAttribute("value", "0");
-        progressAnchor = Anchor.wrap(progress);
-        mainFrame.add(progressAnchor);
-
-        // TODO: add more widgets
-        addPair(new Label("Confusion Matrix - "), type);
-
-        addPair(new Label("Response Variable:"), responseVariable);
-        addPair(new Label("Number of Trees:"), ntree);
-        addPair(new Label("mtry:"), mtry);
-        addPair(new Label("Rows Used/Skipped:"), rows);
-        addPair(new Label("Classification Error:"), classificationError);
-
-        matrixTable = new FlexTable();
-        mainFrame.add(matrixTable);
-
-        mainFrame.add(new HTML("Trees"));
-
-        addPair(new Label("Trees Generated:"), treesGenerated);
-
-        treesTable = new Grid(3, 4);
-        treesTable.setText(0, 1, "Min");
-        treesTable.setText(0, 2, "Mean");
-        treesTable.setText(0, 3, "Max");
-        treesTable.setText(1, 0, "Leaves");
-        treesTable.setText(2, 0, "Depth");
-        mainFrame.add(treesTable);
-
-        initWidget(mainFrame);
-    }
-
-    private void addPair(Label label, Label value) {
-        // TODO: i dont want to use horizontal panel if i dont have to
-        HorizontalPanel panel = new HorizontalPanel();
-        panel.add(label);
-        panel.add(value);
-        mainFrame.add(panel);
     }
 
     @Override
@@ -94,16 +58,16 @@ public class ConfusionMatrixViewImpl extends Composite implements ConfusionMatri
             progress.setAttribute("value", percent.toString());
         }
         else {
-            mainFrame.remove(progressAnchor);
+            progress.removeFromParent();
         }
 
-        responseVariable.setText(Integer.toString(data.getResponseVariable()));
-        ntree.setText(Integer.toString(data.getNtree()));
-        mtry.setText(Integer.toString(data.getMtry()));
+        responseVariable.setInnerText(Integer.toString(data.getResponseVariable()));
+        ntree.setInnerText(Integer.toString(data.getNtree()));
+        mtry.setInnerText(Integer.toString(data.getMtry()));
 
         updateConfusionMatrix(data.getConfusionMatrix());
 
-        treesGenerated.setText(Integer.toString(data.getTrees().getNumberBuilt()));
+        treesGenerated.setInnerText(Integer.toString(data.getTrees().getNumberBuilt()));
 
         treesTable.setText(1, 1, Double.toString(data.getTrees().getLeaves().getMin()));
         treesTable.setText(1, 2, Double.toString(data.getTrees().getLeaves().getMean()));
@@ -124,18 +88,20 @@ public class ConfusionMatrixViewImpl extends Composite implements ConfusionMatri
     }
 
     private void updateConfusionMatrix(ConfusionMatrix confusionMatrix) {
+
         // NOTE: sometimes it is not included in the response, maybe because it hasnt changed? not sure why
         if (confusionMatrix == null) {
             return;
         }
-        type.setText(confusionMatrix.getType());
-        rows.setText(confusionMatrix.getRows() + "/" + confusionMatrix.getRowsSkipped());
-    	classificationError.setText(Double.toString(confusionMatrix.getClassificationError()));
+        type.setInnerText(confusionMatrix.getType());
+        rows.setInnerText(confusionMatrix.getRows() + "/" + confusionMatrix.getRowsSkipped());
+    	classificationError.setInnerText(Double.toString(confusionMatrix.getClassificationError()));
 
         List<String> header = confusionMatrix.getHeader();
 
         // TODO: we really only need to set the labels once...
         matrixTable.setText(0, 0, "Actual/Predicted");
+
         /* Set Column Labels */
         for (int x = 0; x < header.size(); x++) {
             matrixTable.setText(0, x + 1, header.get(x));
@@ -149,11 +115,12 @@ public class ConfusionMatrixViewImpl extends Composite implements ConfusionMatri
         matrixTable.setText(header.size() + 1, 0, "Totals");
 
         updateConfusionScores(confusionMatrix.getScores());
+        matrixTable.getRowFormatter().setStylePrimaryName(0, style.tableHeader());
+        matrixTable.getColumnFormatter().setStylePrimaryName(0, style.tableHeader());
     }
 
     private void updateConfusionScores(List<List<Integer>> scores) {
         /* For All Header Values, Position Offset=1 */
-        // TODO: errors...
         int[] totals = new int[scores.size()];
         for (int i = 0; i < scores.size(); i++) {
             List<Integer> row = scores.get(i);
@@ -161,6 +128,9 @@ public class ConfusionMatrixViewImpl extends Composite implements ConfusionMatri
             int errors = 0;
             for (int j = 0; j < row.size(); j++) {
                 matrixTable.setText(i + 1, j + 1, row.get(j).toString());
+                if (i == j) {
+                    matrixTable.getCellFormatter().setStylePrimaryName(i + 1, j + 1, style.cfmatrixHighlight());
+                }
                 totals[j] += row.get(j);
                 if (i != j) {
                     errors += row.get(j);

@@ -1,0 +1,75 @@
+<!-- ConfusionMatrixViewImpl.ui.xml -->
+
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+    xmlns:gwt='urn:import:com.google.gwt.user.client.ui'>
+
+    <ui:style type='edu.oswego.csc480_hci521_2013.client.ui.ConfusionMatrixViewImpl.Style'>
+        .tableHeader {
+            background-color: #e0e0e0;
+            font-weight: bold;
+        }
+        dl.inline dt, dl.inline dd {
+            float: left;
+            margin: 0 0.5em 0 0;
+        }
+        dl.inline dd + dt, dl.inline dd + dd {
+            clear: left
+        }
+        dl.inline dd + dd {
+            float: none
+        }
+        dl.inline dt {
+            font-weight: bold
+        }
+        .cfmatrixHighlight {
+            background-color: #e0ffe0;
+        }
+    </ui:style>
+
+    <gwt:HTMLPanel>
+        <progress ui:field='progress' value="0" max="100"/>
+
+        <h2>Confusion Matrix - <span ui:field='type'/></h2>
+        <dl class="{style.inline}">
+            <dt>Response Variable:</dt>
+            <dd ui:field='responseVariable'/>
+            <dt>Number of Trees:</dt>
+            <dd ui:field='ntree'/>
+            <dt>mtry:</dt>
+            <dd ui:field='mtry'/>
+            <dt>Rows Used/Skipped:</dt>
+            <dd ui:field='rows'/>
+            <dt>Classification Error:</dt>
+            <dd ui:field='classificationError'/>
+        </dl>
+        <div style="clear: left;"/>
+        <gwt:FlexTable ui:field='matrixTable'/>
+
+        <h2>Trees</h2>
+        <dl class="{style.inline}">
+            <dt>Trees Generated:</dt>
+            <dd ui:field='treesGenerated'/>
+        </dl>
+        <div style="clear: left;"/>
+        <gwt:Grid ui:field='treesTable'>
+            <gwt:row>
+                <gwt:cell></gwt:cell>
+                <gwt:cell styleName='{style.tableHeader}'>Min</gwt:cell>
+                <gwt:cell styleName='{style.tableHeader}'>Mean</gwt:cell>
+                <gwt:cell styleName='{style.tableHeader}'>Max</gwt:cell>
+            </gwt:row>
+            <gwt:row>
+                <gwt:cell styleName='{style.tableHeader}'>Leaves</gwt:cell>
+                <gwt:cell></gwt:cell>
+                <gwt:cell></gwt:cell>
+                <gwt:cell></gwt:cell>
+            </gwt:row>
+            <gwt:row>
+                <gwt:cell styleName='{style.tableHeader}'>Depth</gwt:cell>
+                <gwt:cell></gwt:cell>
+                <gwt:cell></gwt:cell>
+                <gwt:cell></gwt:cell>
+            </gwt:row>
+        </gwt:Grid>
+    </gwt:HTMLPanel>
+</ui:UiBinder>
