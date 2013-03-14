@@ -86,14 +86,12 @@ public class PopoutPanelPlace extends Place {
 
 		@Override
 		public PopoutPanelPlace getPlace(String token) {
-			logger.log(Level.INFO, "Parsing PopoutPanelPlace");
+			TokenParser tp = new TokenParser(token);
 
-			Map<String, String> map = TokenParser.parse(token);
-
-			PanelType paneltype = PanelType.fromString(map.get("paneltype"));
-			String modelKey = map.get("modelkey");
-			String dataKey = map.get("datakey");
-			int treeIndex = map.get("treeindex") != null ? Integer.parseInt(map.get("treeindex")) : -1;
+			PanelType paneltype = PanelType.fromString(tp.getValue("paneltype"));
+			String modelKey = tp.getValue("modelkey");
+			String dataKey = tp.getValue("datakey");
+			int treeIndex = tp.getValue("treeindex") != null ? Integer.parseInt(tp.getValue("treeindex")) : -1;
 
 			PopoutPanelPlace popupPanelPlace = new PopoutPanelPlace();
 			popupPanelPlace.setType(paneltype);

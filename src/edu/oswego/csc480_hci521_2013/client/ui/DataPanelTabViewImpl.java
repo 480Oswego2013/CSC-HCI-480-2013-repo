@@ -104,7 +104,7 @@ public class DataPanelTabViewImpl extends Composite implements DataPanelPresente
     }
 
 	@Override
-	public String getTabTitle() {
+	public String getDataKey() {
 		return title;
 	}
 }

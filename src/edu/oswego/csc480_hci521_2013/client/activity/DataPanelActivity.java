@@ -1,5 +1,6 @@
 package edu.oswego.csc480_hci521_2013.client.activity;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -7,23 +8,21 @@ import java.util.logging.Logger;
 
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.event.shared.EventBus;
+import com.google.gwt.place.shared.Place;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.gwt.user.client.ui.IsWidget;
 
 import edu.oswego.csc480_hci521_2013.client.ClientFactory;
-import edu.oswego.csc480_hci521_2013.client.events.InspectDataEvent;
-import edu.oswego.csc480_hci521_2013.client.events.InspectDataEventHandler;
 import edu.oswego.csc480_hci521_2013.client.events.RFGenerateEvent;
-import edu.oswego.csc480_hci521_2013.client.events.RFGenerateEventHandler;
 import edu.oswego.csc480_hci521_2013.client.events.RFProgressEvent;
 import edu.oswego.csc480_hci521_2013.client.events.RFProgressEventHandler;
 import edu.oswego.csc480_hci521_2013.client.events.TreeVisEvent;
 import edu.oswego.csc480_hci521_2013.client.place.DoublePanelPlace;
 import edu.oswego.csc480_hci521_2013.client.place.DoublePanelPlace.Location;
-import edu.oswego.csc480_hci521_2013.client.place.PopoutPanelPlace.PanelType;
 import edu.oswego.csc480_hci521_2013.client.place.PopoutPanelPlace;
+import edu.oswego.csc480_hci521_2013.client.place.PopoutPanelPlace.PanelType;
 import edu.oswego.csc480_hci521_2013.client.presenters.DataPanelPresenter;
 import edu.oswego.csc480_hci521_2013.client.services.H2OServiceAsync;
 import edu.oswego.csc480_hci521_2013.shared.h2o.json.RF;
@@ -43,8 +42,7 @@ public class DataPanelActivity extends AbstractPanelActivity implements
 	View view;
 	H2OServiceAsync h2oService;
 	
-	String dataKey;
-	
+	String[] dataKeys;
 	boolean isPopout = false;
 
 	public DataPanelActivity(Location loc, DoublePanelPlace place,
@@ -54,7 +52,7 @@ public class DataPanelActivity extends AbstractPanelActivity implements
 
 		eventBus = clientFactory.getEventBus();
 		h2oService = clientFactory.getH2OService();
-		dataKey = place.getDataKey();
+		dataKeys = place.getDataKeys();
 	}
 	
 	public DataPanelActivity(PopoutPanelPlace place, ClientFactory clientFactory) {
@@ -62,7 +60,7 @@ public class DataPanelActivity extends AbstractPanelActivity implements
         
         	eventBus = clientFactory.getEventBus();
         	h2oService = clientFactory.getH2OService();
-        	dataKey = place.getDataKey();
+        	dataKeys = new String[] {place.getDataKey()};
         	isPopout = true;
         }
 
@@ -75,7 +73,35 @@ public class DataPanelActivity extends AbstractPanelActivity implements
 		panel.setWidget(view);
 		bind();
 		
-		if(isPopout()) addDataTab(dataKey);
+		// Add/remove any data tabs if necessary
+		if(isPopout())
+			addDataTab(dataKeys[0]);
+		else {
+			List<Integer> toBeAdded = new ArrayList<Integer>();
+			List<Integer> toBeRemoved = new ArrayList<Integer>();
+			for(int i=0; i<dataKeys.length; i++) {
+				if(view.getTabCount()-1 < i) {
+					toBeAdded.add(i);
+					continue;
+				}
+				if(!dataKeys[i].equals(view.getTab(i).getDataKey())) {
+					toBeRemoved.add(i);
+					toBeAdded.add(i);
+				}
+			}
+			if(view.getTabCount() > dataKeys.length) {
+				int count = view.getTabCount()-dataKeys.length;
+				for(int i=view.getTabCount()-1; i>view.getTabCount()-1-count; i--)
+					toBeRemoved.add(i);
+			}
+			for(int i : toBeRemoved)
+				view.removeDataTab(i);
+			for(int i : toBeAdded)
+				addDataTab(dataKeys[i]);
+			
+			logger.log(Level.INFO, "COUNT:"+toBeAdded.size());
+		}
+		
 	}
 	
 	@Override
@@ -85,7 +111,7 @@ public class DataPanelActivity extends AbstractPanelActivity implements
 	
 	@Override
 	public void popPanel(IsWidget panel) {
-		view.removeDataTab(view.getActivePanel());
+		view.removeDataTab(view.getActiveTabIndex());
 	}
 	
 	@Override
@@ -101,7 +127,7 @@ public class DataPanelActivity extends AbstractPanelActivity implements
 			@Override
 			public void execute() {
 				logger.log(Level.INFO, "Generating Forest");
-				h2oService.generateRandomForest(new RFBuilder(dataKey),
+				h2oService.generateRandomForest(new RFBuilder(dataKeys[view.getActiveTabIndex()]),
 						new AsyncCallback<RF>() {
 							@Override
 							public void onFailure(Throwable thrwbl) {
@@ -116,7 +142,7 @@ public class DataPanelActivity extends AbstractPanelActivity implements
 
 								eventBus.fireEvent(new RFGenerateEvent(rf));
 
-								view.getActivePanel().forestStarted();
+								view.getTab(view.getActiveTabIndex()).forestStarted();
 								startRFViewPoller();
 							}
 						});
@@ -140,9 +166,10 @@ public class DataPanelActivity extends AbstractPanelActivity implements
 			@Override
 			public void execute() {
 				PopoutPanelPlace place = new PopoutPanelPlace();
+				TabView active = view.getTab(view.getActiveTabIndex());
 				place.setType(PanelType.DATA);
-				place.setDataKey(dataKey);
-				popout(place, view.getActivePanel(), view.getTabTitle(view.getActivePanel()));
+				place.setDataKey(dataKeys[view.getActiveTabIndex()]);
+				popout(place, active, active.getDataKey());
 			}
 		};
 	}
@@ -152,7 +179,9 @@ public class DataPanelActivity extends AbstractPanelActivity implements
 		return new Command() {
 			@Override
 			public void execute() {
-				view.removeDataTab(view.getActivePanel());
+				DoublePanelPlace place = ((DoublePanelPlace)clientFactory.getPlaceController().getWhere()).clone();
+				place.removeDataKey(view.getActiveTabIndex());
+				goTo(place);
 			}
 		};
 	}
@@ -161,24 +190,25 @@ public class DataPanelActivity extends AbstractPanelActivity implements
 
 	private void bind() {
 		EventBus eventbus = clientFactory.getEventBus();
-		eventbus.addHandler(InspectDataEvent.TYPE,
-				new InspectDataEventHandler() {
-					@Override
-					public void onViewData(InspectDataEvent e) {
-						addDataTab(e.getName());
-					}
-				});
-		eventbus.addHandler(RFGenerateEvent.TYPE, new RFGenerateEventHandler() {
-			@Override
-			public void onStart(RFGenerateEvent e) {
-				// addConfusionMatrixTab(e.getData());
-			}
-		});
+//		eventbus.addHandler(InspectDataEvent.TYPE,
+//				new InspectDataEventHandler() {
+//					@Override
+//					public void onViewData(InspectDataEvent e) {
+//						addDataTab(e.getName());
+//					}
+//				});
+//		eventbus.addHandler(RFGenerateEvent.TYPE, new RFGenerateEventHandler() {
+//			@Override
+//			public void onStart(RFGenerateEvent e) {
+//				// addConfusionMatrixTab(e.getData());
+//			}
+//		});
 		eventbus.addHandler(RFProgressEvent.TYPE, new RFProgressEventHandler() {
 			@Override
 			public void onDataUpdate(RFProgressEvent e) {
 				if (isOurData(e.getData())) {
 					RFView rfview = e.getData();
+					TabView active = view.getTab(view.getActiveTabIndex());
 					logger.log(Level.INFO, rfview.toString());
 					ResponseStatus status = rfview.getResponse();
 					if (status.isPoll()) {
@@ -186,10 +216,10 @@ public class DataPanelActivity extends AbstractPanelActivity implements
 						int total = status.getProgressTotal();
 						logger.log(Level.INFO, "Trees: Generated " + done
 								+ " of " + total);
-						view.getActivePanel().setForestStatus(done, total);
+						active.setForestStatus(done, total);
 					} else {
 						logger.log(Level.INFO, "Forest finished");
-						view.getActivePanel().forestFinish(rfview.getNtree());
+						active.forestFinish(rfview.getNtree());
 					}
 				}
 			}
@@ -205,7 +235,6 @@ public class DataPanelActivity extends AbstractPanelActivity implements
 	}
 
 	public void addDataTab(final String dataKey) {
-		this.dataKey = dataKey;
 		clientFactory.getH2OService().getParsedData(dataKey,
 				new AsyncCallback<List<Map<String, String>>>() {
 					@Override
@@ -254,6 +283,10 @@ public class DataPanelActivity extends AbstractPanelActivity implements
 				return true;
 			}
 		}, 1000);
+	}
+	
+	public void goTo(Place place) {
+		clientFactory.getPlaceController().goTo(place);
 	}
 
 }

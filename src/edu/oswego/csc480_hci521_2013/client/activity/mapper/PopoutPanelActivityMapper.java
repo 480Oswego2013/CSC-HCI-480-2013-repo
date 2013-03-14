@@ -37,11 +37,12 @@ public class PopoutPanelActivityMapper implements ActivityMapper {
 			
 			// Data panel
 			if(type == PanelType.DATA) {
-				if(currentActivity == null)
-					currentActivity = new DataPanelActivity(ppp, clientFactory);
-				else
-					currentActivity = currentActivity.getClass() == DataPanelActivity.class ?
-							currentActivity : new DataPanelActivity(ppp, clientFactory);
+				currentActivity = new DataPanelActivity(ppp, clientFactory);
+//				if(currentActivity == null)
+//					currentActivity = new DataPanelActivity(ppp, clientFactory);
+//				else
+//					currentActivity = currentActivity.getClass() == DataPanelActivity.class ?
+//							currentActivity : new DataPanelActivity(ppp, clientFactory);
 			
 			// Vis panel
 			} else if(type == PanelType.VIS) {

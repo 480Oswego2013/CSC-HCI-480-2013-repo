@@ -45,17 +45,25 @@ public class DataPanelViewImpl extends Composite implements
 	public void setPresenter(DataPanelPresenter presenter) {
 		this.presenter = presenter;
 	}
+	
+	@Override
+	public int getActiveTabIndex() {
+		return tpData.getTabBar().getSelectedTab();
+	}
 
 	@Override
-	public TabView getActivePanel() {
-		int index = tpData.getTabBar().getSelectedTab();
+	public TabView getTab(int index) {
 		return (TabView) tpData.getWidget(index);
 	}
 	
 	@Override
-	public String getTabTitle(TabView tab) {
-		int index = tpData.getWidgetIndex(tab);
-		return ((TabView)tpData.getWidget(index)).getTabTitle();
+	public void clear() {
+		tpData.clear();
+	}
+	
+	@Override
+	public int getTabCount() {
+		return tpData.getWidgetCount();
 	}
 
 	@Override
@@ -78,8 +86,7 @@ public class DataPanelViewImpl extends Composite implements
 	}
 	
 	@Override
-	public void removeDataTab(TabView tab) {
-		int index = tpData.getWidgetIndex(tab);
+	public void removeDataTab(int index) {
 		tpData.remove(index);
 		if(tpData.getWidgetCount()>0)
 			tpData.selectTab(tpData.getWidgetCount()-1);

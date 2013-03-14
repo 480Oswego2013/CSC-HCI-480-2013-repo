@@ -30,13 +30,15 @@ public class WestPanelActivityMapper implements ActivityMapper {
 
 			// Data panel
 			if (type == PanelType.DATA) {
-				if (currentActivity == null)
-					currentActivity = new DataPanelActivity(Location.EAST, dpp,
-							clientFactory);
-				else
-					currentActivity = currentActivity.getClass() == DataPanelActivity.class ? currentActivity
-							: new DataPanelActivity(Location.EAST, dpp,
-									clientFactory);
+				currentActivity = new DataPanelActivity(Location.EAST, dpp,
+						clientFactory);
+//				if (currentActivity == null)
+//					currentActivity = new DataPanelActivity(Location.WEST, dpp,
+//							clientFactory);
+//				else
+//					currentActivity = currentActivity.getClass() == DataPanelActivity.class ? currentActivity
+//							: new DataPanelActivity(Location.WEST, dpp,
+//									clientFactory);
 
 				// Vis panel
 			} else if (type == PanelType.VIS) {

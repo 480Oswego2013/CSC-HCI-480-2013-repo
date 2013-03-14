@@ -22,9 +22,11 @@ public interface DataPanelPresenter {
         void setPresenter(DataPanelPresenter presenter);
         void addDataTab(String title, List<Map<String, String>> data);
         void addDataTab(String title, TabView tab);
-        void removeDataTab(TabView tab);
-        TabView getActivePanel();
-        String getTabTitle(TabView tab);
+        void removeDataTab(int index);
+        void clear();
+        int getTabCount();
+        int getActiveTabIndex();
+        TabView getTab(int index);
     }
     
     public interface TabView extends IsWidget {
@@ -33,6 +35,6 @@ public interface DataPanelPresenter {
         void forestStarted();
         void setForestStatus(int done, int total);
         void forestFinish(int count);
-        String getTabTitle();
+        String getDataKey();
     }
 }

@@ -1,6 +1,6 @@
 package edu.oswego.csc480_hci521_2013.client.place;
 
-import java.util.Map;
+import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -57,16 +57,18 @@ public class DoublePanelPlace extends Place {
 
 	private PanelType east;
 	private PanelType west;
-	private String dataKey;
+	private String[] dataKeys;
 
 	public DoublePanelPlace() {
 		east = defaultEast;
 		west = defaultWest;
+		dataKeys = new String[0];
 	}
 
 	public DoublePanelPlace(PanelType east, PanelType west) {
 		this.east = east;
 		this.west = west;
+		dataKeys = new String[0];
 	}
 
 	public PanelType getEast() {
@@ -77,12 +79,32 @@ public class DoublePanelPlace extends Place {
 		return west;
 	}
 
-	public String getDataKey() {
-		return dataKey;
+	public String[] getDataKeys() {
+		return dataKeys;
 	}
 
-	public void setDataKey(String dataKey) {
-		this.dataKey = dataKey;
+	public void setDataKeys(String... dataKeys) {
+		this.dataKeys = dataKeys;
+	}
+	
+	public void addDataKey(String dataKey) {
+		String[] newKeys = new String[dataKeys.length+1];
+		System.arraycopy(dataKeys, 0, newKeys, 0, dataKeys.length);
+		newKeys[newKeys.length-1] = dataKey;
+		dataKeys = newKeys;
+	}
+	
+	public void removeDataKey(int index) {
+		String[] newDataKeys = new String[dataKeys.length-1];
+		int i = 0;
+		for(int j=0; j<newDataKeys.length; j++) {
+			if(i == index)
+				j--;
+			else
+				newDataKeys[j] = dataKeys[i];
+			i++;
+		}
+		dataKeys = newDataKeys;
 	}
 
 	public void setEast(PanelType east) {
@@ -91,6 +113,12 @@ public class DoublePanelPlace extends Place {
 
 	public void setWest(PanelType west) {
 		this.west = west;
+	}
+	
+	public DoublePanelPlace clone() {
+		DoublePanelPlace place = new DoublePanelPlace(east, west);
+		place.setDataKeys(dataKeys);
+		return place;
 	}
 
 	// Tokenizer
@@ -102,22 +130,42 @@ public class DoublePanelPlace extends Place {
 			TokenParser tp = new TokenParser();
 			tp.addArgument("east", place.getEast().toString());
 			tp.addArgument("west", place.getWest().toString());
+			if(place.getDataKeys().length > 0)
+				tp.addArgument("datakey", place.getDataKeys());
 
 			return tp.serialize();
 		}
 
 		@Override
 		public DoublePanelPlace getPlace(String token) {
-			Map<String, String> map = TokenParser.parse(token);
+			TokenParser tp = new TokenParser(token);
+			String east = tp.getValue(Location.EAST.toString());
+			String west = tp.getValue(Location.WEST.toString());
+			String[] keys = tp.getAllValues("datakey");
 
-			String east = map.get(Location.EAST.toString());
-			String west = map.get(Location.WEST.toString());
-			
-			logger.log(Level.INFO, "\neast:"+east+" west:"+west+"\n");
-
-			return new DoublePanelPlace(PanelType.fromString(east),
+			DoublePanelPlace place = new DoublePanelPlace(PanelType.fromString(east),
 					PanelType.fromString(west));
+			place.setDataKeys(keys);
+			return place;
 		}
 
 	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if(!(obj instanceof DoublePanelPlace))
+			return false;
+		DoublePanelPlace place = (DoublePanelPlace)obj;
+		
+		if(place.getEast() != getEast() || place.getWest() != getWest())
+			return false;
+		if(place.getDataKeys().length != getDataKeys().length)
+			return false;
+		for(int i=0; i<getDataKeys().length; i++)
+			if(!place.getDataKeys()[i].equals(getDataKeys()[i]))
+				return false;
+		
+		return true;
+	}
+	
 }
