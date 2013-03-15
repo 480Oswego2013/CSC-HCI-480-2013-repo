@@ -1,114 +1,101 @@
 package edu.oswego.csc480_hci521_2013.client.ui;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ChangeEvent;
-import com.google.gwt.event.dom.client.ChangeHandler;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.resources.client.CssResource;
+import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.HorizontalPanel;
-import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.IntegerBox;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.PopupPanel;
-import com.google.gwt.user.client.ui.TextBox;
-import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import edu.oswego.csc480_hci521_2013.client.presenters.RfParametersPresenter;
+import edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders.RFBuilder;
 
-/* Author: Mike Hayes
- * TODO: Try to move functional elements to presenter classes. IE: onChange(), checkSelection()
+/** 
+ * @author Michael Hayes
  * TODO: Confirm that H2O has a way of auto-detecting which column should be used as a 
  *      classification variable by default and implement that here.
- * TODO: Need better way to handle other default value such as number of trees. Right now it is
- *       just final global variable.
+ * TODO: Need better way to handle other default value such as number of trees.
+ * TODO: Input sanity checks such as numTrees is an integer.
  */
-public class RfParametersViewImpl extends PopupPanel implements ChangeHandler, RfParametersPresenter.View {
+public class RfParametersViewImpl extends PopupPanel implements RfParametersPresenter.View {
 
-    private final int NTREES_DEFAULT = 50;
-    private static final Logger logger = Logger.getLogger(RfParametersViewImpl.class.getName());
+    static final Logger logger = Logger.getLogger(RfParametersPresenter.View.class.getName());
 
-    RfParametersPresenter presenter;
-    VerticalPanel mainFrame;
-    List<String> columnHeaders; //Headers of the data columns from the data source.
-    HashMap<Integer, String> ignoreRemoved; //A possibly temporarily removed item from the ignoreColumns ListBox.
-    //List element for the classification variable. Is populated in the setHeaders method.
-    private final ListBox classificationVariable = new ListBox();
-    private final ListBox ignoreColumns = new ListBox(true);
-
-    public RfParametersViewImpl() { }
-
-    public void buildUi() {
-        mainFrame = new VerticalPanel();
-        setWidget(mainFrame);
-        mainFrame.setHorizontalAlignment(VerticalPanel.ALIGN_CENTER);
-        mainFrame.setVerticalAlignment(VerticalPanel.ALIGN_TOP);
-
-        HorizontalPanel header = new HorizontalPanel();
-        header.setWidth("100%");
-        header.setHorizontalAlignment(HorizontalPanel.ALIGN_CENTER);
-        header.add(new Label("Random Forest Model Parameters"));
-
-        //Create and populate a list element for the classification variable.
-        HorizontalPanel classVar = new HorizontalPanel();
-        classVar.add(new Label("Classification Variable: "));
-        classVar.add(classificationVariable);
-
-        //Number of trees input box
-        HorizontalPanel numTrees = new HorizontalPanel();
-        numTrees.add(new Label("Number of trees: "));
-        TextBox numTreesVal = new TextBox();
-        numTreesVal.setText(Integer.toString(NTREES_DEFAULT));
-        numTrees.add(numTreesVal);
-
-        //Create and populate the ignore columns selection list element.
-        HorizontalPanel ignoreColumnsPanel = new HorizontalPanel();
-        ignoreColumns.setWidth("100%");
-        ignoreColumnsPanel.add(new Label("Ignore columns: "));
-        ignoreColumnsPanel.add(ignoreColumns);
-
-        //Buttons...
-        HorizontalPanel buttons = new HorizontalPanel();
-        buttons.add(new Button("OK"));
-        buttons.add(new Button("Cancel"));
-
-        //Add HorizontalPanels to the main VerticalPanel
-        mainFrame.add(header);
-        mainFrame.add(classVar);
-        mainFrame.add(numTrees);
-        mainFrame.add(ignoreColumnsPanel);
-        mainFrame.add(buttons);
-
-        classificationVariable.addChangeHandler(this);
+    interface Style extends CssResource {
+        String tableHeader(); 
     }
 
-    //Called when classificationVariable selection is changed.
+    interface Binder extends UiBinder<Widget, RfParametersViewImpl> {}
+    private static Binder uiBinder = GWT.create(Binder.class);
+    private RfParametersPresenter presenter;
+    private List<String> columnHeaders; //Headers of the data columns from the data source.
+
+    @UiField Style style;
+    @UiField ListBox classVars;
+    @UiField IntegerBox numTrees;
+    @UiField ListBox ignoreCols;
+    @UiField Button submit;
+    @UiField Button cancel;
+
+    public RfParametersViewImpl() { 
+        setWidget(uiBinder.createAndBindUi(this));
+    }
+
+    public void buildUi() {
+    }
+
+    //Called when classVars selection is changed.
+    @UiHandler("classVars")
     public void onChange(ChangeEvent event){
-        int selectedIndex = classificationVariable.getSelectedIndex(); 
-        String selectedName = classificationVariable.getValue(selectedIndex);
+        int selectedIndex = classVars.getSelectedIndex(); 
+        String selectedName = classVars.getValue(selectedIndex);
         setIgnoreColumns(selectedName);
     }
 
+    @UiHandler("submit")
+    public void onSubmitClick(ClickEvent event){
+        RFBuilder builder = new RFBuilder(presenter.getDataKey());
+        builder.setNtree(numTrees.getValue());
+        int classVarSelected = classVars.getSelectedIndex();
+        String classVarVal = classVars.getValue(classVarSelected);
+        builder.setResponseVariable(classVarVal);
+        logger.log(Level.INFO, "BUILDER: "+ builder.build());
+        presenter.fireRFParameterEvent(builder);
+        this.hide();
+    }
+
+    @UiHandler("cancel")
+    public void onCancelClick(ClickEvent event){
+        this.hide();
+    }
+
     public void setHeaders(List<String> headers){
-        this.columnHeaders = headers; 
+       this.columnHeaders = headers; 
         for(String column : columnHeaders){
-            classificationVariable.addItem(column);
+            classVars.addItem(column);
         }
-        classificationVariable.setItemSelected(0,true);
+        classVars.setItemSelected(0,true);
         //Ignore the first header since it is selected first.
         setIgnoreColumns(columnHeaders.get(0));
     }
 
     //Set the available ignore columns to everything excepted the selected class var
     public void setIgnoreColumns(String selected){
-        logger.log(Level.INFO, "Not setting: " + selected);
-        ignoreColumns.clear();
+        ignoreCols.clear();
         for(String column : columnHeaders){
             if(!column.equals(selected))
-                ignoreColumns.addItem(column);
+                ignoreCols.addItem(column);
         }
-        ignoreColumns.setVisibleItemCount(columnHeaders.size());
+        ignoreCols.setVisibleItemCount(columnHeaders.size());
     }
 
     public void showPopUp(){
