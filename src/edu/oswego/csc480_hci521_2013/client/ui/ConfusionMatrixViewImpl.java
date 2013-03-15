@@ -121,6 +121,7 @@ public class ConfusionMatrixViewImpl extends Composite implements ConfusionMatri
 
     private void updateConfusionScores(List<List<Integer>> scores) {
         /* For All Header Values, Position Offset=1 */
+        int overall=0;
         int[] totals = new int[scores.size()];
         for (int i = 0; i < scores.size(); i++) {
             List<Integer> row = scores.get(i);
@@ -139,9 +140,15 @@ public class ConfusionMatrixViewImpl extends Composite implements ConfusionMatri
             }
             // TODO: add the scores for the errors.
             matrixTable.setText(i + 1, row.size() + 1, errors + "/" + total);
+            overall += errors;
         }
+        int allTotals = 0;
         for (int i = 0; i < totals.length; i++) {
             matrixTable.setText(scores.size() + 1, i + 1, Integer.toString(totals[i]));
+            allTotals += totals[i];
         }
+        /* Error Average Total */
+        String val = String.valueOf(overall) + "/" + allTotals;
+        matrixTable.setText(scores.size() + 1, totals.length + 1, val);
     }
 }
