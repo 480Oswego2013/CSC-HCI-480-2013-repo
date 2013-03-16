@@ -15,6 +15,9 @@
 package edu.oswego.csc480_hci521_2013.client.presenters;
 
 import edu.oswego.csc480_hci521_2013.shared.h2o.json.RFView;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class ConfusionMatrixAdapter {
     
@@ -41,6 +44,10 @@ public class ConfusionMatrixAdapter {
         }
         
         return ProgressComplete;
+    }
+    
+    public List<ConfusionMatrixScore> getScores() {
+        return new ArrayList(Arrays.asList(new ConfusionMatrixScoreImpl(1, 0, 0)));
     }
     
     public String getResponseVariable() {

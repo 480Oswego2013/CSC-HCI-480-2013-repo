@@ -16,8 +16,11 @@ package edu.oswego.csc480_hci521_2013.client.ui;
 
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.junit.GWTMockUtilities;
+import edu.oswego.csc480_hci521_2013.client.presenters.ConfusionMatrixAdapter;
 import edu.oswego.csc480_hci521_2013.client.presenters.ConfusionMatrixPresenter.View;
 import edu.oswego.csc480_hci521_2013.client.presenters.ConfusionMatrixPresenterImpl;
+import edu.oswego.csc480_hci521_2013.client.presenters.ConfusionMatrixScore;
+import edu.oswego.csc480_hci521_2013.client.presenters.ConfusionMatrixScoreImpl;
 import edu.oswego.csc480_hci521_2013.client.presenters.ConfusionMatrixView;
 import edu.oswego.csc480_hci521_2013.shared.h2o.json.ConfusionMatrix;
 import static org.mockito.Mockito.when;
@@ -25,6 +28,9 @@ import static org.mockito.Mockito.verify;
 
 import edu.oswego.csc480_hci521_2013.shared.h2o.json.RFView;
 import edu.oswego.csc480_hci521_2013.shared.h2o.json.ResponseStatus;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -70,5 +76,47 @@ public class ConfusionMatrixAdapterTest {
     public void tearDown() {
     }
     
+    @Test
+    public void getResponseVariableTest()
+    {
+        when(randomForest.getResponseVariable()).thenReturn(7);
+        ConfusionMatrixAdapter adapter = new ConfusionMatrixAdapter(randomForest);
+        assertEquals(adapter.getResponseVariable(), "7");
+    }
     
+    @Test
+    public void getNtreeTest()
+    {
+        when(randomForest.getNtree()).thenReturn(1000);
+        ConfusionMatrixAdapter adapter = new ConfusionMatrixAdapter(randomForest);
+        assertEquals(adapter.getNtree(), "1000");
+    }
+    
+    @Test
+    public void getMtryTest()
+    {
+        when(randomForest.getMtry()).thenReturn(9);
+        ConfusionMatrixAdapter adapter = new ConfusionMatrixAdapter(randomForest);
+        assertEquals(adapter.getMtry(), "9");
+    }
+    
+    @Test
+    public void getConfusionMatrixTest()
+    {
+        List<List<Integer>> scores = new ArrayList<List<Integer>>(Arrays.asList(
+                new ArrayList<Integer>(Arrays.asList(1,0,0)),
+                new ArrayList<Integer>(Arrays.asList(0,1,0)),
+                new ArrayList<Integer>(Arrays.asList(0,0,1))
+                ));
+        
+        when(matrix.getScores()).thenReturn(scores);
+        when(randomForest.getConfusionMatrix()).thenReturn(matrix);
+        ConfusionMatrixAdapter adapter = new ConfusionMatrixAdapter(randomForest);
+        
+        ConfusionMatrixScore scoreOne = new ConfusionMatrixScoreImpl(0, 0, 1);
+        List<ConfusionMatrixScore> scoresOut = new ArrayList<ConfusionMatrixScore>(
+                Arrays.asList(
+                scoreOne));
+        //assertEquals(adapter.getScores(), scoresOut);
+    }
 }
