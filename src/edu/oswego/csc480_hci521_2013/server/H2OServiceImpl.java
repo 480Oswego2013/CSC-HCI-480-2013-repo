@@ -102,7 +102,7 @@ public class H2OServiceImpl extends RemoteServiceServlet implements H2OService {
 
             //Iterate through Arraylist of ColumnDef
             for(ColumnDef column : val.getCols()){
-                columnHeaders.add(column.getName()); 
+                columnHeaders.add(column.getName());
             }
 
             return columnHeaders;
@@ -174,9 +174,9 @@ public class H2OServiceImpl extends RemoteServiceServlet implements H2OService {
         }
     }
 
-    public RFView getRandomForestView(String dataKey, String modelKey) throws Exception {
+    public RFView getRandomForestView(RFViewBuilder builder) throws Exception {
         try {
-            String url = new RFViewBuilder(dataKey, modelKey).build();
+            String url = builder.build();
             logger.log(Level.INFO, url.toString());
             String json = rest.fetch(url);
             logger.log(Level.INFO, json);

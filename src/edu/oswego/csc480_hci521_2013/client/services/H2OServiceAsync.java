@@ -5,6 +5,7 @@ import edu.oswego.csc480_hci521_2013.shared.h2o.json.RF;
 import edu.oswego.csc480_hci521_2013.shared.h2o.json.RFTreeView;
 import edu.oswego.csc480_hci521_2013.shared.h2o.json.RFView;
 import edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders.RFBuilder;
+import edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders.RFViewBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,5 +23,5 @@ public interface H2OServiceAsync
 
     void getTreeView(String dataKey, String modelKey, int index, AsyncCallback<RFTreeView> callback);
     void generateRandomForest(RFBuilder builder, AsyncCallback<RF> callback);
-    void getRandomForestView(String dataKey, String modelKey, AsyncCallback<RFView> callback);
+    void getRandomForestView(RFViewBuilder builder, AsyncCallback<RFView> callback);
 }
