@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import edu.oswego.csc480_hci521_2013.h2owrapper.json.deserializers.InspectRowDeserializer;
+import edu.oswego.csc480_hci521_2013.server.json.deserializers.InspectRowDeserializer;
 import edu.oswego.csc480_hci521_2013.shared.h2o.RestException;
 import edu.oswego.csc480_hci521_2013.shared.h2o.json.H2OResponse;
 import edu.oswego.csc480_hci521_2013.shared.h2o.json.InspectRow;

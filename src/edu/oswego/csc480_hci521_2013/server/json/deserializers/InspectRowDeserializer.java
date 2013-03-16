@@ -1,4 +1,4 @@
-package edu.oswego.csc480_hci521_2013.h2owrapper.json.deserializers;
+package edu.oswego.csc480_hci521_2013.server.json.deserializers;
 
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
