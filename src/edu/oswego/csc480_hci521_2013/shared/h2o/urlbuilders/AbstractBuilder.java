@@ -9,7 +9,7 @@ import java.util.Map;
 /**
  *
  */
-abstract class AbstractBuilder implements IsSerializable
+abstract class AbstractBuilder implements IsSerializable, H2ORequest
 {
     private static final String PROTOCOL = "http";
     private static final String HOST = "localhost";
