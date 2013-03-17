@@ -7,6 +7,7 @@ import edu.oswego.csc480_hci521_2013.client.events.RFProgressEvent;
 import edu.oswego.csc480_hci521_2013.shared.h2o.json.RF;
 import edu.oswego.csc480_hci521_2013.shared.h2o.json.RFView;
 import edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders.RFViewBuilder;
+import edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders.RedirectRequestFactory;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -43,7 +44,7 @@ public class RFViewPoller {
     void poll() {
         logger.log(Level.INFO, "Polling forest generation progress");
         h2oService.getRandomForestView(
-                new RFViewBuilder(randomForest),
+                (RFViewBuilder)RedirectRequestFactory.getRequest(randomForest.getResponse()),
                 new AsyncCallback<RFView>() {
             @Override
             public void onFailure(Throwable thrwbl) {

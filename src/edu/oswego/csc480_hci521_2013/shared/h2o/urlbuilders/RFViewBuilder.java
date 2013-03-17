@@ -24,15 +24,6 @@ public class RFViewBuilder extends AbstractBuilder {
         addArg("model_key", modelKey);
     }
 
-    public RFViewBuilder(RF forest) {
-        super(NAME);
-        addArg("data_key", forest.getDataKey());
-        addArg("model_key", forest.getModelKey());
-        setResponseVariable(forest.getResponseVariable());
-        setOutOfBagErrorEstimate(forest.isOutOfBagErrorEstimate());
-        setNtree(forest.getNtree());
-    }
-
     public RFViewBuilder setOutOfBagErrorEstimate(boolean value) {
         if (value) {
             addArg("out_of_bag_error_estimate", "true");

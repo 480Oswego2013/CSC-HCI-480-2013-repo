@@ -27,6 +27,8 @@ public class RedirectRequestFactory extends AbstractBuilder
             return new RFBuilder(args);
         } else if (request.equals(RFTreeViewBuilder.NAME)) {
             return new RFTreeViewBuilder(args);
+        } else if (request.equals(RFViewBuilder.NAME)) {
+            return new RFViewBuilder(args);
         } else if (request.equals(StoreViewBuilder.NAME)) {
             return new StoreViewBuilder(args);
         } else {

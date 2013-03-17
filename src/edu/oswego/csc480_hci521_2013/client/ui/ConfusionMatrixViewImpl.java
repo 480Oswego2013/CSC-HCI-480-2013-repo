@@ -46,7 +46,6 @@ public class ConfusionMatrixViewImpl extends Composite implements ConfusionMatri
         mainFrame.setSize("100%", "100%");
 
         progress = DOM.createElement("progress");
-        progress.setAttribute(DEBUG_ID_PREFIX, DEBUG_ID_PREFIX);
         progress.setAttribute("max", "100");
         progress.setAttribute("value", "0");
         progressAnchor = Anchor.wrap(progress);
