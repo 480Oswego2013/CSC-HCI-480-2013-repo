@@ -60,15 +60,15 @@
             </gwt:row>
             <gwt:row>
                 <gwt:cell styleName='{style.tableHeader}'>Leaves</gwt:cell>
-                <gwt:cell></gwt:cell>
-                <gwt:cell></gwt:cell>
-                <gwt:cell></gwt:cell>
+                <gwt:cell><dd ui:field='leavesMin'/></gwt:cell>
+                <gwt:cell><dd ui:field='leavesMean'/></gwt:cell>
+                <gwt:cell><dd ui:field='leavesMax'/></gwt:cell>
             </gwt:row>
             <gwt:row>
                 <gwt:cell styleName='{style.tableHeader}'>Depth</gwt:cell>
-                <gwt:cell></gwt:cell>
-                <gwt:cell></gwt:cell>
-                <gwt:cell></gwt:cell>
+                <gwt:cell><dd ui:field='depthMin'/></gwt:cell>
+                <gwt:cell><dd ui:field='depthMean'/></gwt:cell>
+                <gwt:cell><dd ui:field='depthMax'/></gwt:cell>
             </gwt:row>
         </gwt:Grid>
     </gwt:HTMLPanel>

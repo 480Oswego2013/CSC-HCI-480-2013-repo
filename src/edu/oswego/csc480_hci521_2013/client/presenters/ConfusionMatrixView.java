@@ -22,4 +22,10 @@ public interface ConfusionMatrixView {
     void setMtry(String mtry);
     void setMatrixType(String matrixType);
     void setMatrixTable(List<ConfusionMatrixScore> scores);
+    void setLeavesMin(String leavesMin);
+    void setLeavesMean(String leavesMean);
+    void setLeavesMax(String leavesMax);
+    void setDepthMin(String depthMin);
+    void setDepthMean(String depthMean);
+    void setDepthMax(String depthMax);
 }

@@ -23,14 +23,32 @@ import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.Widget;
 import edu.oswego.csc480_hci521_2013.client.presenters.ConfusionMatrixPresenter;
-import edu.oswego.csc480_hci521_2013.client.presenters.ConfusionMatrixScore;
-import java.util.List;
+import edu.oswego.csc480_hci521_2013.shared.h2o.json.RFView;
+import java.util.logging.Logger;
 
 public class ConfusionMatrixViewImpl extends ConfusionMatrixPresenter.View {
 
+    private static Binder uiBinder = GWT.create(Binder.class);
+    private static final Logger logger = Logger.getLogger(ConfusionMatrixViewImpl.class.getName());
+    private ConfusionMatrixPresenter presenter;
+    
+    @Override
+    public void buildUi() {        
+    }
+
+    @Override
+    public void setData(RFView data) {
+    }
+
+    @Override
+    public void setPresenter(ConfusionMatrixPresenter presenter) {
+        this.presenter = presenter;
+    }
+
+    
     interface Binder extends UiBinder<Widget, ConfusionMatrixViewImpl> {
     }
-    private static Binder uiBinder = GWT.create(Binder.class);
+    
 
     interface Style extends CssResource {
 
@@ -49,13 +67,21 @@ public class ConfusionMatrixViewImpl extends ConfusionMatrixPresenter.View {
     @UiField Element mtry;
     @UiField Element rows;
     @UiField Element classificationError;
-
+    @UiField Element leavesMin, leavesMean, leavesMax;
+    @UiField Element depthMin, depthMean, depthMax;
+    
     @Override public Element getProgress() { return this.progress; }
     @Override public Element getNtree() { return this.ntree; }
     @Override public Element getMtry() { return this.mtry; }
     @Override public Element getMatrixType() { return this.type; }
     @Override public FlexTable getMatrixTable() { return this.matrixTable; }
-
+    @Override public Element getLeavesMin() { return this.leavesMin; }
+    @Override public Element getLeavesMean() { return this.leavesMean; }
+    @Override public Element getLeavesMax() { return this.leavesMax; }
+    @Override public Element getDepthMin() { return this.depthMin; }
+    @Override public Element getDepthMean() { return this.depthMean; }
+    @Override public Element getDepthMax() { return this.depthMax; }
+    
     public ConfusionMatrixViewImpl() {
         initWidget(uiBinder.createAndBindUi(this));
     }

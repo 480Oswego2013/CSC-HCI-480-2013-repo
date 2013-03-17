@@ -18,6 +18,7 @@ import edu.oswego.csc480_hci521_2013.client.presenters.ConfusionMatrixPresenterI
 import edu.oswego.csc480_hci521_2013.client.presenters.ConfusionMatrixView;
 import edu.oswego.csc480_hci521_2013.shared.h2o.json.ConfusionMatrix;
 import edu.oswego.csc480_hci521_2013.shared.h2o.json.RFView;
+import edu.oswego.csc480_hci521_2013.shared.h2o.json.RFView.TreeProperties.MinMeanMax;
 import edu.oswego.csc480_hci521_2013.shared.h2o.json.ResponseStatus;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -49,6 +50,10 @@ public class ConfusionMatrixPresenterTest {
     private RFView.TreeProperties tree;
     @Mock
     private ConfusionMatrix matrix;
+    @Mock
+    private MinMeanMax treeFeaturesLeaves;
+    @Mock
+    private MinMeanMax treeFeaturesDepth;
     
     public ConfusionMatrixPresenterTest() {
     }
@@ -67,6 +72,8 @@ public class ConfusionMatrixPresenterTest {
         when(randomForest.getResponse()).thenReturn(status);
         when(randomForest.getTrees()).thenReturn(tree);
         when(randomForest.getConfusionMatrix()).thenReturn(matrix);
+        when(tree.getLeaves()).thenReturn(treeFeaturesLeaves);
+        when(tree.getDepth()).thenReturn(treeFeaturesDepth);
     }
     
     @After

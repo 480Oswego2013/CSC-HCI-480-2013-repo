@@ -14,17 +14,10 @@
 package edu.oswego.csc480_hci521_2013.client.presenters;
 
 import com.google.gwt.dom.client.Element;
-import com.google.gwt.resources.client.CssResource;
-import com.google.gwt.uibinder.client.UiField;
-
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlexTable;
-import com.google.gwt.user.client.ui.Grid;
-import static edu.oswego.csc480_hci521_2013.client.presenters.DataPanelPresenterImpl.logger;
-import edu.oswego.csc480_hci521_2013.shared.h2o.json.ConfusionMatrix;
 import edu.oswego.csc480_hci521_2013.shared.h2o.json.RFView;
 import java.util.List;
-import java.util.logging.Level;
 
 public interface ConfusionMatrixPresenter {
 
@@ -33,6 +26,12 @@ public interface ConfusionMatrixPresenter {
     View getView();
 
     public abstract class View extends Composite implements ConfusionMatrixView {
+
+        public abstract void buildUi();
+
+        public abstract void setData(RFView data);
+
+        public abstract void setPresenter(ConfusionMatrixPresenter presenter);
 
         public abstract Element getProgress();
 
@@ -44,10 +43,12 @@ public interface ConfusionMatrixPresenter {
 
         public abstract FlexTable getMatrixTable();
 
-        abstract void buildUi();
-        abstract void setData(RFView data);
-        abstract void setPresenter(ConfusionMatrixPresenter presenter);
-         
+        public abstract Element getLeavesMin();
+        public abstract Element getLeavesMean();
+        public abstract Element getLeavesMax();
+        public abstract Element getDepthMin();
+        public abstract Element getDepthMean();
+        public abstract Element getDepthMax();
         @Override
         public void setProgress(String progressUpdate) {
             this.getProgress().setInnerText(progressUpdate);
@@ -67,15 +68,49 @@ public interface ConfusionMatrixPresenter {
         public void setMatrixType(String matrixType) {
             this.getMatrixType().setInnerText(matrixType);
         }
+        
+        @Override
+        public void setLeavesMin(String leavesMin) {
+            this.getLeavesMin().setInnerText(leavesMin);
+        }
 
         @Override
+        public void setLeavesMean(String leavesMean) {
+            this.getLeavesMean().setInnerText(leavesMean);
+        }
+        
+        @Override
+        public void setLeavesMax(String leavesMax) {
+            this.getLeavesMax().setInnerText(leavesMax);
+        }
+        
+        @Override
+        public void setDepthMin(String depthMin) {
+            this.getDepthMin().setInnerText(depthMin);
+        }
+
+        @Override
+        public void setDepthMean(String depthMean) {
+            this.getDepthMean().setInnerText(depthMean);
+        }
+        
+        @Override
+        public void setDepthMax(String depthMax) {
+            this.getDepthMax().setInnerText(depthMax);
+        }
+        
+        @Override
         public void setMatrixTable(List<ConfusionMatrixScore> scores) {
-            for(ConfusionMatrixScore score : scores) {
+            // NOTE: sometimes it is not included in the response, maybe because it hasnt changed? not sure why
+            if (scores == null){
+                return;
+            }                
+            
+            for (ConfusionMatrixScore score : scores) {
                 this.getMatrixTable().setText(
-                        score.getPositionX(), 
-                        score.getPositionY(), 
+                        score.getPositionX(),
+                        score.getPositionY(),
                         Integer.toString(score.getScore()));
-                logger.log(Level.INFO, "Score" + score.getScore());
             }
         }
 //        public String getTreesGenerated() {
