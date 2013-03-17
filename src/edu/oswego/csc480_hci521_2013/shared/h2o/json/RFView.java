@@ -54,7 +54,7 @@ public class RFView extends H2OResponse {
             + ", response_variable=" + response_variable + ", ntree=" + ntree
             + ", mtry=" + mtry + ", confusion_key=" + confusion_key
             + ", confusion_matrix=" + confusion_matrix + ", trees=" + trees
-            + " " + super.toString() + '}';
+            + super.toString() + '}';
     }
 
     public static class TreeProperties implements IsSerializable {

@@ -1,33 +1,36 @@
 package edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders;
 
+import java.util.Map;
+
 /**
  *
  */
-public class ParseBuilder extends AbstractBuilder
-{
+public class ParseBuilder extends AbstractBuilder {
 
-    ParseBuilder()
-    {
+    static final String NAME = "Parse";
+
+    ParseBuilder() {
     }
 
-    public ParseBuilder(String sourceKey)
-    {
-        super("Parse.json");
+    ParseBuilder(Map<String, String> args) {
+        super(NAME);
+        setArgs(args);
+    }
+
+    public ParseBuilder(String sourceKey) {
+        super(NAME);
         addArg("source_key", sourceKey);
     }
 
-    public ParseBuilder setDestinationKey(String destinationKey)
-    {
+    public ParseBuilder setDestinationKey(String destinationKey) {
         addArg("destination_key", destinationKey);
         return this;
     }
 
-    public ParseBuilder setHeader(boolean header)
-    {
+    public ParseBuilder setHeader(boolean header) {
         if (header) {
             addArg("header", "1");
-        }
-        else {
+        } else {
             addArg("header", "0");
         }
         return this;

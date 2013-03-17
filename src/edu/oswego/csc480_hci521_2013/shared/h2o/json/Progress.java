@@ -13,6 +13,6 @@ public class Progress extends H2OResponse {
 
     @Override
     public String toString() {
-        return "Progress{" + "destination_key=" + destination_key + " " + super.toString() + '}';
+        return "Progress{" + "destination_key=" + destination_key + super.toString() + '}';
     }
 }

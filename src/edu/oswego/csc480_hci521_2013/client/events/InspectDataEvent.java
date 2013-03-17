@@ -7,7 +7,7 @@ import com.google.gwt.event.shared.GwtEvent;
  */
 public class InspectDataEvent extends GwtEvent<InspectDataEventHandler> {
 
-    public static Type<InspectDataEventHandler> TYPE = new Type<InspectDataEventHandler>();
+    public static final Type<InspectDataEventHandler> TYPE = new Type<InspectDataEventHandler>();
     private String name;
 
     public InspectDataEvent(String name) {

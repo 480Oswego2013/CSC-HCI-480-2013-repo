@@ -8,7 +8,7 @@ import edu.oswego.csc480_hci521_2013.shared.h2o.json.RF;
  */
 public class RFGenerateEvent extends GwtEvent<RFGenerateEventHandler> {
 
-    public static Type<RFGenerateEventHandler> TYPE = new Type<RFGenerateEventHandler>();
+    public static final Type<RFGenerateEventHandler> TYPE = new Type<RFGenerateEventHandler>();
 
     private RF data;
 

@@ -31,7 +31,7 @@ public class StoreView extends H2OResponse {
 
     @Override
     public String toString() {
-        return "StoreView{" + "keys=" + keys + ", num_keys=" + num_keys + ", cloud_name=" + cloud_name + ", node_name=" + node_name + " " + super.toString() + '}';
+        return "StoreView{" + "keys=" + keys + ", num_keys=" + num_keys + ", cloud_name=" + cloud_name + ", node_name=" + node_name + super.toString() + '}';
     }
 
     public static class Row implements IsSerializable {

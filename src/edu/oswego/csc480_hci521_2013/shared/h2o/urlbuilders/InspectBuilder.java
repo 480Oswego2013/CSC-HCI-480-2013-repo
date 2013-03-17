@@ -1,39 +1,45 @@
 package edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders;
 
+import java.util.Map;
+
 /**
  *
  */
-public class InspectBuilder extends AbstractBuilder
-{
+public class InspectBuilder extends AbstractBuilder {
 
-    InspectBuilder()
-    {
+    static final String NAME = "Inspect";
+
+    InspectBuilder() {
     }
 
-    public InspectBuilder(String key)
-    {
-        super("Inspect.json");
+    InspectBuilder(Map<String, String> args) {
+        super(NAME);
+        setArgs(args);
+    }
+
+    public InspectBuilder(String key) {
+        super(NAME);
         addArg("key", key);
     }
 
     /**
      *
-     * @param view the number of items to view, used for pagination of parsed data
+     * @param view the number of items to view, used for pagination of parsed
+     * data
      * @return
      */
-    public InspectBuilder setView(Integer view)
-    {
+    public InspectBuilder setView(Integer view) {
         addArg("view", view.toString());
         return this;
     }
 
     /**
      *
-     * @param offset the offset into the data to return, used for pagination of parsed data
+     * @param offset the offset into the data to return, used for pagination of
+     * parsed data
      * @return
      */
-    public InspectBuilder setOffset(Integer offset)
-    {
+    public InspectBuilder setOffset(Integer offset) {
         addArg("offset", offset.toString());
         return this;
     }

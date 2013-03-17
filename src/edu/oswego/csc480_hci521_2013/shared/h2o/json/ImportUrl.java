@@ -18,6 +18,6 @@ public class ImportUrl extends H2OResponse {
 
     @Override
     public String toString() {
-        return "ImportUrl{" + "key=" + key + ", url=" + url + " " + super.toString() + '}';
+        return "ImportUrl{" + "key=" + key + ", url=" + url + super.toString() + '}';
     }
 }

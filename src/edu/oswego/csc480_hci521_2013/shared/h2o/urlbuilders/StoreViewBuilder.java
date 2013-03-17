@@ -1,13 +1,21 @@
 package edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders;
 
+import java.util.Map;
+
 /**
  *
  */
-public class StoreViewBuilder extends AbstractBuilder
-{
-    public StoreViewBuilder()
-    {
-        super("StoreView.json");
+public class StoreViewBuilder extends AbstractBuilder {
+
+    static final String NAME = "StoreView";
+
+    StoreViewBuilder(Map<String, String> args) {
+        super(NAME);
+        setArgs(args);
+    }
+
+    public StoreViewBuilder() {
+        super(NAME);
     }
 
     /**
@@ -15,19 +23,18 @@ public class StoreViewBuilder extends AbstractBuilder
      * @param view the number of items to view, used for pagination of data
      * @return
      */
-    public StoreViewBuilder setView(Integer view)
-    {
+    public StoreViewBuilder setView(Integer view) {
         addArg("view", view.toString());
         return this;
     }
 
     /**
      *
-     * @param offset the offset into the data to return, used for pagination of data
+     * @param offset the offset into the data to return, used for pagination of
+     * data
      * @return
      */
-    public StoreViewBuilder setOffset(Integer offset)
-    {
+    public StoreViewBuilder setOffset(Integer offset) {
         addArg("offset", offset.toString());
         return this;
     }
@@ -37,8 +44,7 @@ public class StoreViewBuilder extends AbstractBuilder
      * @param value a filter for what is returned, a simple string match is done
      * @return
      */
-    public StoreViewBuilder setFilter(String value)
-    {
+    public StoreViewBuilder setFilter(String value) {
         addArg("filter", value);
         return this;
     }

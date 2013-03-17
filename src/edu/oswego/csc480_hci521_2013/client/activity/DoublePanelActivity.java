@@ -18,12 +18,17 @@ import edu.oswego.csc480_hci521_2013.client.presenters.ConfusionMatrixPresenter;
 import edu.oswego.csc480_hci521_2013.client.presenters.ConfusionMatrixPresenterImpl;
 import edu.oswego.csc480_hci521_2013.client.presenters.DataPanelPresenter;
 import edu.oswego.csc480_hci521_2013.client.presenters.DataPanelPresenterImpl;
-import edu.oswego.csc480_hci521_2013.client.ui.ConfusionMatrixViewImpl;
-import edu.oswego.csc480_hci521_2013.client.ui.DataPanelViewImpl;
 import edu.oswego.csc480_hci521_2013.client.ui.PanelView;
 import edu.oswego.csc480_hci521_2013.client.ui.TreePanel;
+import edu.oswego.csc480_hci521_2013.shared.h2o.json.ColumnDef;
+import edu.oswego.csc480_hci521_2013.shared.h2o.json.Inspect;
+import edu.oswego.csc480_hci521_2013.shared.h2o.json.InspectRow;
 import edu.oswego.csc480_hci521_2013.shared.h2o.json.RF;
 import edu.oswego.csc480_hci521_2013.shared.h2o.json.RFTreeView;
+import edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders.InspectBuilder;
+import edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders.RFTreeViewBuilder;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -85,7 +90,8 @@ public class DoublePanelActivity extends AbstractActivity implements PanelView.P
 
     @Override
     public void addDataTab(final String datakey) {
-        clientFactory.getH2OService().getParsedData(datakey, new AsyncCallback<List<Map<String, String>>>() {
+        clientFactory.getH2OService().getData(new InspectBuilder(datakey),
+                new AsyncCallback<Inspect>() {
             @Override
             public void onFailure(Throwable caught)
             {
@@ -94,9 +100,19 @@ public class DoublePanelActivity extends AbstractActivity implements PanelView.P
             }
 
             @Override
-            public void onSuccess(List<Map<String, String>> result)
+            public void onSuccess(Inspect result)
             {
-                DataPanelPresenter presenter = new DataPanelPresenterImpl(clientFactory, datakey, result);
+                // FIXME: This most likely will not return all rows, we need to implement paging
+                List<Map<String, String>> data = new ArrayList<Map<String, String>>();
+                for (InspectRow row : result.getRows()) {
+                    Map<String, String> rowMap = new HashMap<String, String>();
+                    data.add(rowMap);
+                    for (ColumnDef column : result.getCols()) {
+                        rowMap.put(column.getName(), row.getData(column.getName()).toString());
+                    }
+                }
+
+                DataPanelPresenter presenter = new DataPanelPresenterImpl(clientFactory, datakey, data);
                 clientFactory.getDoublePanelView().addDataTab(presenter.getView(), datakey);
             }
         });
@@ -104,7 +120,9 @@ public class DoublePanelActivity extends AbstractActivity implements PanelView.P
 
     @Override
     public void addVisTab(final String datakey, final String modelkey, final int tree) {
-        clientFactory.getH2OService().getTreeView(datakey, modelkey, tree, new AsyncCallback<RFTreeView>() {
+        clientFactory.getH2OService().getTreeView(
+                new RFTreeViewBuilder(datakey, modelkey).setTreeNumber(tree),
+                new AsyncCallback<RFTreeView>() {
             @Override
             public void onFailure(Throwable thrwbl) {
                 logger.log(Level.SEVERE, thrwbl.toString());

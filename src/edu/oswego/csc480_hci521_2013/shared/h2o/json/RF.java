@@ -33,6 +33,6 @@ public class RF extends H2OResponse {
 
     @Override
     public String toString() {
-        return "RF{" + "data_key=" + data_key + ", model_key=" + model_key + ", ntree=" + ntree + ", response_variable=" + response_variable + ", out_of_bag_error_estimate=" + out_of_bag_error_estimate + " " + super.toString() + '}';
+        return "RF{" + "data_key=" + data_key + ", model_key=" + model_key + ", ntree=" + ntree + ", response_variable=" + response_variable + ", out_of_bag_error_estimate=" + out_of_bag_error_estimate + super.toString() + '}';
     }
 }

@@ -6,30 +6,29 @@ import java.util.Map;
 /**
  *
  */
-public class InspectRow implements IsSerializable
-{
+public class InspectRow implements IsSerializable {
+
     private int row;
     private Map<String, String> data;
 
-    public InspectRow(int row, Map<String, String> data)
-    {
+    private InspectRow() {
+    }
+
+    public InspectRow(int row, Map<String, String> data) {
         this.row = row;
         this.data = data;
     }
 
-    public int getRow()
-    {
+    public int getRow() {
         return row;
     }
 
-    public String getData(String name)
-    {
+    public String getData(String name) {
         return data.get(name);
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return "InspectRow{" + "row=" + row + ", data=" + data + '}';
     }
 }

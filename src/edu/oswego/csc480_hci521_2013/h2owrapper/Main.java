@@ -17,6 +17,7 @@ import edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders.ProgressBuilder;
 import edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders.RFBuilder;
 import edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders.RFViewBuilder;
 import edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders.RFTreeViewBuilder;
+import edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders.RedirectRequestFactory;
 import edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders.StoreViewBuilder;
 
 /**
@@ -129,10 +130,8 @@ public class Main
         if (!status.isRedirect() || !status.getRedirectRequest().equals("Progress")) {
             return;
         }
-        String job = status.getRedirectRequestArgs().get("job");
-        String key = status.getRedirectRequestArgs().get("destination_key");
 
-        String url = new ProgressBuilder(job, key).build();
+        String url = RedirectRequestFactory.getRequest(status).build();
         System.out.println(url);
         Progress val;
         for (;;) {
