@@ -23,6 +23,8 @@ import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.Widget;
 import edu.oswego.csc480_hci521_2013.client.presenters.ConfusionMatrixPresenter;
+import edu.oswego.csc480_hci521_2013.client.presenters.ConfusionMatrixScore;
+import java.util.List;
 
 public class ConfusionMatrixViewImpl extends ConfusionMatrixPresenter.View {
 
@@ -52,6 +54,7 @@ public class ConfusionMatrixViewImpl extends ConfusionMatrixPresenter.View {
     @Override public Element getNtree() { return this.ntree; }
     @Override public Element getMtry() { return this.mtry; }
     @Override public Element getMatrixType() { return this.type; }
+    @Override public FlexTable getMatrixTable() { return this.matrixTable; }
 
     public ConfusionMatrixViewImpl() {
         initWidget(uiBinder.createAndBindUi(this));

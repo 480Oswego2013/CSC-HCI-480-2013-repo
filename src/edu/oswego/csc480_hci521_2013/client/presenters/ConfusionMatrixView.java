@@ -14,9 +14,12 @@
 
 package edu.oswego.csc480_hci521_2013.client.presenters;
 
+import java.util.List;
+
 public interface ConfusionMatrixView {
     void setProgress(String progressUpdate);
     void setNtree(String numberTrees);
     void setMtry(String mtry);
     void setMatrixType(String matrixType);
+    void setMatrixTable(List<ConfusionMatrixScore> scores);
 }

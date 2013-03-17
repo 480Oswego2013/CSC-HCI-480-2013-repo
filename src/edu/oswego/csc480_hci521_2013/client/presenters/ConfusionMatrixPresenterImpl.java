@@ -18,8 +18,10 @@ import com.google.web.bindery.event.shared.EventBus;
 import edu.oswego.csc480_hci521_2013.client.ClientFactory;
 import edu.oswego.csc480_hci521_2013.client.events.RFProgressEvent;
 import edu.oswego.csc480_hci521_2013.client.events.RFProgressEventHandler;
+import static edu.oswego.csc480_hci521_2013.client.presenters.DataPanelPresenterImpl.logger;
 import edu.oswego.csc480_hci521_2013.shared.h2o.json.RF;
 import edu.oswego.csc480_hci521_2013.shared.h2o.json.RFView;
+import java.util.logging.Level;
 
 /**
  *
@@ -35,6 +37,8 @@ public class ConfusionMatrixPresenterImpl implements ConfusionMatrixPresenter {
         this.eventbus = factory.getEventBus();
         this.randomForest = randomForest;
         
+        view.setPresenter(this);
+        view.buildUi();
         bind();
     }
 
@@ -42,6 +46,7 @@ public class ConfusionMatrixPresenterImpl implements ConfusionMatrixPresenter {
         eventbus.addHandler(RFProgressEvent.TYPE, new RFProgressEventHandler() {
             @Override
             public void onDataUpdate(RFProgressEvent e) {
+                logger.log(Level.INFO, "Data Update...");
                 if (isOurData(e.getData())) {
                     setData(e.getData());
                 }
@@ -63,11 +68,13 @@ public class ConfusionMatrixPresenterImpl implements ConfusionMatrixPresenter {
     }
 
     public static void UpdateView(ConfusionMatrixView matrixView, RFView data) {
+        logger.log(Level.INFO, "Updating view...");
         ConfusionMatrixAdapter adapter = new ConfusionMatrixAdapter(data);
         matrixView.setProgress(adapter.getProgress());
         matrixView.setNtree(adapter.getNtree());
         matrixView.setMtry(adapter.getMtry());
         matrixView.setMatrixType(adapter.getMatrixType());
+        matrixView.setMatrixTable(adapter.getScores());
     }
 
     @Override

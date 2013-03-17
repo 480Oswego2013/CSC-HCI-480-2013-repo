@@ -101,6 +101,14 @@ public class ConfusionMatrixAdapterTest {
     }
     
     @Test
+    public void getMtryAllTest()
+    {
+        when(randomForest.getMtry()).thenReturn(-1);
+        ConfusionMatrixAdapter adapter = new ConfusionMatrixAdapter(randomForest);
+        assertEquals(adapter.getMtry(), "All");
+    }
+    
+    @Test
     public void getConfusionMatrixTest()
     {
         List<List<Integer>> scores = new ArrayList<List<Integer>>(Arrays.asList(
@@ -113,10 +121,15 @@ public class ConfusionMatrixAdapterTest {
         when(randomForest.getConfusionMatrix()).thenReturn(matrix);
         ConfusionMatrixAdapter adapter = new ConfusionMatrixAdapter(randomForest);
         
-        ConfusionMatrixScore scoreOne = new ConfusionMatrixScoreImpl(0, 0, 1);
-        List<ConfusionMatrixScore> scoresOut = new ArrayList<ConfusionMatrixScore>(
-                Arrays.asList(
-                scoreOne));
-        //assertEquals(adapter.getScores(), scoresOut);
+        List<ConfusionMatrixScore> scoresList = adapter.getScores();
+        assertEquals(9, scoresList.size());
+        
+        assertEquals(scoresList.get(0).getPositionX(), 1);
+        assertEquals(scoresList.get(0).getPositionY(), 1);
+        assertEquals(scoresList.get(0).getScore(), 1);
+        
+        assertEquals(scoresList.get(1).getPositionX(), 1);
+        assertEquals(scoresList.get(1).getPositionY(), 2);
+        assertEquals(scoresList.get(1).getScore(), 0);
     }
 }
