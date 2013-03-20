@@ -1,6 +1,6 @@
 package edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders;
 
-import java.util.Map;
+import java.util.HashMap;
 
 /**
  *
@@ -12,7 +12,7 @@ public class ProgressBuilder extends AbstractBuilder {
     ProgressBuilder() {
     }
 
-    ProgressBuilder(Map<String, String> args) {
+    ProgressBuilder(HashMap<String, String> args) {
         super(NAME);
         setArgs(args);
     }

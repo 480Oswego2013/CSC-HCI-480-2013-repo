@@ -1,20 +1,19 @@
 package edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders;
 
 import edu.oswego.csc480_hci521_2013.shared.h2o.json.ResponseStatus;
-import java.util.Map;
+import java.util.HashMap;
 
 /**
  *
  */
-public class RedirectRequestFactory extends AbstractBuilder
+public class RedirectRequestFactory
 {
-
     public static H2ORequest getRequest(ResponseStatus status) {
         if (!status.isRedirect()) {
             throw new IllegalArgumentException("Not a redirect status: " + status.getStatus());
         }
         String request = status.getRedirectRequest();
-        Map<String, String> args = status.getRedirectRequestArgs();
+        HashMap<String, String> args = status.getRedirectRequestArgs();
         if (request.equals(ImportUrlBuilder.NAME)) {
             return new ImportUrlBuilder(args);
         } else if (request.equals(InspectBuilder.NAME)) {

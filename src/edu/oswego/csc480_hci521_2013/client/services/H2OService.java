@@ -2,6 +2,7 @@ package edu.oswego.csc480_hci521_2013.client.services;
 
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
+import edu.oswego.csc480_hci521_2013.shared.h2o.RestException;
 import edu.oswego.csc480_hci521_2013.shared.h2o.json.Inspect;
 import edu.oswego.csc480_hci521_2013.shared.h2o.json.RF;
 import edu.oswego.csc480_hci521_2013.shared.h2o.json.RFTreeView;
@@ -20,11 +21,11 @@ import java.util.List;
 @RemoteServiceRelativePath("h2oService")
 public interface H2OService extends RemoteService
 {
-    List<String> getParsedDataKeys() throws Exception;
+    List<String> getParsedDataKeys() throws RestException;
 
-    StoreView getDataStores(StoreViewBuilder builder) throws Exception;
-    Inspect getData(InspectBuilder builder) throws Exception;
-    RFTreeView getTreeView(RFTreeViewBuilder builder) throws Exception;
-    RF generateRandomForest(RFBuilder builder) throws Exception;
-    RFView getRandomForestView(RFViewBuilder builder) throws Exception;
+    StoreView getDataStores(StoreViewBuilder builder) throws RestException;
+    Inspect getData(InspectBuilder builder) throws RestException;
+    RFTreeView getTreeView(RFTreeViewBuilder builder) throws RestException;
+    RF generateRandomForest(RFBuilder builder) throws RestException;
+    RFView getRandomForestView(RFViewBuilder builder) throws RestException;
 }

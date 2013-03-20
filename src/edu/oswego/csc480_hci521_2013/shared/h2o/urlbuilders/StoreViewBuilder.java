@@ -1,6 +1,6 @@
 package edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders;
 
-import java.util.Map;
+import java.util.HashMap;
 
 /**
  *
@@ -9,7 +9,7 @@ public class StoreViewBuilder extends AbstractBuilder {
 
     static final String NAME = "StoreView";
 
-    StoreViewBuilder(Map<String, String> args) {
+    StoreViewBuilder(HashMap<String, String> args) {
         super(NAME);
         setArgs(args);
     }

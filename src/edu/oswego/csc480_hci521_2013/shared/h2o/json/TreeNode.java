@@ -1,6 +1,7 @@
 package edu.oswego.csc480_hci521_2013.shared.h2o.json;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -12,7 +13,7 @@ public class TreeNode implements IsSerializable {
     private String condition;
     private float value;
     private String label;
-    private List<TreeNode> children;
+    private TreeNode[] children;
 
     public TreeNode() {
     }
@@ -33,7 +34,7 @@ public class TreeNode implements IsSerializable {
         return label;
     }
 
-    public List<TreeNode> getChildren() {
+    public TreeNode[] getChildren() {
         return children;
     }
 
@@ -51,12 +52,14 @@ public class TreeNode implements IsSerializable {
             + "\"children\":"
             + (children == null
                 ? children
-                : "[" + children.get(0).toJson() + "," + children.get(1).toJson() + "]")
+                : "[" + children[0].toJson() + "," + children[1].toJson() + "]")
             + "}";
     }
 
     @Override
     public String toString() {
-        return "TreeNode{" + "field=" + field + ", condition=" + condition + ", value=" + value + ", label=" + label + ", children=" + children + '}';
+        return "TreeNode{" + "field=" + field + ", condition=" + condition
+                + ", value=" + value + ", label=" + label
+                + ", children=" + Arrays.toString(children) + '}';
     }
 }

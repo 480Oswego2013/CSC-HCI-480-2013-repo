@@ -1,16 +1,13 @@
 package edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders;
 
-import com.google.gwt.user.client.rpc.IsSerializable;
-import edu.oswego.csc480_hci521_2013.shared.h2o.json.ResponseStatus;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.Map.Entry;
 
 /**
  *
  */
-abstract class AbstractBuilder implements IsSerializable, H2ORequest {
+abstract class AbstractBuilder implements H2ORequest {
 
     private static final String PROTOCOL = "http";
     private static final String HOST = "localhost";
@@ -19,8 +16,7 @@ abstract class AbstractBuilder implements IsSerializable, H2ORequest {
     private String host = HOST;
     private int port = PORT;
     private String page;
-    private Map<String, String> args = new HashMap<String, String>();
-    private List<Arg> multiargs = new ArrayList<Arg>();
+    private HashMap<String, ArrayList<String>> args = new HashMap<String, ArrayList<String>>();
 
     protected AbstractBuilder() {
     }
@@ -29,18 +25,24 @@ abstract class AbstractBuilder implements IsSerializable, H2ORequest {
         this.page = "/" + page + ".json";
     }
 
-    protected AbstractBuilder setArgs(Map<String, String> args) {
-        this.args.putAll(args);
+    protected AbstractBuilder setArgs(HashMap<String, String> args) {
+        for (Entry<String, String> item : args.entrySet()) {
+            addMultiArg(item.getKey(), item.getValue());
+        }
         return this;
     }
 
     protected AbstractBuilder addArg(String key, String value) {
-        args.put(key, value);
+        args.put(key, new ArrayList<String>());
+        args.get(key).add(value);
         return this;
     }
 
     protected AbstractBuilder addMultiArg(String key, String value) {
-        multiargs.add(new Arg(key, value));
+        if (!args.containsKey(key)) {
+            args.put(key, new ArrayList<String>());
+        }
+        args.get(key).add(value);
         return this;
     }
 
@@ -62,32 +64,16 @@ abstract class AbstractBuilder implements IsSerializable, H2ORequest {
     public String build() {
         StringBuilder query = new StringBuilder();
         for (String key : args.keySet()) {
-            if (query.length() == 0) {
-                query.append(key).append('=').append(args.get(key));
-            } else {
-                query.append('&').append(key).append('=').append(args.get(key));
-            }
-        }
-        for (Arg arg : multiargs) {
-            if (query.length() == 0) {
-                query.append(arg.key).append('=').append(arg.value);
-            } else {
-                query.append('&').append(arg.key).append('=').append(arg.value);
+            for (String value : args.get(key)) {
+                if (query.length() == 0) {
+                    query.append(key).append('=').append(value);
+                } else {
+                    query.append('&').append(key).append('=').append(value);
+                }
             }
         }
         String url = protocol + "://" + host + ":" + port + page
                 + ((query.length() > 0) ? "?" : "") + query.toString();
         return url;
-    }
-
-    private static class Arg implements IsSerializable {
-
-        String key;
-        String value;
-
-        public Arg(String key, String value) {
-            this.key = key;
-            this.value = value;
-        }
     }
 }

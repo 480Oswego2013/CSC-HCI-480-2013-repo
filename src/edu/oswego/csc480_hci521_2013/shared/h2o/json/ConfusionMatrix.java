@@ -1,7 +1,7 @@
 package edu.oswego.csc480_hci521_2013.shared.h2o.json;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
-import java.util.List;
+import java.util.Arrays;
 
 public class ConfusionMatrix implements IsSerializable
 {
@@ -21,8 +21,8 @@ public class ConfusionMatrix implements IsSerializable
     private float classification_error;
     private int rows_skipped;
     private int rows;
-    private List<String> header;
-    private List<List<Integer>> scores;
+    private String[] header;
+    private Integer[][] scores;
     private int used_trees;
 
     public String getType()
@@ -45,12 +45,12 @@ public class ConfusionMatrix implements IsSerializable
         return rows;
     }
 
-    public List<String> getHeader()
+    public String[] getHeader()
     {
         return header;
     }
 
-    public List<List<Integer>> getScores()
+    public Integer[][] getScores()
     {
         return scores;
     }
@@ -63,6 +63,12 @@ public class ConfusionMatrix implements IsSerializable
     @Override
     public String toString()
     {
-        return "ConfusionMatrix{" + "type=" + type + ", classification_erro=" + classification_error+ ", rows_skipped=" + rows_skipped + ", rows=" + rows + ", header=" + header+ ", scores=" + scores+ ", used_trees=" + used_trees + '}';
+        return "ConfusionMatrix{" + "type=" + type
+                + ", classification_erro=" + classification_error
+                + ", rows_skipped=" + rows_skipped
+                + ", rows=" + rows
+                + ", header=" + Arrays.toString(header)
+                + ", scores=" + Arrays.deepToString(scores)
+                + ", used_trees=" + used_trees + '}';
     }
 }

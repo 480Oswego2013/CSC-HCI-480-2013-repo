@@ -1,6 +1,6 @@
 package edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders;
 
-import java.util.Map;
+import java.util.HashMap;
 
 /**
  *
@@ -12,7 +12,7 @@ public class ImportUrlBuilder extends AbstractBuilder {
     ImportUrlBuilder() {
     }
 
-    ImportUrlBuilder(Map<String, String> args) {
+    ImportUrlBuilder(HashMap<String, String> args) {
         super(NAME);
         setArgs(args);
     }

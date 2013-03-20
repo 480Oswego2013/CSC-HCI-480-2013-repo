@@ -2,18 +2,19 @@ package edu.oswego.csc480_hci521_2013.shared.h2o.json;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  *
  */
 public class StoreView extends H2OResponse {
 
-    private ArrayList<Row> keys;
+    private Row[] keys;
     private int num_keys;
     private String cloud_name;
     private String node_name;
 
-    public ArrayList<Row> getKeys() {
+    public Row[] getKeys() {
         return keys;
     }
 
@@ -31,7 +32,9 @@ public class StoreView extends H2OResponse {
 
     @Override
     public String toString() {
-        return "StoreView{" + "keys=" + keys + ", num_keys=" + num_keys + ", cloud_name=" + cloud_name + ", node_name=" + node_name + super.toString() + '}';
+        return "StoreView{" + "keys=" + Arrays.toString(keys)
+                + ", num_keys=" + num_keys + ", cloud_name=" + cloud_name
+                + ", node_name=" + node_name + super.toString() + '}';
     }
 
     public static class Row implements IsSerializable {

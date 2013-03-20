@@ -131,46 +131,46 @@ public class ConfusionMatrixViewImpl extends Composite implements ConfusionMatri
         rows.setText(confusionMatrix.getRows() + "/" + confusionMatrix.getRowsSkipped());
     	classificationError.setText(Double.toString(confusionMatrix.getClassificationError()));
 
-        List<String> header = confusionMatrix.getHeader();
+        String[] header = confusionMatrix.getHeader();
 
         // TODO: we really only need to set the labels once...
         matrixTable.setText(0, 0, "Actual/Predicted");
         /* Set Column Labels */
-        for (int x = 0; x < header.size(); x++) {
-            matrixTable.setText(0, x + 1, header.get(x));
+        for (int x = 0; x < header.length; x++) {
+            matrixTable.setText(0, x + 1, header[x]);
         }
-        matrixTable.setText(0, header.size() + 1, "Error");
+        matrixTable.setText(0, header.length + 1, "Error");
 
         /* Set Row Labels */
-        for (int x = 0; x < header.size(); x++) {
-            matrixTable.setText(x + 1, 0, header.get(x));
+        for (int x = 0; x < header.length; x++) {
+            matrixTable.setText(x + 1, 0, header[x]);
         }
-        matrixTable.setText(header.size() + 1, 0, "Totals");
+        matrixTable.setText(header.length + 1, 0, "Totals");
 
         updateConfusionScores(confusionMatrix.getScores());
     }
 
-    private void updateConfusionScores(List<List<Integer>> scores) {
+    private void updateConfusionScores(Integer[][] scores) {
         /* For All Header Values, Position Offset=1 */
         // TODO: errors...
-        int[] totals = new int[scores.size()];
-        for (int i = 0; i < scores.size(); i++) {
-            List<Integer> row = scores.get(i);
+        int[] totals = new int[scores.length];
+        for (int i = 0; i < scores.length; i++) {
+            Integer[] row = scores[i];
             int total = 0;
             int errors = 0;
-            for (int j = 0; j < row.size(); j++) {
-                matrixTable.setText(i + 1, j + 1, row.get(j).toString());
-                totals[j] += row.get(j);
+            for (int j = 0; j < row.length; j++) {
+                matrixTable.setText(i + 1, j + 1, row[j].toString());
+                totals[j] += row[j];
                 if (i != j) {
-                    errors += row.get(j);
+                    errors += row[j];
                 }
-                total += row.get(j);
+                total += row[j];
             }
             // TODO: add the scores for the errors.
-            matrixTable.setText(i + 1, row.size() + 1, errors + "/" + total);
+            matrixTable.setText(i + 1, row.length + 1, errors + "/" + total);
         }
         for (int i = 0; i < totals.length; i++) {
-            matrixTable.setText(scores.size() + 1, i + 1, Integer.toString(totals[i]));
+            matrixTable.setText(scores.length + 1, i + 1, Integer.toString(totals[i]));
         }
     }
 }
