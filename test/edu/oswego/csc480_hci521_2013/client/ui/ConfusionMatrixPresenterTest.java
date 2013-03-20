@@ -171,6 +171,8 @@ public class ConfusionMatrixPresenterTest {
         when(matrix.getScores()).thenReturn(scores);
         when(randomForest.getConfusionMatrix()).thenReturn(matrix);
         
+        ConfusionMatrixPresenterImpl.UpdateView(matrixView, randomForest);
+        //verify(matrixView).setMatrixType(matrixType);        
     }
             
 }

@@ -80,7 +80,7 @@ public class ConfusionMatrixViewImpl extends AbstractConfusionMatrix {
     public Element getProgress() {
         return this.progress;
     }
-
+    
     @Override
     public Element getClassificationError() {
         return classificationError;
@@ -95,7 +95,6 @@ public class ConfusionMatrixViewImpl extends AbstractConfusionMatrix {
     public Element getNtree() {
         return this.ntree;
     }
-
     @Override
     public Element getMtry() {
         return this.mtry;
@@ -108,6 +107,7 @@ public class ConfusionMatrixViewImpl extends AbstractConfusionMatrix {
     public Element getRows() {
         return rows;
     }
+    
 
     @Override
     public Element getMatrixType() {
