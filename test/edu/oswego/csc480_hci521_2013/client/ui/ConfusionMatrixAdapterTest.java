@@ -131,5 +131,33 @@ public class ConfusionMatrixAdapterTest {
         assertEquals(scoresList.get(1).getPositionX(), 1);
         assertEquals(scoresList.get(1).getPositionY(), 2);
         assertEquals(scoresList.get(1).getScore(), 0);
+        
+        assertEquals(scoresList.get(2).getPositionX(), 1);
+        assertEquals(scoresList.get(2).getPositionY(), 3);
+        assertEquals(scoresList.get(2).getScore(), 0);
+        
+        assertEquals(scoresList.get(3).getPositionX(), 2);
+        assertEquals(scoresList.get(3).getPositionY(), 1);
+        assertEquals(scoresList.get(3).getScore(), 0);
+        
+        assertEquals(scoresList.get(4).getPositionX(), 2);
+        assertEquals(scoresList.get(4).getPositionY(), 2);
+        assertEquals(scoresList.get(4).getScore(), 1);
+        
+        assertEquals(scoresList.get(5).getPositionX(), 2);
+        assertEquals(scoresList.get(5).getPositionY(), 3);
+        assertEquals(scoresList.get(5).getScore(), 0);
+        
+        assertEquals(scoresList.get(6).getPositionX(), 3);
+        assertEquals(scoresList.get(6).getPositionY(), 1);
+        assertEquals(scoresList.get(6).getScore(), 0);
+        
+        assertEquals(scoresList.get(7).getPositionX(), 3);
+        assertEquals(scoresList.get(7).getPositionY(), 2);
+        assertEquals(scoresList.get(7).getScore(), 0);
+        
+        assertEquals(scoresList.get(8).getPositionX(), 3);
+        assertEquals(scoresList.get(8).getPositionY(), 3);
+        assertEquals(scoresList.get(8).getScore(), 1);
     }
 }
