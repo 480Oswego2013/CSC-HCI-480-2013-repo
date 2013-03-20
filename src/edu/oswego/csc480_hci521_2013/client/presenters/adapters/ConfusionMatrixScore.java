@@ -12,20 +12,10 @@
 // See the License for the specific language governing permissions and 
 // limitations under the License.
 
-package edu.oswego.csc480_hci521_2013.client.presenters;
+package edu.oswego.csc480_hci521_2013.client.presenters.adapters;
 
-import java.util.List;
-
-public interface ConfusionMatrixView {
-    void setProgress(String progressUpdate);
-    void setNtree(String numberTrees);
-    void setMtry(String mtry);
-    void setMatrixType(String matrixType);
-    void setMatrixTable(List<ConfusionMatrixScore> scores);
-    void setLeavesMin(String leavesMin);
-    void setLeavesMean(String leavesMean);
-    void setLeavesMax(String leavesMax);
-    void setDepthMin(String depthMin);
-    void setDepthMean(String depthMean);
-    void setDepthMax(String depthMax);
+public interface ConfusionMatrixScore {
+    int getPositionX();
+    int getPositionY();
+    int getScore();
 }

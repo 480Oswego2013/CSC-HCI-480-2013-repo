@@ -3,7 +3,7 @@
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
     xmlns:gwt='urn:import:com.google.gwt.user.client.ui'>
 
-    <ui:style type='edu.oswego.csc480_hci521_2013.client.ui.ConfusionMatrixViewImpl.Style'>
+    <ui:style type='edu.oswego.csc480_hci521_2013.client.ui.ConfusionMatrixView.Style'>
         .tableHeader {
             background-color: #e0e0e0;
             font-weight: bold;
@@ -38,7 +38,9 @@
             <dt>mtry:</dt>
             <dd ui:field='mtry'/>
             <dt>Rows Used/Skipped:</dt>
-            <dd ui:field='rows'/>
+            <dd>
+                <span ui:field='rows' />/<span ui:field='rowsSkipped' />
+            </dd>
             <dt>Classification Error:</dt>
             <dd ui:field='classificationError'/>
         </dl>

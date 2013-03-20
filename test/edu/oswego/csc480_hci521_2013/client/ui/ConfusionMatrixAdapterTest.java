@@ -1,30 +1,23 @@
 // Copyright 2013 State University of New York at Oswego
 //
-// Licensed under the Apache License, Version 2.0 (the "License"); 
-// you may not use this file except in compliance with the License. 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
 //
 // http://www.apache.org/licenses/LICENSE-2.0
 //
-// Unless required by applicable law or agreed to in writing, software 
-// distributed under the License is distributed on an "AS IS" BASIS, 
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. 
-// See the License for the specific language governing permissions and 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
 // limitations under the License.
 
 package edu.oswego.csc480_hci521_2013.client.ui;
 
-import com.google.gwt.dom.client.Element;
-import com.google.gwt.junit.GWTMockUtilities;
-import edu.oswego.csc480_hci521_2013.client.presenters.ConfusionMatrixAdapter;
-import edu.oswego.csc480_hci521_2013.client.presenters.ConfusionMatrixPresenter.View;
-import edu.oswego.csc480_hci521_2013.client.presenters.ConfusionMatrixPresenterImpl;
-import edu.oswego.csc480_hci521_2013.client.presenters.ConfusionMatrixScore;
-import edu.oswego.csc480_hci521_2013.client.presenters.ConfusionMatrixScoreImpl;
-import edu.oswego.csc480_hci521_2013.client.presenters.ConfusionMatrixView;
+import edu.oswego.csc480_hci521_2013.client.presenters.adapters.ConfusionMatrixAdapter;
+import edu.oswego.csc480_hci521_2013.client.presenters.adapters.ConfusionMatrixScore;
 import edu.oswego.csc480_hci521_2013.shared.h2o.json.ConfusionMatrix;
 import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.verify;
 
 import edu.oswego.csc480_hci521_2013.shared.h2o.json.RFView;
 import edu.oswego.csc480_hci521_2013.shared.h2o.json.ResponseStatus;
@@ -41,7 +34,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 public class ConfusionMatrixAdapterTest {
-    
+
     @Mock
     private RFView randomForest;
     @Mock
@@ -52,18 +45,18 @@ public class ConfusionMatrixAdapterTest {
     private RFView.TreeProperties tree;
     @Mock
     private ConfusionMatrix matrix;
-    
+
     public ConfusionMatrixAdapterTest() {
     }
-    
+
     @BeforeClass
     public static void setUpClass() {
     }
-    
+
     @AfterClass
     public static void tearDownClass() {
     }
-    
+
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
@@ -71,11 +64,11 @@ public class ConfusionMatrixAdapterTest {
         when(randomForest.getTrees()).thenReturn(tree);
         when(randomForest.getConfusionMatrix()).thenReturn(matrix);
     }
-    
+
     @After
     public void tearDown() {
     }
-    
+
     @Test
     public void getResponseVariableTest()
     {
@@ -83,7 +76,7 @@ public class ConfusionMatrixAdapterTest {
         ConfusionMatrixAdapter adapter = new ConfusionMatrixAdapter(randomForest);
         assertEquals(adapter.getResponseVariable(), "7");
     }
-    
+
     @Test
     public void getNtreeTest()
     {
@@ -91,7 +84,7 @@ public class ConfusionMatrixAdapterTest {
         ConfusionMatrixAdapter adapter = new ConfusionMatrixAdapter(randomForest);
         assertEquals(adapter.getNtree(), "1000");
     }
-    
+
     @Test
     public void getMtryTest()
     {
@@ -99,7 +92,7 @@ public class ConfusionMatrixAdapterTest {
         ConfusionMatrixAdapter adapter = new ConfusionMatrixAdapter(randomForest);
         assertEquals(adapter.getMtry(), "9");
     }
-    
+
     @Test
     public void getMtryAllTest()
     {
@@ -107,7 +100,7 @@ public class ConfusionMatrixAdapterTest {
         ConfusionMatrixAdapter adapter = new ConfusionMatrixAdapter(randomForest);
         assertEquals(adapter.getMtry(), "All");
     }
-    
+
     @Test
     public void getConfusionMatrixTest()
     {
@@ -116,18 +109,18 @@ public class ConfusionMatrixAdapterTest {
                 new ArrayList<Integer>(Arrays.asList(0,1,0)),
                 new ArrayList<Integer>(Arrays.asList(0,0,1))
                 ));
-        
+
         when(matrix.getScores()).thenReturn(scores);
         when(randomForest.getConfusionMatrix()).thenReturn(matrix);
         ConfusionMatrixAdapter adapter = new ConfusionMatrixAdapter(randomForest);
-        
+
         List<ConfusionMatrixScore> scoresList = adapter.getScores();
         assertEquals(9, scoresList.size());
-        
+
         assertEquals(scoresList.get(0).getPositionX(), 1);
         assertEquals(scoresList.get(0).getPositionY(), 1);
         assertEquals(scoresList.get(0).getScore(), 1);
-        
+
         assertEquals(scoresList.get(1).getPositionX(), 1);
         assertEquals(scoresList.get(1).getPositionY(), 2);
         assertEquals(scoresList.get(1).getScore(), 0);

@@ -12,7 +12,9 @@
 // See the License for the specific language governing permissions and 
 // limitations under the License.
 
-package edu.oswego.csc480_hci521_2013.client.presenters;
+package edu.oswego.csc480_hci521_2013.client.presenters.adapters;
+
+import edu.oswego.csc480_hci521_2013.client.presenters.adapters.ConfusionMatrixScore;
 
 public class ConfusionMatrixScoreImpl implements ConfusionMatrixScore{
     

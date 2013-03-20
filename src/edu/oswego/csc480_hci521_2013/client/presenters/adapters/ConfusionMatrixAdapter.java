@@ -1,21 +1,20 @@
-// Copyright 2013 State University of New York at Oswego 
+// Copyright 2013 State University of New York at Oswego
 //
-// Licensed under the Apache License, Version 2.0 (the "License"); 
-// you may not use this file except in compliance with the License. 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
 //
 // http://www.apache.org/licenses/LICENSE-2.0
 //
-// Unless required by applicable law or agreed to in writing, software 
-// distributed under the License is distributed on an "AS IS" BASIS, 
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. 
-// See the License for the specific language governing permissions and 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
 // limitations under the License.
-package edu.oswego.csc480_hci521_2013.client.presenters;
+package edu.oswego.csc480_hci521_2013.client.presenters.adapters;
 
 import edu.oswego.csc480_hci521_2013.shared.h2o.json.RFView;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class ConfusionMatrixAdapter {
@@ -44,6 +43,10 @@ public class ConfusionMatrixAdapter {
         return ProgressComplete;
     }
 
+    public List<String> getHeaders() {
+        return rfView.getConfusionMatrix().getHeader();
+    }
+
     public List<ConfusionMatrixScore> getScores() {
         ArrayList scores = new ArrayList();
         List<List<Integer>> matrixScores = this.rfView.getConfusionMatrix().getScores();
@@ -58,6 +61,18 @@ public class ConfusionMatrixAdapter {
         return scores;
     }
 
+    public String getClassificationError() {
+        return Double.toString(rfView.getConfusionMatrix().getClassificationError());
+    }
+
+    public String getRowsSkipped() {
+        return Integer.toString(rfView.getConfusionMatrix().getRowsSkipped());
+    }
+
+    public String getRows() {
+        return Integer.toString(rfView.getConfusionMatrix().getRows());
+    }
+
     public String getResponseVariable() {
         return Integer.toString(this.rfView.getResponseVariable());
     }
@@ -67,16 +82,15 @@ public class ConfusionMatrixAdapter {
     }
 
     public String getMtry() {
-        
+
         if (this.rfView.getMtry() < 0)
         {
             return "All";
         }
-        
+
         return Integer.toString(this.rfView.getMtry());
     }
 
-    //updateConfusionMatrix(data.getConfusionMatrix());
     public String getTreesBuilt() {
         return Integer.toString(this.rfView.getTrees().getNumberBuilt());
     }
