@@ -8,6 +8,8 @@ import com.google.gwt.user.client.ui.MenuBar;
 import com.google.gwt.user.client.ui.MenuItem;
 import edu.oswego.csc480_hci521_2013.client.services.H2OService;
 import edu.oswego.csc480_hci521_2013.client.services.H2OServiceAsync;
+import edu.oswego.csc480_hci521_2013.shared.h2o.json.StoreView;
+import edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders.StoreViewBuilder;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -44,18 +46,29 @@ public class BasicMenuView extends Composite implements MenuView {
     {
         final MenuBar menu = new MenuBar(true);
         MenuItem item = new MenuItem("Parsed Data Sets", false, menu);
-        h2oService.getParsedDataKeys(new AsyncCallback<List<String>>() {
+        h2oService.getDataStores(new StoreViewBuilder()
+                .setFilter(".hex").setView(1024),
+                new AsyncCallback<StoreView>() {
+
             @Override
-            public void onFailure(Throwable caught)
-            {
+            public void onFailure(Throwable caught) {
+                // FIXME: we need some sort of general error handler
                 logger.log(Level.SEVERE, caught.toString());
             }
 
             @Override
-            public void onSuccess(List<String> result)
-            {
-                for (String key: result) {
-                    menu.addItem(new MenuItem(key, false, presenter.getMenuCommand(key)));
+            public void onSuccess(StoreView result) {
+                for (StoreView.Row row : result.getKeys()) {
+                    // NOTE: there is no way to know from this if it is parsed or not,
+                    //       but the naming convention is that parsed data ends in .hex
+                    //       we could possibly do an inspect call on each piece to
+                    //       check if it is parsed or not...
+                    // TODO: we should check if there are more items still available.
+                    if (row.getKey().endsWith(".hex")) {
+                        menu.addItem(new MenuItem(
+                                row.getKey(), false,
+                                presenter.getMenuCommand(row.getKey())));
+                    }
                 }
             }
         });

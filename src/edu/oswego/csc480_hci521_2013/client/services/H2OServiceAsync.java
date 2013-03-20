@@ -11,15 +11,12 @@ import edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders.RFBuilder;
 import edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders.RFTreeViewBuilder;
 import edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders.RFViewBuilder;
 import edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders.StoreViewBuilder;
-import java.util.List;
 
 /**
  *
  */
 public interface H2OServiceAsync
 {
-    void getParsedDataKeys(AsyncCallback<List<String>> callback);
-
     void getDataStores(StoreViewBuilder builder, AsyncCallback<StoreView> callback);
     void getData(InspectBuilder builder, AsyncCallback<Inspect> callback);
     void getTreeView(RFTreeViewBuilder builder, AsyncCallback<RFTreeView> callback);

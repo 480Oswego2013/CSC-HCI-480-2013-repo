@@ -13,7 +13,6 @@ import edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders.RFBuilder;
 import edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders.RFTreeViewBuilder;
 import edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders.RFViewBuilder;
 import edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders.StoreViewBuilder;
-import java.util.List;
 
 /**
  *
@@ -21,8 +20,6 @@ import java.util.List;
 @RemoteServiceRelativePath("h2oService")
 public interface H2OService extends RemoteService
 {
-    List<String> getParsedDataKeys() throws RestException;
-
     StoreView getDataStores(StoreViewBuilder builder) throws RestException;
     Inspect getData(InspectBuilder builder) throws RestException;
     RFTreeView getTreeView(RFTreeViewBuilder builder) throws RestException;
