@@ -76,7 +76,6 @@ public class ConfusionMatrixAdapter {
         return Integer.toString(this.rfView.getMtry());
     }
 
-    //updateConfusionMatrix(data.getConfusionMatrix());
     public String getTreesBuilt() {
         return Integer.toString(this.rfView.getTrees().getNumberBuilt());
     }

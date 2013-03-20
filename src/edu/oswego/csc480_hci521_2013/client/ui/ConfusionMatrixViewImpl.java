@@ -44,18 +44,17 @@ public class ConfusionMatrixViewImpl extends ConfusionMatrixPresenter.View {
     public void setPresenter(ConfusionMatrixPresenter presenter) {
         this.presenter = presenter;
     }
-
     
     interface Binder extends UiBinder<Widget, ConfusionMatrixViewImpl> {
     }
     
-
     interface Style extends CssResource {
 
         String tableHeader();
 
         String cfmatrixHighlight();
     }
+    
     @UiField ConfusionMatrixViewImpl.Style style;
     @UiField Element progress;
     @UiField FlexTable matrixTable;
