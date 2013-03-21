@@ -15,15 +15,12 @@
 package edu.oswego.csc480_hci521_2013.client;
 
 import com.google.gwt.event.shared.EventBus;
-import com.google.gwt.event.shared.SimpleEventBus;
-import com.google.gwt.inject.client.AbstractGinModule;
-import com.google.inject.Singleton;
+import com.google.gwt.inject.client.GinModules;
+import com.google.gwt.inject.client.Ginjector;
 
-public class AppGinModule extends AbstractGinModule {
-
-    @Override
-    protected void configure() {
-        bind(EventBus.class).to(SimpleEventBus.class).in(Singleton.class);
-        bind(ClientFactory.class).to(ClientFactoryImpl.class).in(Singleton.class);
-    }    
+@GinModules(AppGinModule.class)
+public interface AppGinjector extends Ginjector {
+	EventBus getEventBus();
+    ClientFactory getClientFactory();
 }
+

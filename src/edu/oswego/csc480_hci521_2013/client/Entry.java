@@ -18,7 +18,8 @@ import edu.oswego.csc480_hci521_2013.client.place.MenuPlace;
 
 public class Entry implements EntryPoint {
 
-	private Place defaultPlace = new MenuPlace();
+	private final AppGinjector injector = GWT.create(AppGinjector.class);
+    private Place defaultPlace = new MenuPlace();
 	private SimplePanel menuPanel = new SimplePanel();
 	private SimplePanel panelPanel = new SimplePanel();
 
@@ -26,7 +27,7 @@ public class Entry implements EntryPoint {
 	public void onModuleLoad() {
 
 		// Create ClientFactory using deferred binding (just because I say so)
-		ClientFactory clientFactory = GWT.create(ClientFactory.class);
+		ClientFactory clientFactory = injector.getClientFactory();
 		EventBus eventBus = clientFactory.getEventBus();
 		PlaceController placeController = clientFactory.getPlaceController();
 
