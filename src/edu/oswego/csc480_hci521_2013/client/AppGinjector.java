@@ -17,10 +17,21 @@ package edu.oswego.csc480_hci521_2013.client;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.inject.client.GinModules;
 import com.google.gwt.inject.client.Ginjector;
+import com.google.gwt.place.shared.PlaceController;
+
+import edu.oswego.csc480_hci521_2013.client.activity.MenuActivity;
+import edu.oswego.csc480_hci521_2013.client.services.H2OServiceAsync;
+import edu.oswego.csc480_hci521_2013.client.ui.MenuView;
+import edu.oswego.csc480_hci521_2013.client.ui.PanelView;
 
 @GinModules(AppGinModule.class)
 public interface AppGinjector extends Ginjector {
 	EventBus getEventBus();
     ClientFactory getClientFactory();
+    MenuView getMenuView();
+    PanelView getPanelView();
+    MenuActivity getMenuActivity();
+    PlaceController getPlaceController();
+    H2OServiceAsync getH2OServiceAsync();
 }
 

@@ -11,9 +11,19 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. 
 // See the License for the specific language governing permissions and 
 // limitations under the License.
+package edu.oswego.csc480_hci521_2013.client.place;
 
-package edu.oswego.csc480_hci521_2013.client;
+import com.google.gwt.event.shared.EventBus;
+import com.google.gwt.place.shared.PlaceController;
+import com.google.inject.Inject;
+import com.google.inject.Provider;
 
-public class ClientFactoryImpl implements ClientFactory {   
-    
+public class PlaceControllerProvider implements Provider<PlaceController> {
+    @Inject
+    private EventBus eventBus;
+
+    @Override
+    public PlaceController get() {
+        return new PlaceController(this.eventBus);
+    }
 }

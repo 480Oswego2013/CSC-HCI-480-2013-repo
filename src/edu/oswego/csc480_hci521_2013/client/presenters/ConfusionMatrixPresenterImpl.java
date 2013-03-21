@@ -16,24 +16,27 @@ package edu.oswego.csc480_hci521_2013.client.presenters;
 import edu.oswego.csc480_hci521_2013.client.presenters.adapters.ConfusionMatrixAdapter;
 import edu.oswego.csc480_hci521_2013.client.ui.ConfusionMatrixView;
 import com.google.web.bindery.event.shared.EventBus;
-import edu.oswego.csc480_hci521_2013.client.ClientFactory;
 import edu.oswego.csc480_hci521_2013.client.events.RFProgressEvent;
 import edu.oswego.csc480_hci521_2013.client.events.RFProgressEventHandler;
 import edu.oswego.csc480_hci521_2013.shared.h2o.json.RF;
 import edu.oswego.csc480_hci521_2013.shared.h2o.json.RFView;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class ConfusionMatrixPresenterImpl implements ConfusionMatrixPresenter {
 
+    private static final Logger logger = Logger.getLogger(ConfusionMatrixPresenterImpl.class.getName());
     RF randomForest;
     EventBus eventbus;
     ConfusionMatrixView view;
 
-    public ConfusionMatrixPresenterImpl(ClientFactory factory, RF randomForest) {
-        this.view = factory.getConfusionMatrixView();
-        this.eventbus = factory.getEventBus();
+    public ConfusionMatrixPresenterImpl(ConfusionMatrixView view, EventBus eventBus, RF randomForest) {
+        this.view = view;
+        this.eventbus = eventBus;
         this.randomForest = randomForest;
 
         bind();
+        logger.log(Level.INFO, "Confusion matrix bus: " + eventBus.hashCode());
     }
 
     private void bind() {

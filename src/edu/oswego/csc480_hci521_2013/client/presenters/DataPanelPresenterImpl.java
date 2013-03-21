@@ -45,10 +45,10 @@ public class DataPanelPresenterImpl implements DataPanelPresenter {
     String datakey;
     RF randomForest;
 
-    public DataPanelPresenterImpl(ClientFactory factory, String datakey, List<Map<String, String>> data) {
-        this.eventbus = factory.getEventBus();
-        this.view = factory.getDataPanelPresenterView();
-        this.h2oService = factory.getH2OService();
+    public DataPanelPresenterImpl(H2OServiceAsync service, View panelView, EventBus eventBus, String datakey, List<Map<String, String>> data) {
+        this.eventbus = eventBus;
+        this.view = panelView;
+        this.h2oService = service;
         this.datakey = datakey;
 
         view.setPresenter(this);

@@ -14,7 +14,6 @@
 
 package edu.oswego.csc480_hci521_2013.client.ui;
 
-import com.google.gwt.core.client.GWT;
 import java.util.Arrays;
 
 import com.google.gwt.user.cellview.client.CellTable;
@@ -27,7 +26,7 @@ import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TabPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
-import edu.oswego.csc480_hci521_2013.client.services.H2OService;
+import com.google.inject.Inject;
 import edu.oswego.csc480_hci521_2013.client.services.H2OServiceAsync;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -36,7 +35,7 @@ public class DoublePanelView extends Composite implements PanelView
 {
     private Presenter presenter;
     static final Logger logger = Logger.getLogger(DoublePanelView.class.getName());
-    private final H2OServiceAsync h2oService = GWT.create(H2OService.class);
+    private final H2OServiceAsync service;
     TabPanel tpData;
     TabPanel tpVis;
     int imgNum = 0;
@@ -44,8 +43,9 @@ public class DoublePanelView extends Composite implements PanelView
     Label dummyDataLabel = new Label("dummy tab", false);
     Label dummyVisLabel = new Label("dummy tab", false);
 
-    public DoublePanelView()
-    {
+    @Inject
+    public DoublePanelView(H2OServiceAsync service) {
+        this.service = service;
     }
 
     @Override

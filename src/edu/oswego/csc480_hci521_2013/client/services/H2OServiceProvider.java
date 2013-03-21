@@ -12,8 +12,17 @@
 // See the License for the specific language governing permissions and 
 // limitations under the License.
 
-package edu.oswego.csc480_hci521_2013.client;
+package edu.oswego.csc480_hci521_2013.client.services;
 
-public class ClientFactoryImpl implements ClientFactory {   
+import com.google.gwt.core.client.GWT;
+import com.google.inject.Provider;
+
+public class H2OServiceProvider implements Provider<H2OServiceAsync> {
     
+    private static final H2OServiceAsync h2oService = GWT.create(H2OService.class);
+    
+    @Override
+    public H2OServiceAsync get() {
+        return h2oService;
+    }    
 }
