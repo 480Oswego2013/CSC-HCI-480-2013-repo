@@ -7,5 +7,5 @@ import com.google.gwt.user.client.rpc.IsSerializable;
  */
 public interface H2ORequest extends IsSerializable {
 
-    String build();
+    String build(UrlEncoder encoder);
 }

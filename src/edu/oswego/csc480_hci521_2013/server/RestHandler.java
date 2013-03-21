@@ -10,6 +10,7 @@ import edu.oswego.csc480_hci521_2013.shared.h2o.RestException;
 import edu.oswego.csc480_hci521_2013.shared.h2o.json.H2OResponse;
 import edu.oswego.csc480_hci521_2013.shared.h2o.json.InspectRow;
 import edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders.H2ORequest;
+import edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders.UrlEncoder;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
@@ -23,6 +24,7 @@ public class RestHandler {
 
     static final Logger logger = Logger.getLogger(RestHandler.class.getName());
     private Gson gson;
+    private UrlEncoder encoder = new ServerUrlEncoder();
 
     public RestHandler() {
         GsonBuilder gb = new GsonBuilder();
@@ -78,7 +80,7 @@ public class RestHandler {
 
     public <T extends H2OResponse> T get(H2ORequest request, Class<T> responseType) throws RestException
     {
-        String url = request.build();
+        String url = request.build(encoder);
         logger.log(Level.FINEST, url.toString());
         String json = fetch(url);
         logger.log(Level.FINEST, json);

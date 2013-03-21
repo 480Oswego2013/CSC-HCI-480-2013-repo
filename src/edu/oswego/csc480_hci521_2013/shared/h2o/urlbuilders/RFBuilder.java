@@ -1,6 +1,7 @@
 package edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders;
 
 import java.util.HashMap;
+import java.util.Map.Entry;
 
 /**
  *
@@ -51,16 +52,22 @@ public class RFBuilder extends AbstractBuilder {
         return this;
     }
 
-// TODO: figure out the format for this argument... is it just a multi-select?
-//    /**
-//     * @param value Category weight (positive)
-//     * @return
-//     */
-//    public RFBuilder setClassWeights(boolean value)
-//    {
-//        addArg("class_weights", value);
-//        return this;
-//    }
+    /**
+     * @param values Category weight (positive)
+     * @return
+     */
+    public RFBuilder setClassWeights(HashMap<String, Double> values)
+    {
+        StringBuilder value = new StringBuilder();
+        for (Entry<String, Double> pair : values.entrySet()) {
+            value.append(pair.getKey()).append('=')
+                    .append(pair.getValue()).append(',');
+        }
+        addArg("class_weights",
+                value.deleteCharAt(value.length() - 1).toString());
+        return this;
+    }
+
     /**
      * @param value Use Stratified sampling
      * @return
@@ -70,16 +77,21 @@ public class RFBuilder extends AbstractBuilder {
         return this;
     }
 
-// TODO: figure out the format for this argument... is it just a multi-select?
-//    /**
-//     * @param value Category strata (integer)
-//     * @return
-//     */
-//    public RFBuilder setStrata(boolean value)
-//    {
-//        addArg("strata", value);
-//        return this;
-//    }
+    /**
+     * @param values Category strata (integer)
+     * @return
+     */
+    public RFBuilder setStrata(HashMap<String, Integer> values)
+    {
+        StringBuilder value = new StringBuilder();
+        for (Entry<String, Integer> pair : values.entrySet()) {
+            value.append(pair.getKey()).append('=')
+                    .append(pair.getValue()).append(',');
+        }
+        addArg("strata", value.deleteCharAt(value.length() - 1).toString());
+        return this;
+    }
+
     /**
      * @param value Valid H2O key
      * @return
