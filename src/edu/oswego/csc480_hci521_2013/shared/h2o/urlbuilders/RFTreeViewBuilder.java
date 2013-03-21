@@ -31,6 +31,12 @@ public class RFTreeViewBuilder extends AbstractBuilder {
         return this;
     }
 
+    /**
+     * Column name.
+     *
+     * @param value
+     * @return
+     */
     public RFTreeViewBuilder setResponseVariable(int value) {
         addArg("response_variable", Integer.valueOf(value).toString());
         return this;

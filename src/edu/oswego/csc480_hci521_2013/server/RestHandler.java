@@ -8,7 +8,7 @@ import edu.oswego.csc480_hci521_2013.server.json.deserializers.InspectRowDeseria
 import edu.oswego.csc480_hci521_2013.shared.h2o.H2OException;
 import edu.oswego.csc480_hci521_2013.shared.h2o.RestException;
 import edu.oswego.csc480_hci521_2013.shared.h2o.json.H2OResponse;
-import edu.oswego.csc480_hci521_2013.shared.h2o.json.InspectRow;
+import edu.oswego.csc480_hci521_2013.shared.h2o.json.Inspect;
 import edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders.H2ORequest;
 import edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders.UrlEncoder;
 import java.io.BufferedReader;
@@ -28,8 +28,7 @@ public class RestHandler {
 
     public RestHandler() {
         GsonBuilder gb = new GsonBuilder();
-        // FIXME: can we get rid of the inspect row deserializer?
-        gb.registerTypeAdapter(InspectRow.class, new InspectRowDeserializer());
+        gb.registerTypeAdapter(Inspect.Row.class, new InspectRowDeserializer());
         gson = gb.create();
     }
 

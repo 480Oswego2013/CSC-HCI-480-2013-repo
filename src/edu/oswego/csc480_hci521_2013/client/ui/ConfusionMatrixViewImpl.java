@@ -12,9 +12,8 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 import edu.oswego.csc480_hci521_2013.client.presenters.ConfusionMatrixPresenter;
-import edu.oswego.csc480_hci521_2013.shared.h2o.json.ConfusionMatrix;
+import edu.oswego.csc480_hci521_2013.shared.h2o.json.RFView.ConfusionMatrix;
 import edu.oswego.csc480_hci521_2013.shared.h2o.json.RFView;
-import java.util.List;
 
 /**
  *

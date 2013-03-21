@@ -24,6 +24,9 @@ public class StoreViewBuilder extends AbstractBuilder {
      * @return
      */
     public StoreViewBuilder setView(Integer view) {
+        if (view < 0 || view > 1024) {
+            throw new IllegalArgumentException("value must be between 1 and 1024 (inclusive)");
+        }
         addArg("view", view.toString());
         return this;
     }
@@ -35,6 +38,9 @@ public class StoreViewBuilder extends AbstractBuilder {
      * @return
      */
     public StoreViewBuilder setOffset(Integer offset) {
+        if (offset < 0 || offset > 1024) {
+            throw new IllegalArgumentException("value must be between 1 and 1024 (inclusive)");
+        }
         addArg("offset", offset.toString());
         return this;
     }

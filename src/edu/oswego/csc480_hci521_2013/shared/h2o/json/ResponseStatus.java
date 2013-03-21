@@ -22,6 +22,9 @@ public class ResponseStatus implements IsSerializable
     private int progress;
     private int progress_total;
 
+    private ResponseStatus() {
+    }
+
     public String getStatus()
     {
         return status;

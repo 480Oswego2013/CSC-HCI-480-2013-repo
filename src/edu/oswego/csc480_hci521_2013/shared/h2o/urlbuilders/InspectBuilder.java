@@ -29,17 +29,23 @@ public class InspectBuilder extends AbstractBuilder {
      * @return
      */
     public InspectBuilder setView(Integer view) {
+        if (view < 1 || view > 10000) {
+            throw new IllegalArgumentException("value must be between 1 and 10000 (inclusive)");
+        }
         addArg("view", view.toString());
         return this;
     }
 
     /**
      *
-     * @param offset the offset into the data to return, used for pagination of
+     * @param offset the offset into the data to return, -1 to view only column info and no data
      * parsed data
      * @return
      */
-    public InspectBuilder setOffset(Integer offset) {
+    public InspectBuilder setOffset(Long offset) {
+        if (offset < -1) {
+            throw new IllegalArgumentException("value must be greater than -1");
+        }
         addArg("offset", offset.toString());
         return this;
     }

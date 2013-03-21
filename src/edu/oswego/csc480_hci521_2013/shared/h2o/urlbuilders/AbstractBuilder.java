@@ -1,14 +1,8 @@
 package edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders;
 
-import com.google.gwt.core.shared.GWT;
-import com.google.gwt.http.client.URL;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map.Entry;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *

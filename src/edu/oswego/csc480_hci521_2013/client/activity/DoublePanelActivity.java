@@ -20,9 +20,7 @@ import edu.oswego.csc480_hci521_2013.client.presenters.DataPanelPresenter;
 import edu.oswego.csc480_hci521_2013.client.presenters.DataPanelPresenterImpl;
 import edu.oswego.csc480_hci521_2013.client.ui.PanelView;
 import edu.oswego.csc480_hci521_2013.client.ui.TreePanel;
-import edu.oswego.csc480_hci521_2013.shared.h2o.json.ColumnDef;
 import edu.oswego.csc480_hci521_2013.shared.h2o.json.Inspect;
-import edu.oswego.csc480_hci521_2013.shared.h2o.json.InspectRow;
 import edu.oswego.csc480_hci521_2013.shared.h2o.json.RF;
 import edu.oswego.csc480_hci521_2013.shared.h2o.json.RFTreeView;
 import edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders.InspectBuilder;
@@ -104,10 +102,10 @@ public class DoublePanelActivity extends AbstractActivity implements PanelView.P
             {
                 // FIXME: This most likely will not return all rows, we need to implement paging
                 List<Map<String, String>> data = new ArrayList<Map<String, String>>();
-                for (InspectRow row : result.getRows()) {
+                for (Inspect.Row row : result.getRows()) {
                     Map<String, String> rowMap = new HashMap<String, String>();
                     data.add(rowMap);
-                    for (ColumnDef column : result.getCols()) {
+                    for (Inspect.Column column : result.getCols()) {
                         rowMap.put(column.getName(), row.getData(column.getName()).toString());
                     }
                 }

@@ -1,11 +1,12 @@
 package edu.oswego.csc480_hci521_2013.shared.h2o.json;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
+import java.util.Arrays;
 
 /**
  *
  */
-public class RFView extends H2OResponse {
+public class RFView extends AbstractResponse {
 
     private String data_key;
     private String model_key;
@@ -15,6 +16,9 @@ public class RFView extends H2OResponse {
     private String confusion_key;
     private ConfusionMatrix confusion_matrix;
     private TreeProperties trees;
+
+    private RFView() {
+    }
 
     public String getDataKey() {
         return data_key;
@@ -51,10 +55,64 @@ public class RFView extends H2OResponse {
     @Override
     public String toString() {
         return "RFView{" + "data_key=" + data_key + ", model_key=" + model_key
-            + ", response_variable=" + response_variable + ", ntree=" + ntree
-            + ", mtry=" + mtry + ", confusion_key=" + confusion_key
-            + ", confusion_matrix=" + confusion_matrix + ", trees=" + trees
-            + super.toString() + '}';
+                + ", response_variable=" + response_variable
+                + ", ntree=" + ntree + ", mtry=" + mtry
+                + ", confusion_key=" + confusion_key
+                + ", confusion_matrix=" + confusion_matrix + ", trees=" + trees
+                + super.toString() + '}';
+    }
+
+    public static class ConfusionMatrix implements IsSerializable {
+
+        private String type;
+        private float classification_error;
+        private int rows_skipped;
+        private int rows;
+        private String[] header;
+        private Integer[][] scores;
+        private int used_trees;
+
+        private ConfusionMatrix() {
+        }
+
+        public String getType() {
+            return type;
+        }
+
+        public float getClassificationError() {
+            return classification_error;
+        }
+
+        public int getRowsSkipped() {
+            return rows_skipped;
+        }
+
+        public int getRows() {
+            return rows;
+        }
+
+        public String[] getHeader() {
+            return header;
+        }
+
+        public Integer[][] getScores() {
+            return scores;
+        }
+
+        public int getUsedTrees() {
+            return used_trees;
+        }
+
+        @Override
+        public String toString() {
+            return "ConfusionMatrix{" + "type=" + type
+                    + ", classification_erro=" + classification_error
+                    + ", rows_skipped=" + rows_skipped
+                    + ", rows=" + rows
+                    + ", header=" + Arrays.toString(header)
+                    + ", scores=" + Arrays.deepToString(scores)
+                    + ", used_trees=" + used_trees + '}';
+        }
     }
 
     public static class TreeProperties implements IsSerializable {
@@ -62,6 +120,9 @@ public class RFView extends H2OResponse {
         private int number_built;
         private MinMeanMax depth;
         private MinMeanMax leaves;
+
+        private TreeProperties() {
+        }
 
         public int getNumberBuilt() {
             return number_built;
@@ -77,13 +138,18 @@ public class RFView extends H2OResponse {
 
         @Override
         public String toString() {
-            return "TreeProperties{ number_built=" + number_built + ", depth=" + depth + ", leaves=" + leaves + "}";
+            return "TreeProperties{ number_built=" + number_built
+                    + ", depth=" + depth + ", leaves=" + leaves + "}";
         }
 
         public static class MinMeanMax implements IsSerializable {
+
             private double min;
             private double mean;
             private double max;
+
+            private MinMeanMax() {
+            }
 
             public double getMin() {
                 return min;
@@ -99,7 +165,8 @@ public class RFView extends H2OResponse {
 
             @Override
             public String toString() {
-                return "MinMeanMax{" + "min=" + min + ", mean=" + mean + ", max=" + max + '}';
+                return "MinMeanMax{" + "min=" + min + ", mean=" + mean
+                        + ", max=" + max + '}';
             }
         }
     }

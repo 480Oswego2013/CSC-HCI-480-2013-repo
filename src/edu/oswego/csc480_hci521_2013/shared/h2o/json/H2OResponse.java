@@ -5,21 +5,9 @@ import com.google.gwt.user.client.rpc.IsSerializable;
 /**
  *
  */
-public abstract class H2OResponse implements IsSerializable {
+public interface H2OResponse extends IsSerializable {
 
-    String error;
-    ResponseStatus response;
+    String getError();
 
-    public String getError() {
-        return error;
-    }
-
-    public ResponseStatus getResponse() {
-        return response;
-    }
-
-    @Override
-    public String toString() {
-        return ", H2OResponse{" + "error=" + error + ", response=" + response + '}';
-    }
+    ResponseStatus getResponse();
 }

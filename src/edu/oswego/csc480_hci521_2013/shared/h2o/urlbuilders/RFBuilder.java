@@ -23,7 +23,6 @@ public class RFBuilder extends AbstractBuilder {
         addArg("data_key", dataKey);
     }
 
-    // TODO: add validation to the setters where possible
     /**
      * @param value Column name	The output classification (also known as
      * 'response variable') that is being learned.
@@ -39,6 +38,9 @@ public class RFBuilder extends AbstractBuilder {
      * @return
      */
     public RFBuilder setNtree(Integer value) {
+        if (value < 0) {
+            throw new IllegalArgumentException("value must be positive");
+        }
         addArg("ntree", value.toString());
         return this;
     }
@@ -56,10 +58,12 @@ public class RFBuilder extends AbstractBuilder {
      * @param values Category weight (positive)
      * @return
      */
-    public RFBuilder setClassWeights(HashMap<String, Double> values)
-    {
+    public RFBuilder setClassWeights(HashMap<String, Double> values) {
         StringBuilder value = new StringBuilder();
         for (Entry<String, Double> pair : values.entrySet()) {
+            if (pair.getValue() < 0) {
+                throw new IllegalArgumentException("values must be positive");
+            }
             value.append(pair.getKey()).append('=')
                     .append(pair.getValue()).append(',');
         }
@@ -115,6 +119,9 @@ public class RFBuilder extends AbstractBuilder {
      * @return
      */
     public RFBuilder setFeatures(Integer value) {
+        if (value < 0) {
+            throw new IllegalArgumentException("value must be positive");
+        }
         addArg("features", value.toString());
         return this;
     }
@@ -135,6 +142,9 @@ public class RFBuilder extends AbstractBuilder {
      * @return
      */
     public RFBuilder setSample(Integer value) {
+        if (value < 0 || value > 100) {
+            throw new IllegalArgumentException("value must be between 1 and 100 (inclusive)");
+        }
         addArg("sample", value.toString());
         return this;
     }
@@ -144,6 +154,9 @@ public class RFBuilder extends AbstractBuilder {
      * @return
      */
     public RFBuilder setBinLimit(Integer value) {
+        if (value < 0 || value > 65535) {
+            throw new IllegalArgumentException("value must be between 0 and 65535 (inclusive)");
+        }
         addArg("bin_limit", value.toString());
         return this;
     }
@@ -153,6 +166,9 @@ public class RFBuilder extends AbstractBuilder {
      * @return
      */
     public RFBuilder setDepth(Integer value) {
+        if (value < 0) {
+            throw new IllegalArgumentException("value must be positive");
+        }
         addArg("depth", value.toString());
         return this;
     }
@@ -180,6 +196,9 @@ public class RFBuilder extends AbstractBuilder {
      * @return
      */
     public RFBuilder setExclusiveSplitLimit(Integer value) {
+        if (value < 0) {
+            throw new IllegalArgumentException("value must be positive");
+        }
         addArg("exclusive_split_limit", value.toString());
         return this;
     }
