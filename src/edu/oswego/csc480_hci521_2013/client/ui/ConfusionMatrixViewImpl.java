@@ -15,7 +15,6 @@ package edu.oswego.csc480_hci521_2013.client.ui;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
-import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.FlexTable;
@@ -80,7 +79,7 @@ public class ConfusionMatrixViewImpl extends AbstractConfusionMatrix {
     public Element getProgress() {
         return this.progress;
     }
-    
+
     @Override
     public Element getClassificationError() {
         return classificationError;
@@ -107,7 +106,7 @@ public class ConfusionMatrixViewImpl extends AbstractConfusionMatrix {
     public Element getRows() {
         return rows;
     }
-    
+
 
     @Override
     public Element getMatrixType() {

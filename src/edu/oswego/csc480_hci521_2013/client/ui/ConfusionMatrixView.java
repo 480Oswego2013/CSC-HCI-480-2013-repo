@@ -17,7 +17,6 @@ import com.google.gwt.dom.client.Element;
 import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.IsWidget;
-import edu.oswego.csc480_hci521_2013.client.presenters.adapters.ConfusionMatrixScore;
 import java.util.List;
 
 public interface ConfusionMatrixView extends IsWidget {
@@ -42,7 +41,7 @@ public interface ConfusionMatrixView extends IsWidget {
 
     void setMatrixHeaders(List<String> headers);
 
-    void setMatrixScores(List<ConfusionMatrixScore> scores);
+    void setMatrixScores(List<List<Integer>> scores);
 
     void setTreesGenerated(String treesGenerated);
 

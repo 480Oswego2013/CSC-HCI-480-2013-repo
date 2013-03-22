@@ -15,7 +15,6 @@
 package edu.oswego.csc480_hci521_2013.client.ui;
 
 import edu.oswego.csc480_hci521_2013.client.presenters.adapters.ConfusionMatrixAdapter;
-import edu.oswego.csc480_hci521_2013.client.presenters.adapters.ConfusionMatrixScore;
 import edu.oswego.csc480_hci521_2013.shared.h2o.json.ConfusionMatrix;
 import static org.mockito.Mockito.when;
 
@@ -114,43 +113,22 @@ public class ConfusionMatrixAdapterTest {
         when(randomForest.getConfusionMatrix()).thenReturn(matrix);
         ConfusionMatrixAdapter adapter = new ConfusionMatrixAdapter(randomForest);
 
-        List<ConfusionMatrixScore> scoresList = adapter.getScores();
-        assertEquals(9, scoresList.size());
+        List<List<Integer>> scoresList = adapter.getScores();
+        assertEquals(3, scoresList.size());
+        assertEquals(3, scoresList.get(0).size());
+        assertEquals(3, scoresList.get(1).size());
+        assertEquals(3, scoresList.get(2).size());
 
-        assertEquals(scoresList.get(0).getPositionX(), 1);
-        assertEquals(scoresList.get(0).getPositionY(), 1);
-        assertEquals(scoresList.get(0).getScore(), 1);
+        assertEquals(scoresList.get(0).get(0), Integer.valueOf(1));
+        assertEquals(scoresList.get(0).get(1), Integer.valueOf(0));
+        assertEquals(scoresList.get(0).get(2), Integer.valueOf(0));
 
-        assertEquals(scoresList.get(1).getPositionX(), 1);
-        assertEquals(scoresList.get(1).getPositionY(), 2);
-        assertEquals(scoresList.get(1).getScore(), 0);
-        
-        assertEquals(scoresList.get(2).getPositionX(), 1);
-        assertEquals(scoresList.get(2).getPositionY(), 3);
-        assertEquals(scoresList.get(2).getScore(), 0);
-        
-        assertEquals(scoresList.get(3).getPositionX(), 2);
-        assertEquals(scoresList.get(3).getPositionY(), 1);
-        assertEquals(scoresList.get(3).getScore(), 0);
-        
-        assertEquals(scoresList.get(4).getPositionX(), 2);
-        assertEquals(scoresList.get(4).getPositionY(), 2);
-        assertEquals(scoresList.get(4).getScore(), 1);
-        
-        assertEquals(scoresList.get(5).getPositionX(), 2);
-        assertEquals(scoresList.get(5).getPositionY(), 3);
-        assertEquals(scoresList.get(5).getScore(), 0);
-        
-        assertEquals(scoresList.get(6).getPositionX(), 3);
-        assertEquals(scoresList.get(6).getPositionY(), 1);
-        assertEquals(scoresList.get(6).getScore(), 0);
-        
-        assertEquals(scoresList.get(7).getPositionX(), 3);
-        assertEquals(scoresList.get(7).getPositionY(), 2);
-        assertEquals(scoresList.get(7).getScore(), 0);
-        
-        assertEquals(scoresList.get(8).getPositionX(), 3);
-        assertEquals(scoresList.get(8).getPositionY(), 3);
-        assertEquals(scoresList.get(8).getScore(), 1);
+        assertEquals(scoresList.get(1).get(0), Integer.valueOf(0));
+        assertEquals(scoresList.get(1).get(1), Integer.valueOf(1));
+        assertEquals(scoresList.get(1).get(2), Integer.valueOf(0));
+
+        assertEquals(scoresList.get(2).get(0), Integer.valueOf(0));
+        assertEquals(scoresList.get(2).get(1), Integer.valueOf(0));
+        assertEquals(scoresList.get(2).get(2), Integer.valueOf(1));
     }
 }

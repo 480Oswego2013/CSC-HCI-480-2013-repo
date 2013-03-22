@@ -1,0 +1,9 @@
+<!-- TreePanel.ui.xml -->
+
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+    xmlns:gwt='urn:import:com.google.gwt.user.client.ui'>
+    <gwt:HTMLPanel>
+        <div ui:field='canvas' class="sigma-expand"
+             style="width:800px;height:1000px;" />
+    </gwt:HTMLPanel>
+</ui:UiBinder>

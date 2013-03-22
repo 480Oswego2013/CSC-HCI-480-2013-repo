@@ -2,7 +2,6 @@ package edu.oswego.csc480_hci521_2013.client.ui;
 
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlexTable;
-import edu.oswego.csc480_hci521_2013.client.presenters.adapters.ConfusionMatrixScore;
 import java.util.List;
 
 /**'
@@ -114,17 +113,16 @@ public abstract class AbstractConfusionMatrix extends Composite implements Confu
     }
 
     @Override
-    public void setMatrixScores(List<ConfusionMatrixScore> scores) {
+    public void setMatrixScores(List<List<Integer>> scores) {
         // TODO: need to set errors/totals somewhere!
-        for (ConfusionMatrixScore score : scores) {
-            this.getMatrixTable().setText(
-                    score.getPositionX(),
-                    score.getPositionY(),
-                    Integer.toString(score.getScore()));
-            if (score.getPositionX() == score.getPositionY()) {
-                getMatrixTable().getCellFormatter().setStylePrimaryName(
-                        score.getPositionX(), score.getPositionY(),
-                        getStyle().cfmatrixHighlight());
+        for (int i = 0; i < scores.size(); i++) {
+            List<Integer> row = scores.get(i);
+            for (int j = 0; j < row.size(); j++) {
+                getMatrixTable().setText(i + 1, j + 1, row.get(j).toString());
+                if (i == j) {
+                    getMatrixTable().getCellFormatter().setStylePrimaryName(
+                            i + 1, j + 1, getStyle().cfmatrixHighlight());
+                }
             }
         }
     }

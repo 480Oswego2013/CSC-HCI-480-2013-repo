@@ -47,18 +47,8 @@ public class ConfusionMatrixAdapter {
         return rfView.getConfusionMatrix().getHeader();
     }
 
-    public List<ConfusionMatrixScore> getScores() {
-        ArrayList scores = new ArrayList();
-        List<List<Integer>> matrixScores = this.rfView.getConfusionMatrix().getScores();
-
-        for (int i = 0; i < matrixScores.size(); i++) {
-            List<Integer> row = matrixScores.get(i);
-
-            for (int j = 0; j < row.size(); j++) {
-                scores.add(new ConfusionMatrixScoreImpl(i + 1, j + 1, row.get(j)));
-            }
-        }
-        return scores;
+    public List<List<Integer>> getScores() {
+        return rfView.getConfusionMatrix().getScores();
     }
 
     public String getClassificationError() {
