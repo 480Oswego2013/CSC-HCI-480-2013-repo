@@ -17,12 +17,15 @@ import com.google.gwt.activity.shared.ActivityManager;
 import com.google.gwt.activity.shared.ActivityMapper;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.Style;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.place.shared.Place;
 import com.google.gwt.place.shared.PlaceController;
 import com.google.gwt.place.shared.PlaceHistoryHandler;
-import com.google.gwt.user.client.ui.RootPanel;
-import com.google.gwt.user.client.ui.SimplePanel;
+import com.google.gwt.user.client.ui.DockLayoutPanel;
+import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.RootLayoutPanel;
+import com.google.gwt.user.client.ui.SimpleLayoutPanel;
 import edu.oswego.csc480_hci521_2013.client.activity.DoublePanelActivity;
 
 import edu.oswego.csc480_hci521_2013.client.activity.MenuActivity;
@@ -38,8 +41,8 @@ public class Entry implements EntryPoint {
 
 	private final AppGinjector injector = GWT.create(AppGinjector.class);
     private Place defaultPlace = new MenuPlace();
-	private SimplePanel menuPanel = new SimplePanel();
-	private SimplePanel panelPanel = new SimplePanel();
+	private SimpleLayoutPanel menuPanel = new SimpleLayoutPanel();
+	private SimpleLayoutPanel panelPanel = new SimpleLayoutPanel();
     private PlaceController places;
 
 	@Override
@@ -68,8 +71,14 @@ public class Entry implements EntryPoint {
 		PlaceHistoryHandler historyHandler = new PlaceHistoryHandler(historyMapper);
 		historyHandler.register(places, eventBus, defaultPlace);
 		// Add to RootPanel and handle history token, open double panel place
-		RootPanel.get().add(menuPanel);
-		RootPanel.get().add(panelPanel);
+
+        // FIXME: we only have 1 place, the menu is not its own place....
+
+        DockLayoutPanel bp = new DockLayoutPanel(Style.Unit.EM);
+        bp.addNorth(menuPanel, 3);
+        bp.add(panelPanel);
+        RootLayoutPanel.get().add(bp);
+
 		historyHandler.handleCurrentHistory();
 		places.goTo(new DoublePanelPlace());
 

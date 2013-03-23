@@ -1,15 +1,15 @@
 // Copyright 2013 State University of New York at Oswego
 //
-// Licensed under the Apache License, Version 2.0 (the "License"); 
-// you may not use this file except in compliance with the License. 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
 //
 // http://www.apache.org/licenses/LICENSE-2.0
 //
-// Unless required by applicable law or agreed to in writing, software 
-// distributed under the License is distributed on an "AS IS" BASIS, 
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. 
-// See the License for the specific language governing permissions and 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
 // limitations under the License.
 
 package edu.oswego.csc480_hci521_2013.client.presenters;
@@ -17,13 +17,13 @@ package edu.oswego.csc480_hci521_2013.client.presenters;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import edu.oswego.csc480_hci521_2013.client.ClientFactory;
 import edu.oswego.csc480_hci521_2013.client.events.RFGenerateEvent;
 import edu.oswego.csc480_hci521_2013.client.events.RFProgressEvent;
 import edu.oswego.csc480_hci521_2013.client.events.RFProgressEventHandler;
 import edu.oswego.csc480_hci521_2013.client.events.TreeVisEvent;
 import edu.oswego.csc480_hci521_2013.client.services.H2OServiceAsync;
 import edu.oswego.csc480_hci521_2013.client.services.RFViewPoller;
+import edu.oswego.csc480_hci521_2013.client.ui.DataPanelView;
 import edu.oswego.csc480_hci521_2013.shared.h2o.json.RF;
 import edu.oswego.csc480_hci521_2013.shared.h2o.json.RFView;
 import edu.oswego.csc480_hci521_2013.shared.h2o.json.ResponseStatus;
@@ -32,6 +32,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.text.View;
 
 /**
  *
@@ -40,12 +41,12 @@ public class DataPanelPresenterImpl implements DataPanelPresenter {
 
     static final Logger logger = Logger.getLogger(DataPanelPresenterImpl.class.getName());
     EventBus eventbus;
-    View view;
+    DataPanelView view;
     H2OServiceAsync h2oService;
     String datakey;
     RF randomForest;
 
-    public DataPanelPresenterImpl(H2OServiceAsync service, View panelView, EventBus eventBus, String datakey, List<Map<String, String>> data) {
+    public DataPanelPresenterImpl(H2OServiceAsync service, DataPanelView panelView, EventBus eventBus, String datakey, List<Map<String, String>> data) {
         this.eventbus = eventBus;
         this.view = panelView;
         this.h2oService = service;
@@ -128,7 +129,7 @@ public class DataPanelPresenterImpl implements DataPanelPresenter {
     }
 
     @Override
-    public View getView() {
+    public DataPanelView getView() {
         return view;
     }
 }

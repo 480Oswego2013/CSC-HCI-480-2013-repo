@@ -34,6 +34,7 @@ import edu.oswego.csc480_hci521_2013.client.presenters.DataPanelPresenter;
 import edu.oswego.csc480_hci521_2013.client.presenters.DataPanelPresenterImpl;
 import edu.oswego.csc480_hci521_2013.client.services.H2OServiceAsync;
 import edu.oswego.csc480_hci521_2013.client.ui.ConfusionMatrixViewImpl;
+import edu.oswego.csc480_hci521_2013.client.ui.DataPanelView;
 import edu.oswego.csc480_hci521_2013.client.ui.DataPanelViewImpl;
 import edu.oswego.csc480_hci521_2013.client.ui.DoublePanelView;
 import edu.oswego.csc480_hci521_2013.client.ui.PanelView;
@@ -52,8 +53,7 @@ public class DoublePanelActivity extends AbstractActivity implements PanelView.P
     private PlaceController places;
     private EventBus eventBus;
     private H2OServiceAsync service;
-    private DataPanelPresenter.View dataView = new DataPanelViewImpl();
-    
+
 	public DoublePanelActivity(PanelView view, PlaceController places, EventBus eventBus, H2OServiceAsync service) {
 		this.view = view;
         this.places = places;
@@ -123,7 +123,7 @@ public class DoublePanelActivity extends AbstractActivity implements PanelView.P
             public void onSuccess(List<Map<String, String>> result)
             {
                 logger.log(Level.INFO, "Building data tab.");
-                DataPanelPresenter presenter = new DataPanelPresenterImpl(service, dataView, eventBus, datakey, result);
+                DataPanelPresenter presenter = new DataPanelPresenterImpl(service, new DataPanelViewImpl(), eventBus, datakey, result);
                 view.addDataTab(presenter.getView(), datakey);
             }
         });
@@ -157,5 +157,5 @@ public class DoublePanelActivity extends AbstractActivity implements PanelView.P
         String title = "Confusion Matrix<br>" + rf.getDataKey() + "<br>" + rf.getModelKey();
         DoublePanelView panelView = (DoublePanelView)view;
                 panelView.addVisTab(presenter.getView(), title);
-    }    
+    }
 }
