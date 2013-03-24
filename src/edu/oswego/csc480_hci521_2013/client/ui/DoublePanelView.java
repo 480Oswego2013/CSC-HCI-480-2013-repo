@@ -17,7 +17,7 @@ package edu.oswego.csc480_hci521_2013.client.ui;
 import com.google.gwt.user.client.ui.IsWidget;
 import edu.oswego.csc480_hci521_2013.client.presenters.DoublePanelPresenter;
 
-public interface PanelView extends IsWidget {
+public interface DoublePanelView extends IsWidget {
 	void buildGui();
 	void addDataTab(IsWidget panel, String title);
 	void addVisTab(IsWidget panel, String title);

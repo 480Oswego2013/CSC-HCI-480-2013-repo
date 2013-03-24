@@ -37,7 +37,7 @@ import edu.oswego.csc480_hci521_2013.client.services.H2OServiceAsync;
 import edu.oswego.csc480_hci521_2013.client.ui.ConfusionMatrixViewImpl;
 import edu.oswego.csc480_hci521_2013.client.ui.DataPanelViewImpl;
 import edu.oswego.csc480_hci521_2013.client.ui.DoublePanelViewImpl;
-import edu.oswego.csc480_hci521_2013.client.ui.PanelView;
+import edu.oswego.csc480_hci521_2013.client.ui.DoublePanelView;
 import edu.oswego.csc480_hci521_2013.client.ui.TreePanel;
 import edu.oswego.csc480_hci521_2013.shared.h2o.json.RF;
 import edu.oswego.csc480_hci521_2013.shared.h2o.json.RFTreeView;
@@ -49,12 +49,12 @@ import java.util.logging.Logger;
 public class DoublePanelActivity extends AbstractActivity implements DoublePanelPresenter {
 
     static final Logger logger = Logger.getLogger(DoublePanelActivity.class.getName());
-	private PanelView view;
+	private DoublePanelView view;
     private PlaceController places;
     private EventBus eventBus;
     private H2OServiceAsync service;
 
-	public DoublePanelActivity(PanelView view, PlaceController places, EventBus eventBus, H2OServiceAsync service) {
+	public DoublePanelActivity(DoublePanelView view, PlaceController places, EventBus eventBus, H2OServiceAsync service) {
 		this.view = view;
         this.places = places;
         this.eventBus = eventBus;

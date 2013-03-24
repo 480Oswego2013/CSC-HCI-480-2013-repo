@@ -28,7 +28,7 @@ import edu.oswego.csc480_hci521_2013.client.services.H2OServiceProvider;
 import edu.oswego.csc480_hci521_2013.client.ui.BasicMenuView;
 import edu.oswego.csc480_hci521_2013.client.ui.DoublePanelViewImpl;
 import edu.oswego.csc480_hci521_2013.client.ui.MenuView;
-import edu.oswego.csc480_hci521_2013.client.ui.PanelView;
+import edu.oswego.csc480_hci521_2013.client.ui.DoublePanelView;
 
 public class AppGinModule extends AbstractGinModule {
 
@@ -37,7 +37,7 @@ public class AppGinModule extends AbstractGinModule {
         bind(EventBus.class).to(SimpleEventBus.class).in(Singleton.class);
         bind(ClientFactory.class).to(ClientFactoryImpl.class).in(Singleton.class);
         bind(MenuView.class).to(BasicMenuView.class).in(Singleton.class);
-        bind(PanelView.class).to(DoublePanelViewImpl.class).in(Singleton.class);
+        bind(DoublePanelView.class).to(DoublePanelViewImpl.class).in(Singleton.class);
         bind(MenuActivity.class);
         bind(PlaceController.class).toProvider(PlaceControllerProvider.class).in(Singleton.class);
         bind(H2OServiceAsync.class).toProvider(H2OServiceProvider.class).in(Singleton.class);

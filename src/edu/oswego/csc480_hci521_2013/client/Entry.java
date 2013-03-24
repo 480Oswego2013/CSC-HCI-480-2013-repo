@@ -35,7 +35,7 @@ import edu.oswego.csc480_hci521_2013.client.activity.mapper.PanelActivityMapper;
 import edu.oswego.csc480_hci521_2013.client.place.DoublePanelPlace;
 import edu.oswego.csc480_hci521_2013.client.place.MenuPlace;
 import edu.oswego.csc480_hci521_2013.client.ui.MenuView;
-import edu.oswego.csc480_hci521_2013.client.ui.PanelView;
+import edu.oswego.csc480_hci521_2013.client.ui.DoublePanelView;
 
 public class Entry implements EntryPoint {
 
@@ -60,7 +60,7 @@ public class Entry implements EntryPoint {
 		ActivityManager mainActivityManager = new ActivityManager(mainActivityMapper, eventBus);
 		mainActivityManager.setDisplay(menuPanel);
 
-        PanelView panelView = injector.getPanelView();
+        DoublePanelView panelView = injector.getPanelView();
         DoublePanelActivity panelActivity = new DoublePanelActivity(panelView, places, eventBus, injector.getH2OServiceAsync());
 		ActivityMapper panelActivityMapper = new PanelActivityMapper(panelActivity);
 		ActivityManager panelActivityManager = new ActivityManager(panelActivityMapper, eventBus);

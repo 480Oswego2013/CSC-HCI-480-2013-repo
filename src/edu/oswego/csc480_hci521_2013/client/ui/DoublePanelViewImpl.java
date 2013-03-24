@@ -34,7 +34,7 @@ import edu.oswego.csc480_hci521_2013.client.services.H2OServiceAsync;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class DoublePanelViewImpl extends Composite implements PanelView
+public class DoublePanelViewImpl extends Composite implements DoublePanelView
 {
     private DoublePanelPresenter presenter;
     static final Logger logger = Logger.getLogger(DoublePanelViewImpl.class.getName());
