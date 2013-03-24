@@ -29,13 +29,14 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.SplitLayoutPanel;
 import com.google.gwt.user.client.ui.TabLayoutPanel;
 import com.google.inject.Inject;
+import edu.oswego.csc480_hci521_2013.client.presenters.DoublePanelPresenter;
 import edu.oswego.csc480_hci521_2013.client.services.H2OServiceAsync;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class DoublePanelViewImpl extends Composite implements PanelView
 {
-    private Presenter presenter;
+    private DoublePanelPresenter presenter;
     static final Logger logger = Logger.getLogger(DoublePanelViewImpl.class.getName());
     private final H2OServiceAsync service;
     TabLayoutPanel tpData;
@@ -104,7 +105,7 @@ public class DoublePanelViewImpl extends Composite implements PanelView
     }
 
     @Override
-    public void setPresenter(Presenter presenter)
+    public void setPresenter(DoublePanelPresenter presenter)
     {
         this.presenter = presenter;
     }

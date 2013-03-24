@@ -32,9 +32,9 @@ import edu.oswego.csc480_hci521_2013.client.presenters.ConfusionMatrixPresenter;
 import edu.oswego.csc480_hci521_2013.client.presenters.ConfusionMatrixPresenterImpl;
 import edu.oswego.csc480_hci521_2013.client.presenters.DataPanelPresenter;
 import edu.oswego.csc480_hci521_2013.client.presenters.DataPanelPresenterImpl;
+import edu.oswego.csc480_hci521_2013.client.presenters.DoublePanelPresenter;
 import edu.oswego.csc480_hci521_2013.client.services.H2OServiceAsync;
 import edu.oswego.csc480_hci521_2013.client.ui.ConfusionMatrixViewImpl;
-import edu.oswego.csc480_hci521_2013.client.ui.DataPanelView;
 import edu.oswego.csc480_hci521_2013.client.ui.DataPanelViewImpl;
 import edu.oswego.csc480_hci521_2013.client.ui.DoublePanelViewImpl;
 import edu.oswego.csc480_hci521_2013.client.ui.PanelView;
@@ -46,7 +46,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class DoublePanelActivity extends AbstractActivity implements PanelView.Presenter {
+public class DoublePanelActivity extends AbstractActivity implements DoublePanelPresenter {
 
     static final Logger logger = Logger.getLogger(DoublePanelActivity.class.getName());
 	private PanelView view;
