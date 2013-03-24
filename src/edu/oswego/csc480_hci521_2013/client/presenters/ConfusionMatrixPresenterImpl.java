@@ -20,6 +20,7 @@ import edu.oswego.csc480_hci521_2013.client.events.RFProgressEvent;
 import edu.oswego.csc480_hci521_2013.client.events.RFProgressEventHandler;
 import edu.oswego.csc480_hci521_2013.shared.h2o.json.RF;
 import edu.oswego.csc480_hci521_2013.shared.h2o.json.RFView;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -81,6 +82,8 @@ public class ConfusionMatrixPresenterImpl implements ConfusionMatrixPresenter {
 
         matrixView.setMatrixHeaders(adapter.getHeaders());
         matrixView.setMatrixScores(adapter.getScores());
+        matrixView.setErrors(adapter.getErrors());
+        matrixView.setTotals(adapter.getTotals());
 
         matrixView.setTreesGenerated(adapter.getTreesBuilt());
         matrixView.setLeavesMin(adapter.getLeavesMin());

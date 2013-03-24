@@ -28,10 +28,8 @@ import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.SplitLayoutPanel;
 import com.google.gwt.user.client.ui.TabLayoutPanel;
-import com.google.gwt.view.client.NoSelectionModel;
 import com.google.inject.Inject;
 import edu.oswego.csc480_hci521_2013.client.services.H2OServiceAsync;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -131,11 +129,11 @@ public class DoublePanelView extends Composite implements PanelView
         Label lblVis = new Label("Visualization");
         rightPanel.add(lblVis);
 
-        tpData = new TabLayoutPanel(1.5, Style.Unit.EM);
+        tpData = new TabLayoutPanel(2.5, Style.Unit.EM);
         tpData.setSize("100%", "100%");
         leftPanel.add(tpData);
 
-        tpVis = new TabLayoutPanel(1.5, Style.Unit.EM);
+        tpVis = new TabLayoutPanel(5, Style.Unit.EM);
         tpVis.setSize("100%", "100%");
         rightPanel.add(tpVis);
 

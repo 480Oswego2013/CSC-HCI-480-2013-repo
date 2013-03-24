@@ -66,11 +66,6 @@ public class ConfusionMatrixViewImpl extends AbstractConfusionMatrix {
     }
 
     @Override
-    public Widget asWidget() {
-        return this;
-    }
-
-    @Override
     public Style getStyle() {
         return style;
     }
@@ -94,19 +89,21 @@ public class ConfusionMatrixViewImpl extends AbstractConfusionMatrix {
     public Element getNtree() {
         return this.ntree;
     }
+
     @Override
     public Element getMtry() {
         return this.mtry;
     }
 
+    @Override
     public Element getRowsSkipped() {
         return rowsSkipped;
     }
 
+    @Override
     public Element getRows() {
         return rows;
     }
-
 
     @Override
     public Element getMatrixType() {

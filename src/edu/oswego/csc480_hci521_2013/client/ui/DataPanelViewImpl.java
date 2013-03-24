@@ -14,60 +14,48 @@
 
 package edu.oswego.csc480_hci521_2013.client.ui;
 
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.Scheduler.ScheduledCommand;
+import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.cellview.client.HasKeyboardSelectionPolicy;
 import com.google.gwt.user.cellview.client.TextColumn;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.MenuBar;
 import com.google.gwt.user.client.ui.MenuItem;
+import com.google.gwt.user.client.ui.Widget;
 import edu.oswego.csc480_hci521_2013.client.presenters.DataPanelPresenter;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  *
  */
 public class DataPanelViewImpl extends Composite implements DataPanelView {
 
-    private MenuBar visbar;
-    private FlowPanel dataPanel;
-    private MenuBar treebar;
-    private MenuItem trees;
-    private List<Map<String, String>> data;
+    interface Binder extends UiBinder<Widget, DataPanelViewImpl> {
+    }
+
+    private static Binder uiBinder = GWT.create(Binder.class);
+
     private DataPanelPresenter presenter;
 
+    @UiField MenuBar visbar;
+    @UiField MenuItem generate;
+    @UiField MenuBar treebar;
+    @UiField MenuItem trees;
+    @UiField DataGrid<Map<String, String>> dataTable;
+
     public DataPanelViewImpl() {
+        initWidget(uiBinder.createAndBindUi(this));
+        dataTable.setKeyboardSelectionPolicy(HasKeyboardSelectionPolicy.KeyboardSelectionPolicy.DISABLED);
     }
 
     @Override
-    public void buildUi() {
-        dataPanel = new FlowPanel();
-        if (data.isEmpty()) {
-            dataPanel.add(new HTML("No Data Found"));
-        } else {
-            visbar = new MenuBar(false);
-            MenuItem generate = new MenuItem("Generate Forest", presenter.getGenerateCommand());
-            visbar.addItem(generate);
-            dataPanel.add(visbar);
-
-            DataGrid<Map<String, String>> cellTable = new DataGrid<Map<String, String>>();
-            for (final String key : data.get(0).keySet()) {
-                cellTable.addColumn(new TextColumn<Map<String, String>>() {
-                    @Override
-                    public String getValue(Map<String, String> row) {
-                        return row.get(key);
-                    }
-                }, key);
-            }
-            cellTable.setSize("100%", Window.getClientHeight() - 40 - 100 + "px");
-            cellTable.setKeyboardSelectionPolicy(HasKeyboardSelectionPolicy.KeyboardSelectionPolicy.DISABLED);
-            cellTable.setRowData(data);
-            dataPanel.add(cellTable);
-        }
-        initWidget(dataPanel);
+    public void setGenerateCommand(ScheduledCommand command) {
+        generate.setScheduledCommand(command);
     }
 
     @Override
@@ -77,21 +65,17 @@ public class DataPanelViewImpl extends Composite implements DataPanelView {
 
     @Override
     public void forestStarted() {
-        visbar.clearItems();
-        treebar = new MenuBar(true);
-        trees = new MenuItem("Trees", treebar);
-        trees.setEnabled(false);
-        visbar.addItem(trees);
+        treebar.clearItems();
+        generate.setEnabled(false);
     }
 
     @Override
     public void setForestStatus(int done, int total) {
-        trees.setHTML("Trees: Generated " + done + " of " + total);
+        //trees.setHTML("Trees: Generated " + done + " of " + total);
     }
 
     @Override
     public void forestFinish(int count) {
-        trees.setHTML("Trees");
         for (int i = 0; i < count; i++) {
             final int index = i;
             treebar.addItem(String.valueOf(i + 1), presenter.getTreeVisCommand(index));
@@ -100,7 +84,19 @@ public class DataPanelViewImpl extends Composite implements DataPanelView {
     }
 
     @Override
+    public void setColumns(Set<String> columns) {
+        for (final String key : columns) {
+            dataTable.addColumn(new TextColumn<Map<String, String>>() {
+                @Override
+                public String getValue(Map<String, String> row) {
+                    return row.get(key);
+                }
+            }, key);
+        }
+    }
+
+    @Override
     public void setData(List<Map<String, String>> data) {
-        this.data = data;
+        dataTable.setRowData(data);
     }
 }

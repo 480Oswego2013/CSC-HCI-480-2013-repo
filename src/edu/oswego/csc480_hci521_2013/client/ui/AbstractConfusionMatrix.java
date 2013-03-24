@@ -99,7 +99,7 @@ public abstract class AbstractConfusionMatrix extends Composite implements Confu
         for (int x = 0; x < headers.size(); x++) {
             matrixTable.setText(0, x + 1, headers.get(x));
         }
-        matrixTable.setText(0, headers.size() + 1, "Error");
+        matrixTable.setText(0, headers.size() + 1, "Errors");
 
         for (int x = 0; x < headers.size(); x++) {
             matrixTable.setText(x + 1, 0, headers.get(x));
@@ -124,6 +124,26 @@ public abstract class AbstractConfusionMatrix extends Composite implements Confu
                             i + 1, j + 1, getStyle().cfmatrixHighlight());
                 }
             }
+        }
+    }
+
+    @Override
+    public void setErrors(List<String> errors) {
+        int col = getMatrixTable().getCellCount(0) - 1;
+        int row = 1;
+        for (String e : errors) {
+            getMatrixTable().setText(row, col, e);
+            row++;
+        }
+    }
+
+    @Override
+    public void setTotals(List<String> totals) {
+        int col = 1;
+        int row = getMatrixTable().getRowCount() - 1;
+        for (String t : totals) {
+            getMatrixTable().setText(row, col, t);
+            col++;
         }
     }
 }

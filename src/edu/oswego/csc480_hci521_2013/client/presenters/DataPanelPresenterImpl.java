@@ -14,8 +14,8 @@
 
 package edu.oswego.csc480_hci521_2013.client.presenters;
 
+import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.event.shared.EventBus;
-import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import edu.oswego.csc480_hci521_2013.client.events.RFGenerateEvent;
 import edu.oswego.csc480_hci521_2013.client.events.RFProgressEvent;
@@ -32,7 +32,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.text.View;
 
 /**
  *
@@ -53,8 +52,9 @@ public class DataPanelPresenterImpl implements DataPanelPresenter {
         this.datakey = datakey;
 
         view.setPresenter(this);
+        view.setGenerateCommand(getGenerateCommand());
+        view.setColumns(data.get(0).keySet());
         view.setData(data);
-        view.buildUi();
         bind();
     }
 
@@ -89,9 +89,8 @@ public class DataPanelPresenterImpl implements DataPanelPresenter {
         return false;
     }
 
-    @Override
-    public Command getGenerateCommand() {
-        return new Command() {
+    ScheduledCommand getGenerateCommand() {
+        return new ScheduledCommand() {
             @Override
             public void execute() {
                 logger.log(Level.INFO, "Generating Forest");
@@ -118,8 +117,8 @@ public class DataPanelPresenterImpl implements DataPanelPresenter {
     }
 
     @Override
-    public Command getTreeVisCommand(final int index) {
-        return new Command() {
+    public ScheduledCommand getTreeVisCommand(final int index) {
+        return new ScheduledCommand() {
             @Override
             public void execute()
             {

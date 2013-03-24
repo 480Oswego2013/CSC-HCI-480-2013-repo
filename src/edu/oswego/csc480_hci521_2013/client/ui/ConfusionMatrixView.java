@@ -43,6 +43,10 @@ public interface ConfusionMatrixView extends IsWidget {
 
     void setMatrixScores(List<List<Integer>> scores);
 
+    void setErrors(List<String> errors);
+
+    void setTotals(List<String> totals);
+
     void setTreesGenerated(String treesGenerated);
 
     void setLeavesMin(String leavesMin);

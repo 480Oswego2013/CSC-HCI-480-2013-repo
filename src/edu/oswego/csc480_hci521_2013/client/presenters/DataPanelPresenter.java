@@ -14,7 +14,7 @@
 
 package edu.oswego.csc480_hci521_2013.client.presenters;
 
-import com.google.gwt.user.client.Command;
+import com.google.gwt.core.client.Scheduler;
 import edu.oswego.csc480_hci521_2013.client.ui.DataPanelView;
 
 /**
@@ -22,9 +22,7 @@ import edu.oswego.csc480_hci521_2013.client.ui.DataPanelView;
  */
 public interface DataPanelPresenter {
 
-    Command getGenerateCommand();
-
-    Command getTreeVisCommand(int index);
+    Scheduler.ScheduledCommand getTreeVisCommand(int index);
 
     DataPanelView getView();
 }
