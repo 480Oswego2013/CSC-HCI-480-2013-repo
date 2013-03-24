@@ -4,9 +4,6 @@
     xmlns:gwt='urn:import:com.google.gwt.user.client.ui'
     xmlns:cv='urn:import:com.google.gwt.user.cellview.client'>
 
-    <ui:style>
-    </ui:style>
-
     <gwt:HTMLPanel>
         <gwt:MenuBar ui:field='visbar' vertical="false">
             <gwt:MenuItem ui:field='generate'>Generate Forest</gwt:MenuItem>

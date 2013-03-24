@@ -64,9 +64,6 @@ public class DoublePanelActivity extends AbstractActivity implements DoublePanel
 
 	@Override
 	public void start(AcceptsOneWidget containerWidget, EventBus eventBus) {
-		this.view.setPresenter(this);
-		this.view.buildGui();
-
 		containerWidget.setWidget(this.view.asWidget());
         bind();
         logger.log(Level.INFO, "DoublePanelActivity started");

@@ -14,41 +14,36 @@
 
 package edu.oswego.csc480_hci521_2013.client.ui;
 
-import com.google.gwt.dom.client.Style;
-import com.google.gwt.user.cellview.client.DataGrid;
-import com.google.gwt.user.cellview.client.HasKeyboardSelectionPolicy;
-import java.util.Arrays;
-
-import com.google.gwt.user.cellview.client.TextColumn;
-import com.google.gwt.user.client.Window;
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.SplitLayoutPanel;
 import com.google.gwt.user.client.ui.TabLayoutPanel;
-import com.google.inject.Inject;
-import edu.oswego.csc480_hci521_2013.client.presenters.DoublePanelPresenter;
-import edu.oswego.csc480_hci521_2013.client.services.H2OServiceAsync;
+import com.google.gwt.user.client.ui.Widget;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class DoublePanelViewImpl extends Composite implements DoublePanelView
 {
-    private DoublePanelPresenter presenter;
+    interface Binder extends UiBinder<Widget, DoublePanelViewImpl> {
+    }
+
+    private static Binder uiBinder = GWT.create(Binder.class);
     static final Logger logger = Logger.getLogger(DoublePanelViewImpl.class.getName());
-    private final H2OServiceAsync service;
-    TabLayoutPanel tpData;
-    TabLayoutPanel tpVis;
-    int imgNum = 0;
+
+    @UiField TabLayoutPanel tpData;
+    @UiField TabLayoutPanel tpVis;
 
     Label dummyDataLabel = new Label("dummy tab", false);
     Label dummyVisLabel = new Label("dummy tab", false);
 
-    @Inject
-    public DoublePanelViewImpl(H2OServiceAsync service) {
-        this.service = service;
+    public DoublePanelViewImpl() {
+        initWidget(uiBinder.createAndBindUi(this));
+
+        tpData.getTabWidget(0).getParent().setVisible(false);
+        tpVis.getTabWidget(0).getParent().setVisible(false);
     }
 
     @Override
@@ -63,27 +58,6 @@ public class DoublePanelViewImpl extends Composite implements DoublePanelView
         }
     }
 
-    private void addDummyDataTab()
-    {
-        DataGrid<String> cellTable = new DataGrid<String>();
-        cellTable.setKeyboardSelectionPolicy(HasKeyboardSelectionPolicy.KeyboardSelectionPolicy.DISABLED);
-        cellTable.setSize("100%", Window.getClientHeight() - 40 - 100 + "px");
-        for (int i = 0; i < 5; i++) {
-            cellTable.addColumn(new TextColumn<String>()
-            {
-                @Override
-                public String getValue(String object)
-                {
-                    return object;
-                }
-            }, "Column " + i);
-        }
-        cellTable.setRowData(Arrays.asList(new String[] {"Data1", "Data2",
-            "Data3", "Data4", "Data5", "Data6", "Data7", "Data8", "Data9",
-            "Data10", "Data11", "Data12", "Data13", "Data14", "Data15"}));
-        tpData.add(cellTable, dummyDataLabel);
-    }
-
     @Override
     public void addVisTab(IsWidget panel, String title) {
         logger.log(Level.INFO, "adding vis tab: " + title);
@@ -93,57 +67,5 @@ public class DoublePanelViewImpl extends Composite implements DoublePanelView
             tpVis.remove(0);
             dummyVisLabel = null;
         }
-    }
-
-    private void addDummyVisTab()
-    {
-        FlowPanel panel = new FlowPanel();
-        Image img = new Image("img0.jpg");
-        img.setSize("500px", "300px");
-        panel.add(img);
-        tpVis.add(panel, dummyVisLabel);
-    }
-
-    @Override
-    public void setPresenter(DoublePanelPresenter presenter)
-    {
-        this.presenter = presenter;
-    }
-
-    @Override
-    public void buildGui()
-    {
-        SplitLayoutPanel mainPanel = new SplitLayoutPanel();
-        mainPanel.getElement().getStyle().setFloat(Style.Float.LEFT);
-        mainPanel.setSize("100%", "100%");
-
-        FlowPanel leftPanel = new FlowPanel();
-
-        FlowPanel rightPanel = new FlowPanel();
-        mainPanel.addEast(rightPanel, (Window.getClientWidth())/2);
-        // NOTE: center panel must be added last.
-        mainPanel.add(leftPanel);
-
-        Label lblData = new Label("Data");
-        leftPanel.add(lblData);
-
-        Label lblVis = new Label("Visualization");
-        rightPanel.add(lblVis);
-
-        tpData = new TabLayoutPanel(2.5, Style.Unit.EM);
-        tpData.setSize("100%", "100%");
-        leftPanel.add(tpData);
-
-        tpVis = new TabLayoutPanel(5, Style.Unit.EM);
-        tpVis.setSize("100%", "100%");
-        rightPanel.add(tpVis);
-
-        // FIXME: if we dont start with tabs the tab panel does not work...
-        addDummyDataTab();
-        addDummyVisTab();
-        tpData.selectTab(0);
-        tpVis.selectTab(0);
-
-        initWidget(mainPanel);
     }
 }
