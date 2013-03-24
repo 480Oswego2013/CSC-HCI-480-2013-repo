@@ -36,7 +36,7 @@ import edu.oswego.csc480_hci521_2013.client.services.H2OServiceAsync;
 import edu.oswego.csc480_hci521_2013.client.ui.ConfusionMatrixViewImpl;
 import edu.oswego.csc480_hci521_2013.client.ui.DataPanelView;
 import edu.oswego.csc480_hci521_2013.client.ui.DataPanelViewImpl;
-import edu.oswego.csc480_hci521_2013.client.ui.DoublePanelView;
+import edu.oswego.csc480_hci521_2013.client.ui.DoublePanelViewImpl;
 import edu.oswego.csc480_hci521_2013.client.ui.PanelView;
 import edu.oswego.csc480_hci521_2013.client.ui.TreePanel;
 import edu.oswego.csc480_hci521_2013.shared.h2o.json.RF;
@@ -142,7 +142,7 @@ public class DoublePanelActivity extends AbstractActivity implements PanelView.P
             public void onSuccess(RFTreeView treeview) {
                 logger.log(Level.INFO, treeview.toString());
                 // TODO: inject this here...
-                DoublePanelView panelView = (DoublePanelView)view;
+                DoublePanelViewImpl panelView = (DoublePanelViewImpl)view;
                 panelView.addVisTab(
                     new TreePanel(treeview, datakey, modelkey, tree),
                     datakey + "<br>" + modelkey + "<br>tree " + (tree + 1)
@@ -155,7 +155,7 @@ public class DoublePanelActivity extends AbstractActivity implements PanelView.P
     public void addConfusionMatrixTab(RF rf) {
         ConfusionMatrixPresenter presenter = new ConfusionMatrixPresenterImpl(new ConfusionMatrixViewImpl(), eventBus, rf);
         String title = "Confusion Matrix<br>" + rf.getDataKey() + "<br>" + rf.getModelKey();
-        DoublePanelView panelView = (DoublePanelView)view;
+        DoublePanelViewImpl panelView = (DoublePanelViewImpl)view;
                 panelView.addVisTab(presenter.getView(), title);
     }
 }

@@ -33,10 +33,10 @@ import edu.oswego.csc480_hci521_2013.client.services.H2OServiceAsync;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class DoublePanelView extends Composite implements PanelView
+public class DoublePanelViewImpl extends Composite implements PanelView
 {
     private Presenter presenter;
-    static final Logger logger = Logger.getLogger(DoublePanelView.class.getName());
+    static final Logger logger = Logger.getLogger(DoublePanelViewImpl.class.getName());
     private final H2OServiceAsync service;
     TabLayoutPanel tpData;
     TabLayoutPanel tpVis;
@@ -46,7 +46,7 @@ public class DoublePanelView extends Composite implements PanelView
     Label dummyVisLabel = new Label("dummy tab", false);
 
     @Inject
-    public DoublePanelView(H2OServiceAsync service) {
+    public DoublePanelViewImpl(H2OServiceAsync service) {
         this.service = service;
     }
 
