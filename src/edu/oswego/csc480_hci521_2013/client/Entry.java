@@ -60,7 +60,7 @@ public class Entry implements EntryPoint {
 		ActivityManager mainActivityManager = new ActivityManager(mainActivityMapper, eventBus);
 		mainActivityManager.setDisplay(menuPanel);
 
-        DoublePanelView panelView = injector.getPanelView();
+        DoublePanelView panelView = injector.getDoublePanelView();
         DoublePanelActivity panelActivity = new DoublePanelActivity(panelView, places, eventBus, injector.getH2OServiceAsync());
 		ActivityMapper panelActivityMapper = new PanelActivityMapper(panelActivity);
 		ActivityManager panelActivityManager = new ActivityManager(panelActivityMapper, eventBus);

@@ -29,7 +29,7 @@ public interface AppGinjector extends Ginjector {
 	EventBus getEventBus();
     ClientFactory getClientFactory();
     MenuView getMenuView();
-    DoublePanelView getPanelView();
+    DoublePanelView getDoublePanelView();
     MenuActivity getMenuActivity();
     PlaceController getPlaceController();
     H2OServiceAsync getH2OServiceAsync();
