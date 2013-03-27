@@ -24,6 +24,7 @@ import edu.oswego.csc480_hci521_2013.client.activity.mapper.EastPanelActivityMap
 import edu.oswego.csc480_hci521_2013.client.activity.mapper.MenuActivityMapper;
 import edu.oswego.csc480_hci521_2013.client.activity.mapper.PopoutPanelActivityMapper;
 import edu.oswego.csc480_hci521_2013.client.activity.mapper.WestPanelActivityMapper;
+import edu.oswego.csc480_hci521_2013.client.presenters.DataPanelPresenter;
 import edu.oswego.csc480_hci521_2013.client.services.H2OServiceAsync;
 import edu.oswego.csc480_hci521_2013.client.services.H2OServiceProvider;
 import edu.oswego.csc480_hci521_2013.client.ui.BasicMenuView;
@@ -36,6 +37,7 @@ public class AppGinModule extends AbstractGinModule {
     protected void configure() {
         bind(EventBus.class).to(SimpleEventBus.class).in(Singleton.class);
         bind(MenuView.class).to(BasicMenuView.class).in(Singleton.class);
+        bind(DataPanelPresenter.class).to(DataPanelPresenterImpl.class).in(Singleton.class);
         bind(MenuActivity.class);
         bind(MenuActivityMapper.class);
         bind(WestPanelActivityMapper.class);

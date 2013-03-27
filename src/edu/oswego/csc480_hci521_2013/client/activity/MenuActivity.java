@@ -1,6 +1,5 @@
 package edu.oswego.csc480_hci521_2013.client.activity;
 
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.google.gwt.activity.shared.AbstractActivity;
@@ -10,7 +9,6 @@ import com.google.gwt.place.shared.PlaceController;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 
-import edu.oswego.csc480_hci521_2013.client.ClientFactory;
 import edu.oswego.csc480_hci521_2013.client.place.DoublePanelPlace;
 import edu.oswego.csc480_hci521_2013.client.ui.MenuView;
 

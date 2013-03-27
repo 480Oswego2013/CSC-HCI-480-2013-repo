@@ -36,7 +36,6 @@ public class DataPanelActivity extends AbstractPanelActivity implements
 
 	static final Logger logger = Logger.getLogger(DataPanelActivity.class
 			.getName());
-	private ClientFactory clientFactory;
 	private RF randomForest;
     private PlaceController places;
 	EventBus eventBus;
@@ -233,7 +232,7 @@ public class DataPanelActivity extends AbstractPanelActivity implements
 	}
 
 	public void addDataTab(final String dataKey) {
-		clientFactory.getH2OService().getParsedData(dataKey,
+		this.h2oService.getParsedData(dataKey,
 				new AsyncCallback<List<Map<String, String>>>() {
 					@Override
 					public void onFailure(Throwable caught) {
@@ -284,7 +283,7 @@ public class DataPanelActivity extends AbstractPanelActivity implements
 	}
 	
 	public void goTo(Place place) {
-		clientFactory.getPlaceController().goTo(place);
+		this.places.goTo(place);
 	}
 
 }
