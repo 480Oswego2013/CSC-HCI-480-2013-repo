@@ -37,7 +37,6 @@ public class AppGinModule extends AbstractGinModule {
     protected void configure() {
         bind(EventBus.class).to(SimpleEventBus.class).in(Singleton.class);
         bind(MenuView.class).to(BasicMenuView.class).in(Singleton.class);
-        bind(DataPanelPresenter.class).to(DataPanelPresenterImpl.class).in(Singleton.class);
         bind(MenuActivity.class);
         bind(MenuActivityMapper.class);
         bind(WestPanelActivityMapper.class);

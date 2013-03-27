@@ -34,22 +34,26 @@ public class Entry implements EntryPoint {
 		init();
 		
 		// Create ActivityManager for north panel (menu)
-		ActivityMapper northActivityMapper = injector.getMenuActivityMapper();
+		MenuActivityMapper northActivityMapper = injector.getMenuActivityMapper();
+        northActivityMapper.setPlaceController(placeController);
 		ActivityManager northActivityManager = new ActivityManager(northActivityMapper, eventBus);
 		northActivityManager.setDisplay(northPanel);
 		
 		// Create ActivityManager for west panel (data)
-		ActivityMapper westActivityMapper = injector.getWestPanelActivityMapper();
+		WestPanelActivityMapper westActivityMapper = injector.getWestPanelActivityMapper();
+        westActivityMapper.setPlaceController(placeController);
 		ActivityManager westActivityManager = new ActivityManager(westActivityMapper, eventBus);
 		westActivityManager.setDisplay(westPanel);
 		
 		// Create ActivityManager for east panel (visualization)
-		ActivityMapper eastActivityMapper = injector.getEastPanelActivityMapper();
+		EastPanelActivityMapper eastActivityMapper = injector.getEastPanelActivityMapper();
+        eastActivityMapper.setPlaceController(placeController);
 		ActivityManager eastActivityManager = new ActivityManager(eastActivityMapper, eventBus);
 		eastActivityManager.setDisplay(eastPanel);
 		
 		// Create ActivityManager for popout panel (only visible with specific place)
-		ActivityMapper popoutActivityMapper = injector.getPopoutPanelActivityMapper();
+		PopoutPanelActivityMapper popoutActivityMapper = injector.getPopoutPanelActivityMapper();
+        popoutActivityMapper.setPlaceController(placeController);
 		ActivityManager popoutActivityManager = new ActivityManager(popoutActivityMapper, eventBus);
 		popoutActivityManager.setDisplay(popoutPanel);
 		

@@ -29,13 +29,16 @@ public class PopoutPanelActivityMapper implements ActivityMapper {
     private PlaceController places;
     
     @Inject
-	public PopoutPanelActivityMapper(EventBus eventBus, H2OServiceAsync service, DataPanelPresenter.View panelView, PlaceController places) {
+	public PopoutPanelActivityMapper(EventBus eventBus, H2OServiceAsync service, DataPanelPresenter.View panelView) {
 		this.eventBus = eventBus;
         this.service = service;
-        this.places = places;
         this.panelView = panelView;
 	}
 
+    public void setPlaceController(PlaceController places) {
+        this.places = places;
+    }
+    
 	@Override
 	public Activity getActivity(Place place) {
 	    

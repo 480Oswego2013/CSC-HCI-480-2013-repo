@@ -19,11 +19,14 @@ public class MenuActivityMapper implements ActivityMapper {
     private MenuView menuView;
 
     @Inject
-	public MenuActivityMapper(PlaceController places, MenuView menuView) {
-		this.places = places;
-        this.menuView = menuView;
+	public MenuActivityMapper(MenuView menuView) {
+		this.menuView = menuView;
 	}
 
+    public void setPlaceController(PlaceController places) {
+        this.places = places;
+    }
+    
 	@Override
 	public Activity getActivity(Place place) {
 		
