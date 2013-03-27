@@ -21,10 +21,10 @@ import edu.oswego.csc480_hci521_2013.client.place.DoublePanelPlace;
 
 public class Entry implements EntryPoint {
 
-	private static AppPlaceHistoryMapper historyMapper;
+	private final AppGinjector injector = GWT.create(AppGinjector.class);
+    private static AppPlaceHistoryMapper historyMapper;
 	private static final Place defaultPlace = new DoublePanelPlace();
 	
-	private ClientFactory clientFactory;
 	private EventBus eventBus;
 	private PlaceController placeController;
 	private SimplePanel northPanel, eastPanel, westPanel, popoutPanel;
@@ -34,22 +34,22 @@ public class Entry implements EntryPoint {
 		init();
 		
 		// Create ActivityManager for north panel (menu)
-		ActivityMapper northActivityMapper = new MenuActivityMapper(clientFactory);
+		ActivityMapper northActivityMapper = injector.getMenuActivityMapper();
 		ActivityManager northActivityManager = new ActivityManager(northActivityMapper, eventBus);
 		northActivityManager.setDisplay(northPanel);
 		
 		// Create ActivityManager for west panel (data)
-		ActivityMapper westActivityMapper = new WestPanelActivityMapper(clientFactory);
+		ActivityMapper westActivityMapper = injector.getWestPanelActivityMapper();
 		ActivityManager westActivityManager = new ActivityManager(westActivityMapper, eventBus);
 		westActivityManager.setDisplay(westPanel);
 		
 		// Create ActivityManager for east panel (visualization)
-		ActivityMapper eastActivityMapper = new EastPanelActivityMapper(clientFactory);
+		ActivityMapper eastActivityMapper = injector.getEastPanelActivityMapper();
 		ActivityManager eastActivityManager = new ActivityManager(eastActivityMapper, eventBus);
 		eastActivityManager.setDisplay(eastPanel);
 		
 		// Create ActivityManager for popout panel (only visible with specific place)
-		ActivityMapper popoutActivityMapper = new PopoutPanelActivityMapper(clientFactory);
+		ActivityMapper popoutActivityMapper = injector.getPopoutPanelActivityMapper();
 		ActivityManager popoutActivityManager = new ActivityManager(popoutActivityMapper, eventBus);
 		popoutActivityManager.setDisplay(popoutPanel);
 		
@@ -70,9 +70,9 @@ public class Entry implements EntryPoint {
 	
 	private void init() {
 		// Create ClientFactory using deferred binding
-		clientFactory = GWT.create(ClientFactory.class);
-		eventBus = clientFactory.getEventBus();
-		placeController = clientFactory.getPlaceController();
+		
+		eventBus = this.injector.getEventBus();
+		placeController = new PlaceController(eventBus);
 		
 		northPanel = new SimplePanel();
 		eastPanel = new SimplePanel();

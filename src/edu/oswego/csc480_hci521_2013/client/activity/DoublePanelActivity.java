@@ -31,16 +31,21 @@
 //public class DoublePanelActivity extends AbstractActivity implements PanelView.Presenter {
 //
 //    static final Logger logger = Logger.getLogger(DoublePanelActivity.class.getName());
-//	private ClientFactory clientFactory;
+//  private PanelView panelView;
+//  private EventBus eventBus;
+//  private H2OServiceAsync service;
+//  private PlaceController places;
 //
-//	public DoublePanelActivity(DoublePanelPlace place, ClientFactory clientFactory) {
-//		this.clientFactory = clientFactory;
+//	public DoublePanelActivity(DoublePanelPlace place, PanelView panelView, EventBus eventBus, PlaceController places, H2OServiceAsync service) {
+//      this.panelView = panelView;
+//      this.eventBus = eventBus;
+//      this.places = places;
+//      this.service = service;
 //	}
 //
 //	@Override
 //	public void start(AcceptsOneWidget containerWidget, EventBus eventBus) {
-//		PanelView panelView = clientFactory.getDoublePanelView();
-//		panelView.setPresenter(this);
+//		this.panelView.setPresenter(this);
 //
 //		containerWidget.setWidget(panelView.asWidget());
 //        bind();
@@ -53,20 +58,19 @@
 //	}
 //
 //    private void bind() {
-//        EventBus eventbus = clientFactory.getEventBus();
-//        eventbus.addHandler(InspectDataEvent.TYPE, new InspectDataEventHandler() {
+//        eventBus.addHandler(InspectDataEvent.TYPE, new InspectDataEventHandler() {
 //            @Override
 //            public void onViewData(InspectDataEvent e) {
 //                addDataTab(e.getName());
 //            }
 //        });
-//        eventbus.addHandler(TreeVisEvent.TYPE, new TreeVisEventHandler() {
+//        eventBus.addHandler(TreeVisEvent.TYPE, new TreeVisEventHandler() {
 //            @Override
 //            public void onViewData(TreeVisEvent e) {
 //                addVisTab(e.getData().getDataKey(), e.getData().getModelKey(), e.getIndex());
 //            }
 //        });
-//        eventbus.addHandler(RFGenerateEvent.TYPE, new RFGenerateEventHandler() {
+//        eventBus.addHandler(RFGenerateEvent.TYPE, new RFGenerateEventHandler() {
 //            @Override
 //            public void onStart(RFGenerateEvent e) {
 //                addConfusionMatrixTab(e.getData());
@@ -83,7 +87,7 @@
 //
 //    @Override
 //    public void addDataTab(final String datakey) {
-//        clientFactory.getH2OService().getParsedData(datakey, new AsyncCallback<List<Map<String, String>>>() {
+//        service.getParsedData(datakey, new AsyncCallback<List<Map<String, String>>>() {
 //            @Override
 //            public void onFailure(Throwable caught)
 //            {
@@ -97,19 +101,19 @@
 //                // TODO: inject this...
 //                DataPanelPresenter.TabPanelView view = new DataPanelViewImpl_old(result);
 //                DataPanelPresenter presenter = new DataPanelPresenterImpl(
-//                    clientFactory.getEventBus(),
+//                    eventBus,
 //                    view,
-//                    clientFactory.getH2OService(),
+//                    service,
 //                    datakey
 //                );
-//                clientFactory.getDoublePanelView().addDataTab(view, datakey);
+//                panelView.addDataTab(view, datakey);
 //            }
 //        });
 //    }
 //
 //    @Override
 //    public void addVisTab(final String datakey, final String modelkey, final int tree) {
-//        clientFactory.getH2OService().getTreeView(datakey, modelkey, tree, new AsyncCallback<RFTreeView>() {
+//        service.getTreeView(datakey, modelkey, tree, new AsyncCallback<RFTreeView>() {
 //            @Override
 //            public void onFailure(Throwable thrwbl) {
 //                logger.log(Level.SEVERE, thrwbl.toString());
@@ -120,7 +124,7 @@
 //            public void onSuccess(RFTreeView treeview) {
 //                logger.log(Level.INFO, treeview.toString());
 //                // TODO: inject this here...
-//                clientFactory.getDoublePanelView().addVisTab(
+//                panelView.addVisTab(
 //                    new TreePanel(treeview, datakey, modelkey, tree),
 //                    datakey + "<br>" + modelkey + "<br>tree " + (tree + 1)
 //                );
@@ -131,8 +135,12 @@
 //    public void addConfusionMatrixTab(RF rf) {
 //        // TODO: inject these here...
 //        ConfusionMatrixPresenter.View view = new ConfusionMatrixViewImpl();
-//        ConfusionMatrixPresenter presenter = new ConfusionMatrixPresenterImpl(view, clientFactory.getEventBus(), rf);
+//        ConfusionMatrixPresenter presenter = new ConfusionMatrixPresenterImpl(view, eventBus, rf);
 //        String title = "Confusion Matrix<br>" + rf.getDataKey() + "<br>" + rf.getModelKey();
 //        clientFactory.getDoublePanelView().addVisTab(view, title);
 //    }
 //}
+
+import com.google.gwt.place.shared.PlaceController;
+import edu.oswego.csc480_hci521_2013.client.services.H2OServiceAsync;
+

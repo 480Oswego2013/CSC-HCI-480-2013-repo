@@ -5,23 +5,33 @@ import java.util.logging.Logger;
 
 import com.google.gwt.activity.shared.Activity;
 import com.google.gwt.activity.shared.ActivityMapper;
+import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.place.shared.Place;
+import com.google.gwt.place.shared.PlaceController;
 
 import edu.oswego.csc480_hci521_2013.client.ClientFactory;
 import edu.oswego.csc480_hci521_2013.client.activity.DataPanelActivity;
 import edu.oswego.csc480_hci521_2013.client.place.DoublePanelPlace.Location;
 import edu.oswego.csc480_hci521_2013.client.place.PopoutPanelPlace;
 import edu.oswego.csc480_hci521_2013.client.place.PopoutPanelPlace.PanelType;
+import edu.oswego.csc480_hci521_2013.client.presenters.DataPanelPresenter;
+import edu.oswego.csc480_hci521_2013.client.services.H2OServiceAsync;
 
 public class PopoutPanelActivityMapper implements ActivityMapper {
 
     static final Logger logger = Logger.getLogger(PopoutPanelActivityMapper.class.getName());
     
-    private ClientFactory clientFactory;
-	private Activity currentActivity;
-
-	public PopoutPanelActivityMapper(ClientFactory clientFactory) {
-		this.clientFactory = clientFactory;
+    private Activity currentActivity;
+    private EventBus eventBus;
+    private H2OServiceAsync service;
+    private DataPanelPresenter.View panelView;
+    private PlaceController places;
+    
+	public PopoutPanelActivityMapper(EventBus eventBus, H2OServiceAsync service, DataPanelPresenter.View panelView, PlaceController places) {
+		this.eventBus = eventBus;
+        this.service = service;
+        this.places = places;
+        this.panelView = panelView;
 	}
 
 	@Override
@@ -37,7 +47,7 @@ public class PopoutPanelActivityMapper implements ActivityMapper {
 			
 			// Data panel
 			if(type == PanelType.DATA) {
-				currentActivity = new DataPanelActivity(ppp, clientFactory);
+				currentActivity = new DataPanelActivity(ppp, eventBus, service, panelView, places);
 //				if(currentActivity == null)
 //					currentActivity = new DataPanelActivity(ppp, clientFactory);
 //				else
@@ -47,10 +57,10 @@ public class PopoutPanelActivityMapper implements ActivityMapper {
 			// Vis panel
 			} else if(type == PanelType.VIS) {
 				if(currentActivity == null)
-					currentActivity = new DataPanelActivity(ppp, clientFactory);
+					currentActivity = new DataPanelActivity(ppp, eventBus, service, panelView, places);
 				else
 					currentActivity = currentActivity.getClass() == DataPanelActivity.class ?
-							currentActivity : new DataPanelActivity(ppp, clientFactory);
+							currentActivity : new DataPanelActivity(ppp, eventBus, service, panelView, places);
 			}
 			
 		} else {

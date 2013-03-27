@@ -9,6 +9,7 @@ import java.util.logging.Logger;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.place.shared.Place;
+import com.google.gwt.place.shared.PlaceController;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
@@ -37,7 +38,7 @@ public class DataPanelActivity extends AbstractPanelActivity implements
 			.getName());
 	private ClientFactory clientFactory;
 	private RF randomForest;
-
+    private PlaceController places;
 	EventBus eventBus;
 	View view;
 	H2OServiceAsync h2oService;
@@ -45,21 +46,19 @@ public class DataPanelActivity extends AbstractPanelActivity implements
 	String[] dataKeys;
 	boolean isPopout = false;
 
-	public DataPanelActivity(Location loc, DoublePanelPlace place,
-			ClientFactory clientFactory) {
+	public DataPanelActivity(Location loc, DoublePanelPlace place, EventBus eventBus, H2OServiceAsync service, View panelView, PlaceController places) {
 		super(loc);
-		this.clientFactory = clientFactory;
-
-		eventBus = clientFactory.getEventBus();
-		h2oService = clientFactory.getH2OService();
+        this.view = panelView;
+		this.eventBus = eventBus;
+		this.h2oService = service;
+        this.places = places;
 		dataKeys = place.getDataKeys();
 	}
 	
-	public DataPanelActivity(PopoutPanelPlace place, ClientFactory clientFactory) {
-        	this.clientFactory = clientFactory;
-        
-        	eventBus = clientFactory.getEventBus();
-        	h2oService = clientFactory.getH2OService();
+	public DataPanelActivity(PopoutPanelPlace place, EventBus eventBus, H2OServiceAsync service, View panelView, PlaceController places) {
+        	this.eventBus = eventBus;
+        	this.h2oService = service;
+            this.places = places;
         	dataKeys = new String[] {place.getDataKey()};
         	isPopout = true;
         }
@@ -68,8 +67,7 @@ public class DataPanelActivity extends AbstractPanelActivity implements
 
 	@Override
 	public void start(AcceptsOneWidget panel, EventBus eventBus) {
-		view = clientFactory.getDataPanelView();
-		view.setPresenter(this);
+		this.view.setPresenter(this);
 		panel.setWidget(view);
 		bind();
 		
@@ -179,7 +177,7 @@ public class DataPanelActivity extends AbstractPanelActivity implements
 		return new Command() {
 			@Override
 			public void execute() {
-				DoublePanelPlace place = ((DoublePanelPlace)clientFactory.getPlaceController().getWhere()).clone();
+				DoublePanelPlace place = ((DoublePanelPlace)places.getWhere()).clone();
 				place.removeDataKey(view.getActiveTabIndex());
 				goTo(place);
 			}
@@ -189,7 +187,7 @@ public class DataPanelActivity extends AbstractPanelActivity implements
 	// Utility methods
 
 	private void bind() {
-		EventBus eventbus = clientFactory.getEventBus();
+		
 //		eventbus.addHandler(InspectDataEvent.TYPE,
 //				new InspectDataEventHandler() {
 //					@Override
@@ -203,7 +201,7 @@ public class DataPanelActivity extends AbstractPanelActivity implements
 //				// addConfusionMatrixTab(e.getData());
 //			}
 //		});
-		eventbus.addHandler(RFProgressEvent.TYPE, new RFProgressEventHandler() {
+		eventBus.addHandler(RFProgressEvent.TYPE, new RFProgressEventHandler() {
 			@Override
 			public void onDataUpdate(RFProgressEvent e) {
 				if (isOurData(e.getData())) {

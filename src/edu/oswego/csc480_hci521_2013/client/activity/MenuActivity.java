@@ -6,6 +6,7 @@ import java.util.logging.Logger;
 import com.google.gwt.activity.shared.AbstractActivity;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.place.shared.Place;
+import com.google.gwt.place.shared.PlaceController;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 
@@ -17,18 +18,19 @@ public class MenuActivity extends AbstractActivity implements MenuView.Presenter
 
 	static final Logger logger = Logger.getLogger(MenuActivity.class.getName());
 	
-	private ClientFactory clientFactory;
 	private DoublePanelPlace place;
-
-	public MenuActivity(DoublePanelPlace place, ClientFactory clientFactory) {
-		this.clientFactory = clientFactory;
+    private PlaceController places;
+    private MenuView menuView;
+    
+	public MenuActivity(DoublePanelPlace place, PlaceController places, MenuView menuView) {
 		this.place = place;
+        this.places = places;
+        this.menuView = menuView;
 	}
 
 	@Override
 	public void start(AcceptsOneWidget containerWidget, EventBus eventBus) {
-		MenuView menuView = clientFactory.getMainView();
-		menuView.setPresenter(this);
+		this.menuView.setPresenter(this);
 
 		containerWidget.setWidget(menuView.asWidget());
 	}
@@ -39,12 +41,11 @@ public class MenuActivity extends AbstractActivity implements MenuView.Presenter
 		return null;
 	}
 
-
-	// Presenter methods
+    // Presenter methods
 
 	@Override
 	public void goTo(Place place) {
-		clientFactory.getPlaceController().goTo(place);
+		this.places.goTo(place);
 	}
 
 	@Override
@@ -52,7 +53,7 @@ public class MenuActivity extends AbstractActivity implements MenuView.Presenter
 		return new Command() {
 			@Override
 			public void execute() {
-				place = ((DoublePanelPlace)clientFactory.getPlaceController().getWhere()).clone();
+				place = ((DoublePanelPlace)places.getWhere()).clone();
 				place.addDataKey(value);
 				goTo(place);
 			}

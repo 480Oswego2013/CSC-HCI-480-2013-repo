@@ -2,7 +2,9 @@ package edu.oswego.csc480_hci521_2013.client.activity.mapper;
 
 import com.google.gwt.activity.shared.Activity;
 import com.google.gwt.activity.shared.ActivityMapper;
+import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.place.shared.Place;
+import com.google.gwt.place.shared.PlaceController;
 
 import edu.oswego.csc480_hci521_2013.client.ClientFactory;
 import edu.oswego.csc480_hci521_2013.client.activity.DataPanelActivity;
@@ -10,14 +12,22 @@ import edu.oswego.csc480_hci521_2013.client.place.DoublePanelPlace;
 import edu.oswego.csc480_hci521_2013.client.place.DoublePanelPlace.Location;
 import edu.oswego.csc480_hci521_2013.client.place.DoublePanelPlace.PanelType;
 import edu.oswego.csc480_hci521_2013.client.place.PopoutPanelPlace;
+import edu.oswego.csc480_hci521_2013.client.presenters.DataPanelPresenter.View;
+import edu.oswego.csc480_hci521_2013.client.services.H2OServiceAsync;
 
 public class WestPanelActivityMapper implements ActivityMapper {
 
-	private ClientFactory clientFactory;
 	private Activity currentActivity;
-
-	public WestPanelActivityMapper(ClientFactory clientFactory) {
-		this.clientFactory = clientFactory;
+    private EventBus eventBus;
+    private H2OServiceAsync service;
+    private View panelView;
+    private PlaceController places;
+    
+	public WestPanelActivityMapper(EventBus eventBus, H2OServiceAsync service, View panelView, PlaceController places) {
+		this.eventBus = eventBus;
+        this.service = service;
+        this.places = places;
+        this.panelView = panelView;
 	}
 
 	@Override
@@ -30,8 +40,8 @@ public class WestPanelActivityMapper implements ActivityMapper {
 
 			// Data panel
 			if (type == PanelType.DATA) {
-				currentActivity = new DataPanelActivity(Location.EAST, dpp,
-						clientFactory);
+                //EventBus eventBus, H2OServiceAsync service, View panelView, PlaceController places
+				currentActivity = new DataPanelActivity(Location.EAST, dpp, eventBus, service, panelView, places);
 //				if (currentActivity == null)
 //					currentActivity = new DataPanelActivity(Location.WEST, dpp,
 //							clientFactory);
