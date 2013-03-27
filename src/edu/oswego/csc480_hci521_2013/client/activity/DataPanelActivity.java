@@ -55,12 +55,13 @@ public class DataPanelActivity extends AbstractPanelActivity implements
 	}
 	
 	public DataPanelActivity(PopoutPanelPlace place, EventBus eventBus, H2OServiceAsync service, View panelView, PlaceController places) {
-        	this.eventBus = eventBus;
-        	this.h2oService = service;
-            this.places = places;
-        	dataKeys = new String[] {place.getDataKey()};
-        	isPopout = true;
-        }
+		this.view = panelView;
+		this.eventBus = eventBus;
+    	this.h2oService = service;
+        this.places = places;
+    	dataKeys = new String[] {place.getDataKey()};
+    	isPopout = true;
+	}
 
 	// Activity lifecycle methods
 
