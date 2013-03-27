@@ -17,13 +17,13 @@ package edu.oswego.csc480_hci521_2013.client;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.inject.client.GinModules;
 import com.google.gwt.inject.client.Ginjector;
-import com.google.gwt.place.shared.PlaceController;
 
 import edu.oswego.csc480_hci521_2013.client.activity.MenuActivity;
 import edu.oswego.csc480_hci521_2013.client.activity.mapper.EastPanelActivityMapper;
 import edu.oswego.csc480_hci521_2013.client.activity.mapper.MenuActivityMapper;
 import edu.oswego.csc480_hci521_2013.client.activity.mapper.PopoutPanelActivityMapper;
 import edu.oswego.csc480_hci521_2013.client.activity.mapper.WestPanelActivityMapper;
+import edu.oswego.csc480_hci521_2013.client.presenters.DataPanelPresenter;
 import edu.oswego.csc480_hci521_2013.client.services.H2OServiceAsync;
 import edu.oswego.csc480_hci521_2013.client.ui.MenuView;
 
@@ -31,11 +31,11 @@ import edu.oswego.csc480_hci521_2013.client.ui.MenuView;
 public interface AppGinjector extends Ginjector {
 	EventBus getEventBus();
     MenuView getMenuView();
-    MenuActivity getMenuActivity();
     MenuActivityMapper getMenuActivityMapper();
     WestPanelActivityMapper getWestPanelActivityMapper();
     EastPanelActivityMapper getEastPanelActivityMapper();
     PopoutPanelActivityMapper getPopoutPanelActivityMapper();
-    H2OServiceAsync getH2OServiceAsync();    
+    H2OServiceAsync getH2OServiceAsync();
+    DataPanelPresenter.View getDataPanelView();
 }
 
