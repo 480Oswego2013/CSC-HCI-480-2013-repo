@@ -32,11 +32,10 @@ public interface AppGinjector extends Ginjector {
 	EventBus getEventBus();
     MenuView getMenuView();
     MenuActivity getMenuActivity();
-    PlaceController getPlaceController();
-    H2OServiceAsync getH2OServiceAsync();
     MenuActivityMapper getMenuActivityMapper();
     WestPanelActivityMapper getWestPanelActivityMapper();
     EastPanelActivityMapper getEastPanelActivityMapper();
     PopoutPanelActivityMapper getPopoutPanelActivityMapper();
+    H2OServiceAsync getH2OServiceAsync();    
 }
 

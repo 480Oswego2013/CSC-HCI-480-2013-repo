@@ -8,6 +8,7 @@ import com.google.gwt.activity.shared.ActivityMapper;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.place.shared.Place;
 import com.google.gwt.place.shared.PlaceController;
+import com.google.inject.Inject;
 
 import edu.oswego.csc480_hci521_2013.client.ClientFactory;
 import edu.oswego.csc480_hci521_2013.client.activity.DataPanelActivity;
@@ -27,6 +28,7 @@ public class PopoutPanelActivityMapper implements ActivityMapper {
     private DataPanelPresenter.View panelView;
     private PlaceController places;
     
+    @Inject
 	public PopoutPanelActivityMapper(EventBus eventBus, H2OServiceAsync service, DataPanelPresenter.View panelView, PlaceController places) {
 		this.eventBus = eventBus;
         this.service = service;

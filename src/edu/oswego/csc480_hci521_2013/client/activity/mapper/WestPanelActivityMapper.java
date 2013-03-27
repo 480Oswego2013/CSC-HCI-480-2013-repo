@@ -5,6 +5,7 @@ import com.google.gwt.activity.shared.ActivityMapper;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.place.shared.Place;
 import com.google.gwt.place.shared.PlaceController;
+import com.google.inject.Inject;
 
 import edu.oswego.csc480_hci521_2013.client.ClientFactory;
 import edu.oswego.csc480_hci521_2013.client.activity.DataPanelActivity;
@@ -23,6 +24,7 @@ public class WestPanelActivityMapper implements ActivityMapper {
     private View panelView;
     private PlaceController places;
     
+    @Inject
 	public WestPanelActivityMapper(EventBus eventBus, H2OServiceAsync service, View panelView, PlaceController places) {
 		this.eventBus = eventBus;
         this.service = service;
