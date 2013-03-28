@@ -68,6 +68,12 @@ public class RfParametersViewImpl extends PopupPanel implements RfParametersPres
         int classVarSelected = classVars.getSelectedIndex();
         String classVarVal = classVars.getValue(classVarSelected);
         builder.setResponseVariable(classVarVal);
+        for(int i = 0; i < ignoreCols.getItemCount(); i++){
+            if(ignoreCols.isItemSelected(i)){
+                Integer ignoreThis = Integer.valueOf(ignoreCols.getValue(i));
+                builder.setIgnore(ignoreThis);
+            }
+        }
         logger.log(Level.INFO, "BUILDER: "+ builder.build());
         presenter.fireRFParameterEvent(builder);
         this.hide();
@@ -91,9 +97,11 @@ public class RfParametersViewImpl extends PopupPanel implements RfParametersPres
     //Set the available ignore columns to everything excepted the selected class var
     public void setIgnoreColumns(String selected){
         ignoreCols.clear();
-        for(String column : columnHeaders){
+        //for(String column : columnHeaders){
+        for(int i = 0; i < columnHeaders.size(); i++){
+            String column = columnHeaders.get(i);
             if(!column.equals(selected))
-                ignoreCols.addItem(column);
+                ignoreCols.addItem(column, Integer.toString(i));
         }
         ignoreCols.setVisibleItemCount(columnHeaders.size());
     }
