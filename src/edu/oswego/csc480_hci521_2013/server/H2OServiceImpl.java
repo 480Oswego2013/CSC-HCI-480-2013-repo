@@ -89,6 +89,32 @@ public class H2OServiceImpl extends RemoteServiceServlet implements H2OService {
         }
     }
 
+    public ArrayList<String> getColumnHeaders(String dataKey) throws Exception{
+        try {
+            String url = new InspectBuilder(dataKey).build();
+            logger.log(Level.INFO, url.toString());
+            String json = rest.fetch(url);
+            logger.log(Level.INFO, json);
+            Inspect val = rest.parse(json, Inspect.class);
+            logger.log(Level.INFO, val.toString());
+
+            ArrayList<String> columnHeaders = new ArrayList<String>();
+
+            //Iterate through Arraylist of ColumnDef
+            for(ColumnDef column : val.getCols()){
+                columnHeaders.add(column.getName());
+            }
+
+            return columnHeaders;
+        } catch (RestException e) {
+            logger.log(Level.SEVERE, e.getMessage(), e);
+            throw e;
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, e.getMessage(), e);
+            throw new IllegalStateException(e);
+        }
+    }
+
     public String getTreeAsJson(String dataKey, String modelKey, int index) throws Exception {
         try {
             String url = new RFTreeViewBuilder(dataKey, modelKey).setTreeNumber(index).build();
@@ -133,9 +159,9 @@ public class H2OServiceImpl extends RemoteServiceServlet implements H2OService {
     public RF generateRandomForest(RFBuilder builder) throws Exception {
         try {
             String url = builder.build();
-            logger.log(Level.INFO, url.toString());
+            logger.log(Level.INFO, "H2OService: generateRandomForest urL: " + url.toString());
             String json = rest.fetch(url);
-            logger.log(Level.INFO, json);
+            logger.log(Level.INFO, "H2OService: generateRandomForest json: " + json);
             RF val = rest.parse(json, RF.class);
             logger.log(Level.INFO, val.toString());
             return val;
@@ -148,9 +174,9 @@ public class H2OServiceImpl extends RemoteServiceServlet implements H2OService {
         }
     }
 
-    public RFView getRandomForestView(String dataKey, String modelKey) throws Exception {
+    public RFView getRandomForestView(RFViewBuilder builder) throws Exception {
         try {
-            String url = new RFViewBuilder(dataKey, modelKey).build();
+            String url = builder.build();
             logger.log(Level.INFO, url.toString());
             String json = rest.fetch(url);
             logger.log(Level.INFO, json);

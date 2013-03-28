@@ -38,6 +38,7 @@ public class AppGinModule extends AbstractGinModule {
         bind(ClientFactory.class).to(ClientFactoryImpl.class).in(Singleton.class);
         bind(MenuView.class).to(BasicMenuView.class).in(Singleton.class);
         bind(DoublePanelView.class).to(DoublePanelViewImpl.class).in(Singleton.class);
+        //bind(RfParametersView.class).to(RfParametersViewImpl.class).in(Singleton.class);
         bind(MenuActivity.class);
         bind(PlaceController.class).toProvider(PlaceControllerProvider.class).in(Singleton.class);
         bind(H2OServiceAsync.class).toProvider(H2OServiceProvider.class).in(Singleton.class);

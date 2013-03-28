@@ -6,6 +6,7 @@ import com.google.web.bindery.event.shared.EventBus;
 import edu.oswego.csc480_hci521_2013.client.events.RFProgressEvent;
 import edu.oswego.csc480_hci521_2013.shared.h2o.json.RF;
 import edu.oswego.csc480_hci521_2013.shared.h2o.json.RFView;
+import edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders.RFViewBuilder;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -21,12 +22,14 @@ public class RFViewPoller {
     H2OServiceAsync h2oService;
     RF randomForest;
     Timer timer;
+    RFViewBuilder builder;
 
     public RFViewPoller(EventBus eventbus, H2OServiceAsync h2oService, RF randomForest) {
         this.eventbus = eventbus;
         this.h2oService = h2oService;
         this.randomForest = randomForest;
 
+        builder = new RFViewBuilder(randomForest);
         timer = new Timer() {
             @Override
             public void run() {
@@ -41,10 +44,7 @@ public class RFViewPoller {
 
     void poll() {
         logger.log(Level.INFO, "Polling forest generation progress");
-        h2oService.getRandomForestView(
-                randomForest.getDataKey(),
-                randomForest.getModelKey(),
-                new AsyncCallback<RFView>() {
+        h2oService.getRandomForestView(builder, new AsyncCallback<RFView>() {
             @Override
             public void onFailure(Throwable thrwbl) {
                 // FIXME: need a way of handling errors...

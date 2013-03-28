@@ -40,6 +40,8 @@ abstract class AbstractBuilder implements IsSerializable
 
     protected AbstractBuilder addMultiArg(String key, String value)
     {
+        //Changed this because using Arg was causing an com.google.gwt.user.client.rpc.IsSerializable error.
+        //args.put(key,value);
         multiargs.add(new Arg(key, value));
         return this;
     }
@@ -91,15 +93,4 @@ abstract class AbstractBuilder implements IsSerializable
         return url;
     }
 
-    private static class Arg implements IsSerializable
-    {
-        String key;
-        String value;
-
-        public Arg(String key, String value)
-        {
-            this.key = key;
-            this.value = value;
-        }
-    }
 }
