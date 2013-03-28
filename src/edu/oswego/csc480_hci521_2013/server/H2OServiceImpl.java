@@ -159,9 +159,9 @@ public class H2OServiceImpl extends RemoteServiceServlet implements H2OService {
     public RF generateRandomForest(RFBuilder builder) throws Exception {
         try {
             String url = builder.build();
-            logger.log(Level.INFO, url.toString());
+            logger.log(Level.INFO, "H2OService: generateRandomForest urL: " + url.toString());
             String json = rest.fetch(url);
-            logger.log(Level.INFO, json);
+            logger.log(Level.INFO, "H2OService: generateRandomForest json: " + json);
             RF val = rest.parse(json, RF.class);
             logger.log(Level.INFO, val.toString());
             return val;
