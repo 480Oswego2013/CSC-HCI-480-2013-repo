@@ -67,11 +67,15 @@
                 </configuration>
             </plugin>
             <plugin>
+                <!-- To just run the project from the command line
+                     mvn tomcat7:run -->
                 <groupId>org.apache.tomcat.maven</groupId>
                 <artifactId>tomcat7-maven-plugin</artifactId>
                 <version>2.1</version>
                 <configuration>
-                    <warSourceDirectory>war</warSourceDirectory>
+                    <port>8080</port>
+                    <path>/</path>
+                    <warSourceDirectory>target/${project.build.finalName}</warSourceDirectory>
                 </configuration>
             </plugin>
             <plugin>
@@ -169,7 +173,7 @@
             <groupId>com.google.gwt</groupId>
             <artifactId>gwt-user</artifactId>
             <version>2.5.0</version>
-            <scope>compile</scope>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.google.gwt</groupId>
