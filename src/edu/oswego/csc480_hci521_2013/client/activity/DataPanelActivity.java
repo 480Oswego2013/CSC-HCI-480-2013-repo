@@ -29,6 +29,7 @@ import edu.oswego.csc480_hci521_2013.shared.h2o.json.RF;
 import edu.oswego.csc480_hci521_2013.shared.h2o.json.RFView;
 import edu.oswego.csc480_hci521_2013.shared.h2o.json.ResponseStatus;
 import edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders.RFBuilder;
+import edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders.RFViewBuilder;
 
 public class DataPanelActivity extends AbstractPanelActivity implements
 		DataPanelPresenter {
@@ -261,8 +262,7 @@ public class DataPanelActivity extends AbstractPanelActivity implements
 				}
 
 				logger.log(Level.INFO, "Polling forest generation progress");
-				h2oService.getRandomForestView(randomForest.getDataKey(),
-						randomForest.getModelKey(),
+				h2oService.getRandomForestView(new RFViewBuilder(randomForest),
 						new AsyncCallback<RFView>() {
 							@Override
 							public void onFailure(Throwable thrwbl) {
