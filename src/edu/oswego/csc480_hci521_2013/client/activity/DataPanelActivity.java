@@ -15,7 +15,6 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.gwt.user.client.ui.IsWidget;
 
-import edu.oswego.csc480_hci521_2013.client.ClientFactory;
 import edu.oswego.csc480_hci521_2013.client.events.RFGenerateEvent;
 import edu.oswego.csc480_hci521_2013.client.events.RFProgressEvent;
 import edu.oswego.csc480_hci521_2013.client.events.RFProgressEventHandler;

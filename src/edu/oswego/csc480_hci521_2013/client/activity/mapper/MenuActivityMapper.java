@@ -19,7 +19,6 @@ import com.google.gwt.place.shared.Place;
 import com.google.gwt.place.shared.PlaceController;
 import com.google.inject.Inject;
 
-import edu.oswego.csc480_hci521_2013.client.ClientFactory;
 import edu.oswego.csc480_hci521_2013.client.activity.MenuActivity;
 import edu.oswego.csc480_hci521_2013.client.place.DoublePanelPlace;
 import edu.oswego.csc480_hci521_2013.client.place.PopoutPanelPlace;
