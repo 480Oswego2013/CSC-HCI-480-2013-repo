@@ -20,6 +20,6 @@ public abstract class H2OResponse implements IsSerializable {
 
     @Override
     public String toString() {
-        return "H2OResponse{" + "error=" + error + ", response=" + response + '}';
+        return ", H2OResponse{" + "error=" + error + ", response=" + response + '}';
     }
 }

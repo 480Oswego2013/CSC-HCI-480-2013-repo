@@ -50,6 +50,6 @@ public class Inspect extends H2OResponse {
 
     @Override
     public String toString() {
-        return "Inspect{" + "type=" + type + ", key=" + key + ", num_rows=" + num_rows + ", num_cols=" + num_cols + ", row_size=" + row_size + ", value_size_bytes=" + value_size_bytes + ", cols=" + cols + ", rows=" + rows + '}';
+        return "Inspect{" + "type=" + type + ", key=" + key + ", num_rows=" + num_rows + ", num_cols=" + num_cols + ", row_size=" + row_size + ", value_size_bytes=" + value_size_bytes + ", cols=" + cols + ", rows=" + rows + " " + super.toString() + '}';
     }
 }
