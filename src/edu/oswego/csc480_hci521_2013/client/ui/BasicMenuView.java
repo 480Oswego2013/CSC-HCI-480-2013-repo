@@ -14,13 +14,12 @@
 
 package edu.oswego.csc480_hci521_2013.client.ui;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.MenuBar;
 import com.google.gwt.user.client.ui.MenuItem;
-import edu.oswego.csc480_hci521_2013.client.services.H2OService;
+import com.google.inject.Inject;
 import edu.oswego.csc480_hci521_2013.client.services.H2OServiceAsync;
 import java.util.List;
 import java.util.logging.Level;
@@ -30,10 +29,11 @@ public class BasicMenuView extends Composite implements MenuView {
 
 	private Presenter presenter;
     static final Logger logger = Logger.getLogger(BasicMenuView.class.getName());
-    private final H2OServiceAsync h2oService = GWT.create(H2OService.class);
+    private final H2OServiceAsync service;
 
-	public BasicMenuView() {
-		buildGui();
+    @Inject
+	public BasicMenuView(H2OServiceAsync service) {
+        this.service = service;
 	}
 
 	@Override
@@ -58,7 +58,7 @@ public class BasicMenuView extends Composite implements MenuView {
     {
         final MenuBar menu = new MenuBar(true);
         MenuItem item = new MenuItem("Parsed Data Sets", false, menu);
-        h2oService.getParsedDataKeys(new AsyncCallback<List<String>>() {
+        service.getParsedDataKeys(new AsyncCallback<List<String>>() {
             @Override
             public void onFailure(Throwable caught)
             {
