@@ -91,15 +91,4 @@ abstract class AbstractBuilder implements IsSerializable
         return url;
     }
 
-    private static class Arg implements IsSerializable
-    {
-        String key;
-        String value;
-
-        public Arg(String key, String value)
-        {
-            this.key = key;
-            this.value = value;
-        }
-    }
 }
