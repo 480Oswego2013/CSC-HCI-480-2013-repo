@@ -48,6 +48,7 @@ Please set the M2_HOME environment variable to your maven installation directory
         </artifact:mvn>
     </target>
 
+
     <target name="clean" depends="init-maven" description="Clean up temporary files">
         <artifact:mvn pom="pom.xml" mavenHome="${maven.home}" fork="true">
             <arg value="clean"/>
