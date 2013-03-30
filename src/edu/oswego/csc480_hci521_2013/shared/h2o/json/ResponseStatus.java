@@ -77,6 +77,11 @@ public class ResponseStatus implements IsSerializable
         return status.equals(STATUS_ERROR);
     }
 
+    public boolean isDone()
+    {
+        return status.equals(STATUS_DONE);
+    }
+
     @Override
     public String toString()
     {
