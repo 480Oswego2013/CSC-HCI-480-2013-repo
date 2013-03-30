@@ -33,7 +33,6 @@ import edu.oswego.csc480_hci521_2013.client.ui.MenuView;
 import edu.oswego.csc480_hci521_2013.client.ui.DoublePanelView;
 
 public class AppGinModule extends AbstractGinModule {
-
     @Override
     protected void configure() {
         bind(EventBus.class).to(SimpleEventBus.class).in(Singleton.class);

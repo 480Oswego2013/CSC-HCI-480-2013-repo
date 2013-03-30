@@ -38,4 +38,3 @@ public interface AppGinjector extends Ginjector {
     H2OServiceAsync getH2OServiceAsync();
     DataPanelPresenter.View getDataPanelView();
 }
-
