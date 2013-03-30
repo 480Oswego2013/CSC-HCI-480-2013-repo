@@ -22,11 +22,9 @@ import edu.oswego.csc480_hci521_2013.shared.h2o.json.RF;
 import edu.oswego.csc480_hci521_2013.shared.h2o.json.RFView;
 import java.util.List;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class ConfusionMatrixPresenterImpl implements ConfusionMatrixPresenter {
 
-    private static final Logger logger = Logger.getLogger(ConfusionMatrixPresenterImpl.class.getName());
     RF randomForest;
     EventBus eventbus;
     ConfusionMatrixView view;
@@ -37,7 +35,6 @@ public class ConfusionMatrixPresenterImpl implements ConfusionMatrixPresenter {
         this.randomForest = randomForest;
 
         bind();
-        logger.log(Level.INFO, "Confusion matrix bus: " + eventBus.hashCode());
     }
 
     private void bind() {
