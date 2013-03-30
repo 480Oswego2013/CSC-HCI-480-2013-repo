@@ -41,6 +41,7 @@
                     <version>2.5.3</version>
                 </plugin>
             </plugins>
+        </pluginManagement>    
         <plugins>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
