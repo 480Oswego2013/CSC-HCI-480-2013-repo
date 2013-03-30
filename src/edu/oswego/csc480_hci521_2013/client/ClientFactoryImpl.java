@@ -42,7 +42,7 @@ public class ClientFactoryImpl implements ClientFactory {
 	@Override
 	public MenuView getMainView() {
         if (menuView == null) {
-            menuView = new BasicMenuView();
+            menuView = new BasicMenuView(this.getH2OService());
         }
 		return menuView;
 	}
