@@ -13,42 +13,40 @@
 // limitations under the License.
 package edu.oswego.csc480_hci521_2013.client.activity;
 
+import java.util.logging.Logger;
 import com.google.gwt.activity.shared.AbstractActivity;
 import com.google.gwt.event.shared.EventBus;
-
 import com.google.gwt.place.shared.Place;
 import com.google.gwt.place.shared.PlaceController;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.inject.Inject;
-
-
 import edu.oswego.csc480_hci521_2013.client.events.InspectDataEvent;
 import edu.oswego.csc480_hci521_2013.client.ui.MenuView;
 import java.util.logging.Level;
-import java.util.logging.Logger;
+
 
 public class MenuActivity extends AbstractActivity implements MenuView.Presenter {
 
-    private static final Logger logger = Logger.getLogger(DoublePanelActivity.class.getName());
-    private MenuView view;
+    private static final Logger logger = Logger.getLogger(MenuActivity.class.getName());
+    private MenuView menuView;
     private PlaceController places;
     private EventBus eventBus;
 
     @Inject
-    public MenuActivity(MenuView view, PlaceController places, EventBus eventBus) {
-        this.view = view;
+    public MenuActivity(MenuView menuView, PlaceController places, EventBus eventBus) {
         this.places = places;
+        this.menuView = menuView;
         this.eventBus = eventBus;
         logger.log(Level.INFO, "MenuActivity bus: " + eventBus.hashCode());
     }
 
     @Override
     public void start(AcceptsOneWidget containerWidget, EventBus eventBus) {
-        this.view.setPresenter(this);
-        this.view.buildGui();
+        this.menuView.setPresenter(this);
+        this.menuView.buildGui();
 
-        containerWidget.setWidget(this.view.asWidget());
+        containerWidget.setWidget(this.menuView.asWidget());
         logger.log(Level.INFO, "MenuActivity started");
     }
 
