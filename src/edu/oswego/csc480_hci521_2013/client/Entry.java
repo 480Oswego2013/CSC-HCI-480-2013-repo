@@ -23,7 +23,6 @@ import com.google.gwt.place.shared.Place;
 import com.google.gwt.place.shared.PlaceController;
 import com.google.gwt.place.shared.PlaceHistoryHandler;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
-import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
 import com.google.gwt.user.client.ui.SimpleLayoutPanel;
 import edu.oswego.csc480_hci521_2013.client.activity.DoublePanelActivity;
@@ -39,38 +38,40 @@ import edu.oswego.csc480_hci521_2013.client.ui.DoublePanelView;
 
 public class Entry implements EntryPoint {
 
-	private final AppGinjector injector = GWT.create(AppGinjector.class);
+    private final AppGinjector injector = GWT.create(AppGinjector.class);
+    private static AppPlaceHistoryMapper historyMapper;
     private Place defaultPlace = new MenuPlace();
-	private SimpleLayoutPanel menuPanel = new SimpleLayoutPanel();
-	private SimpleLayoutPanel panelPanel = new SimpleLayoutPanel();
+    private SimpleLayoutPanel menuPanel = new SimpleLayoutPanel();
+    private SimpleLayoutPanel panelPanel = new SimpleLayoutPanel();
     private PlaceController places;
 
-	@Override
-	public void onModuleLoad() {
+    @Override
+    public void onModuleLoad() {
+        historyMapper = GWT.create(AppPlaceHistoryMapper.class);
 
-		// Create ClientFactory using deferred binding (just because I say so)
-		//ClientFactory clientFactory = injector.getClientFactory();
-		EventBus eventBus = injector.getEventBus();
-		places = new PlaceController(eventBus);
+        // Create ClientFactory using deferred binding (just because I say so)
+        //ClientFactory clientFactory = injector.getClientFactory();
+        EventBus eventBus = injector.getEventBus();
+        places = new PlaceController(eventBus);
 
-		// Start ActivityManagers for the main panel and content panel
+        // Start ActivityManagers for the main panel and content panel
         MenuView menuView = injector.getMenuView();
         MenuActivity menuActivity = new MenuActivity(menuView, places, eventBus);
-		ActivityMapper mainActivityMapper = new MenuActivityMapper(menuActivity);
-		ActivityManager mainActivityManager = new ActivityManager(mainActivityMapper, eventBus);
-		mainActivityManager.setDisplay(menuPanel);
+        ActivityMapper mainActivityMapper = new MenuActivityMapper(menuActivity);
+        ActivityManager mainActivityManager = new ActivityManager(mainActivityMapper, eventBus);
+        mainActivityManager.setDisplay(menuPanel);
 
         DoublePanelView panelView = injector.getDoublePanelView();
         DoublePanelActivity panelActivity = new DoublePanelActivity(panelView, places, eventBus, injector.getH2OServiceAsync());
-		ActivityMapper panelActivityMapper = new PanelActivityMapper(panelActivity);
-		ActivityManager panelActivityManager = new ActivityManager(panelActivityMapper, eventBus);
-		panelActivityManager.setDisplay(panelPanel);
+        ActivityMapper panelActivityMapper = new PanelActivityMapper(panelActivity);
+        ActivityManager panelActivityManager = new ActivityManager(panelActivityMapper, eventBus);
+        panelActivityManager.setDisplay(panelPanel);
 
-		// Start PlaceHistoryHandler with our PlaceHistoryMapper
-		AppPlaceHistoryMapper historyMapper = GWT.create(AppPlaceHistoryMapper.class);
-		PlaceHistoryHandler historyHandler = new PlaceHistoryHandler(historyMapper);
-		historyHandler.register(places, eventBus, defaultPlace);
-		// Add to RootPanel and handle history token, open double panel place
+        // Start PlaceHistoryHandler with our PlaceHistoryMapper
+        AppPlaceHistoryMapper historyMapper = GWT.create(AppPlaceHistoryMapper.class);
+        PlaceHistoryHandler historyHandler = new PlaceHistoryHandler(historyMapper);
+        historyHandler.register(places, eventBus, defaultPlace);
+        // Add to RootPanel and handle history token, open double panel place
 
         // FIXME: we only have 1 place, the menu is not its own place....
 
@@ -79,8 +80,11 @@ public class Entry implements EntryPoint {
         bp.add(panelPanel);
         RootLayoutPanel.get().add(bp);
 
-		historyHandler.handleCurrentHistory();
-		places.goTo(new DoublePanelPlace());
+        historyHandler.handleCurrentHistory();
+        places.goTo(new DoublePanelPlace());
+    }
 
-	}
+    public static AppPlaceHistoryMapper getPlaceHistoryMapper() {
+        return historyMapper;
+    }
 }

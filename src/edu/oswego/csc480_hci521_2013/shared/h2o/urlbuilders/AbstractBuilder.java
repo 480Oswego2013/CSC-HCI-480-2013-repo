@@ -40,8 +40,6 @@ abstract class AbstractBuilder implements IsSerializable
 
     protected AbstractBuilder addMultiArg(String key, String value)
     {
-        //Changed this because using Arg was causing an com.google.gwt.user.client.rpc.IsSerializable error.
-        //args.put(key,value);
         multiargs.add(new Arg(key, value));
         return this;
     }
