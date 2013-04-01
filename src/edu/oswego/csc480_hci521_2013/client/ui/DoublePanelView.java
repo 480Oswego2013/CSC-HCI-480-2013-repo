@@ -15,10 +15,13 @@
 package edu.oswego.csc480_hci521_2013.client.ui;
 
 import com.google.gwt.user.client.ui.IsWidget;
+import com.google.gwt.user.client.ui.MenuItem;
 
 public interface DoublePanelView extends IsWidget {
 
     void addDataTab(IsWidget panel, String title);
 
     void addVisTab(IsWidget panel, String title);
+
+    void addMenuItem(MenuItem item);
 }

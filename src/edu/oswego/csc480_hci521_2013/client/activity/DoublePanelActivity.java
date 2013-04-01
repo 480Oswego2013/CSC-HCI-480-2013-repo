@@ -18,16 +18,19 @@ import com.google.gwt.event.shared.EventBus;
 
 import com.google.gwt.place.shared.Place;
 import com.google.gwt.place.shared.PlaceController;
+import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
+import com.google.gwt.user.client.ui.MenuBar;
+import com.google.gwt.user.client.ui.MenuItem;
 
-import static edu.oswego.csc480_hci521_2013.client.activity.DoublePanelActivity.logger;
 import edu.oswego.csc480_hci521_2013.client.events.InspectDataEvent;
 import edu.oswego.csc480_hci521_2013.client.events.InspectDataEventHandler;
 import edu.oswego.csc480_hci521_2013.client.events.RFGenerateEvent;
 import edu.oswego.csc480_hci521_2013.client.events.RFGenerateEventHandler;
 import edu.oswego.csc480_hci521_2013.client.events.TreeVisEvent;
 import edu.oswego.csc480_hci521_2013.client.events.TreeVisEventHandler;
+import edu.oswego.csc480_hci521_2013.client.place.DoublePanelPlace;
 import edu.oswego.csc480_hci521_2013.client.presenters.ConfusionMatrixPresenter;
 import edu.oswego.csc480_hci521_2013.client.presenters.ConfusionMatrixPresenterImpl;
 import edu.oswego.csc480_hci521_2013.client.presenters.DataPanelPresenter;
@@ -55,27 +58,27 @@ public class DoublePanelActivity extends AbstractActivity implements DoublePanel
     private H2OServiceAsync service;
 
 	public DoublePanelActivity(DoublePanelView view, PlaceController places, EventBus eventBus, H2OServiceAsync service) {
+        // FIXME: this constructor should go away...
+        this(null, view, places, service);
+	}
+
+	public DoublePanelActivity(DoublePanelPlace place, DoublePanelView view, PlaceController places, H2OServiceAsync service) {
+        // TODO: handle the place, it will carry args for what we should display.
 		this.view = view;
         this.places = places;
-        this.eventBus = eventBus;
         this.service = service;
-        logger.log(Level.INFO, "DoublePanelActivity bus: " + eventBus.hashCode());
 	}
 
 	@Override
 	public void start(AcceptsOneWidget containerWidget, EventBus eventBus) {
-		containerWidget.setWidget(this.view.asWidget());
-        bind();
+        this.eventBus = eventBus;
+		containerWidget.setWidget(view);
+        bind(eventBus);
+        loadParsedDataMenu();
         logger.log(Level.INFO, "DoublePanelActivity started");
 	}
 
-	@Override
-	public String mayStop() {
-//		return "Please don't leave me.";
-		return null;
-	}
-
-    private void bind() {
+    private void bind(EventBus eventBus) {
         eventBus.addHandler(InspectDataEvent.TYPE, new InspectDataEventHandler() {
             @Override
             public void onViewData(InspectDataEvent e) {
@@ -98,7 +101,24 @@ public class DoublePanelActivity extends AbstractActivity implements DoublePanel
         });
     }
 
-	// Presenter methods
+    private void loadParsedDataMenu()
+    {
+        service.getParsedDataKeys(new AsyncCallback<List<String>>() {
+            @Override
+            public void onFailure(Throwable caught)
+            {
+                logger.log(Level.SEVERE, caught.toString());
+            }
+
+            @Override
+            public void onSuccess(List<String> result)
+            {
+                for (String key: result) {
+                    view.addMenuItem(new MenuItem(key, false, getMenuCommand(key)));
+                }
+            }
+        });
+    }
 
 	@Override
 	public void goTo(Place place) {
@@ -154,5 +174,16 @@ public class DoublePanelActivity extends AbstractActivity implements DoublePanel
         String title = "Confusion Matrix<br>" + rf.getDataKey() + "<br>" + rf.getModelKey();
         DoublePanelViewImpl panelView = (DoublePanelViewImpl)view;
                 panelView.addVisTab(presenter.getView(), title);
+    }
+
+    @Override
+    public Command getMenuCommand(final String value) {
+        return new Command() {
+            @Override
+            public void execute() {
+                eventBus.fireEvent(new InspectDataEvent(value));
+                logger.log(Level.INFO, "Selected dataset: " + value);
+            }
+        };
     }
 }

@@ -20,6 +20,8 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.MenuBar;
+import com.google.gwt.user.client.ui.MenuItem;
 import com.google.gwt.user.client.ui.TabLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
 import java.util.logging.Level;
@@ -33,6 +35,7 @@ public class DoublePanelViewImpl extends Composite implements DoublePanelView
     private static Binder uiBinder = GWT.create(Binder.class);
     static final Logger logger = Logger.getLogger(DoublePanelViewImpl.class.getName());
 
+    @UiField MenuBar dataSets;
     @UiField TabLayoutPanel tpData;
     @UiField TabLayoutPanel tpVis;
 
@@ -67,5 +70,10 @@ public class DoublePanelViewImpl extends Composite implements DoublePanelView
             tpVis.remove(0);
             dummyVisLabel = null;
         }
+    }
+
+    @Override
+    public void addMenuItem(MenuItem item) {
+        dataSets.addItem(item);
     }
 }

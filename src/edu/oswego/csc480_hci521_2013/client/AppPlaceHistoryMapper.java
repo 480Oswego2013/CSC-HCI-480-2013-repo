@@ -12,7 +12,5 @@ import edu.oswego.csc480_hci521_2013.client.place.PopoutPanelPlace;
  * annotation or by extending PlaceHistoryMapperWithFactory and creating a
  * separate TokenizerFactory.
  */
-
- @WithTokenizers( { DoublePanelPlace.Tokenizer.class, PopoutPanelPlace.Tokenizer.class })
-
+@WithTokenizers({DoublePanelPlace.Tokenizer.class, PopoutPanelPlace.Tokenizer.class})
 public interface AppPlaceHistoryMapper extends PlaceHistoryMapper {}

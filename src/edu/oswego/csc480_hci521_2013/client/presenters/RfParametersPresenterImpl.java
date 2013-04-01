@@ -5,7 +5,6 @@ package edu.oswego.csc480_hci521_2013.client.presenters;
 import java.util.List;
 
 import com.google.gwt.event.shared.EventBus;
-import edu.oswego.csc480_hci521_2013.client.ClientFactory;
 import edu.oswego.csc480_hci521_2013.client.events.RFParameterEvent;
 import edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders.RFBuilder;
 
@@ -24,7 +23,7 @@ public class RfParametersPresenterImpl implements RfParametersPresenter {
     }
 
     public void fireRFParameterEvent(RFBuilder builder){
-        bus.fireEvent(new RFParameterEvent(builder)); 
+        bus.fireEvent(new RFParameterEvent(builder));
     }
 
     public String getDataKey(){
