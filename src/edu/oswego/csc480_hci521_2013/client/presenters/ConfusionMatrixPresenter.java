@@ -13,20 +13,13 @@
 // limitations under the License.
 package edu.oswego.csc480_hci521_2013.client.presenters;
 
-import com.google.gwt.user.client.ui.IsWidget;
+import edu.oswego.csc480_hci521_2013.client.ui.ConfusionMatrixView;
 import edu.oswego.csc480_hci521_2013.shared.h2o.json.RFView;
 
-/**
- *
- */
 public interface ConfusionMatrixPresenter {
 
     void setData(RFView data);
 
-    public interface View extends IsWidget {
+    ConfusionMatrixView getView();
 
-        void buildUi();
-        void setData(RFView data);
-        void setPresenter(ConfusionMatrixPresenter presenter);
-    }
 }

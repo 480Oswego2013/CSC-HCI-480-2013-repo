@@ -13,27 +13,27 @@
 // limitations under the License.
 package edu.oswego.csc480_hci521_2013.client.presenters;
 
+import edu.oswego.csc480_hci521_2013.client.presenters.adapters.ConfusionMatrixAdapter;
+import edu.oswego.csc480_hci521_2013.client.ui.ConfusionMatrixView;
 import com.google.web.bindery.event.shared.EventBus;
 import edu.oswego.csc480_hci521_2013.client.events.RFProgressEvent;
 import edu.oswego.csc480_hci521_2013.client.events.RFProgressEventHandler;
 import edu.oswego.csc480_hci521_2013.shared.h2o.json.RF;
 import edu.oswego.csc480_hci521_2013.shared.h2o.json.RFView;
+import java.util.List;
+import java.util.logging.Level;
 
-/**
- *
- */
 public class ConfusionMatrixPresenterImpl implements ConfusionMatrixPresenter {
+
     RF randomForest;
     EventBus eventbus;
-    View view;
+    ConfusionMatrixView view;
 
-    public ConfusionMatrixPresenterImpl(View view, EventBus eventbus, RF randomForest) {
+    public ConfusionMatrixPresenterImpl(ConfusionMatrixView view, EventBus eventBus, RF randomForest) {
         this.view = view;
-        this.eventbus = eventbus;
+        this.eventbus = eventBus;
         this.randomForest = randomForest;
 
-        view.setPresenter(this);
-        view.buildUi();
         bind();
     }
 
@@ -58,6 +58,41 @@ public class ConfusionMatrixPresenterImpl implements ConfusionMatrixPresenter {
 
     @Override
     public void setData(RFView data) {
-        view.setData(data);
+        updateView(this.view, data);
+    }
+
+    public static void updateView(ConfusionMatrixView matrixView, RFView data) {
+        ConfusionMatrixAdapter adapter = new ConfusionMatrixAdapter(data);
+        if (data.getResponse().isPoll()) {
+            matrixView.setProgress(adapter.getProgress());
+        }
+        else {
+            matrixView.hideProgress();
+        }
+        matrixView.setClassificationError(adapter.getClassificationError());
+        matrixView.setResponseVariable(adapter.getResponseVariable());
+        matrixView.setNtree(adapter.getNtree());
+        matrixView.setMtry(adapter.getMtry());
+        matrixView.setRowsSkipped(adapter.getRowsSkipped());
+        matrixView.setRows(adapter.getRows());
+        matrixView.setMatrixType(adapter.getMatrixType());
+
+        matrixView.setMatrixHeaders(adapter.getHeaders());
+        matrixView.setMatrixScores(adapter.getScores());
+        matrixView.setErrors(adapter.getErrors());
+        matrixView.setTotals(adapter.getTotals());
+
+        matrixView.setTreesGenerated(adapter.getTreesBuilt());
+        matrixView.setLeavesMin(adapter.getLeavesMin());
+        matrixView.setLeavesMean(adapter.getLeavesMean());
+        matrixView.setLeavesMax(adapter.getLeavesMax());
+        matrixView.setDepthMin(adapter.getDepthMin());
+        matrixView.setDepthMean(adapter.getDepthMean());
+        matrixView.setDepthMax(adapter.getDepthMax());
+    }
+
+    @Override
+    public ConfusionMatrixView getView() {
+        return view;
     }
 }

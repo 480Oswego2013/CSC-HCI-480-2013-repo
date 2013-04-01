@@ -16,6 +16,7 @@ import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.gwt.user.client.ui.IsWidget;
 
 import edu.oswego.csc480_hci521_2013.client.events.RFGenerateEvent;
+import edu.oswego.csc480_hci521_2013.client.events.RFGenerateEventHandler;
 import edu.oswego.csc480_hci521_2013.client.events.RFParameterEvent;
 import edu.oswego.csc480_hci521_2013.client.events.RFParameterEventHandler;
 import edu.oswego.csc480_hci521_2013.client.events.RFProgressEvent;
@@ -25,11 +26,14 @@ import edu.oswego.csc480_hci521_2013.client.place.DoublePanelPlace;
 import edu.oswego.csc480_hci521_2013.client.place.DoublePanelPlace.Location;
 import edu.oswego.csc480_hci521_2013.client.place.PopoutPanelPlace;
 import edu.oswego.csc480_hci521_2013.client.place.PopoutPanelPlace.PanelType;
+import edu.oswego.csc480_hci521_2013.client.presenters.ConfusionMatrixPresenter;
+import edu.oswego.csc480_hci521_2013.client.presenters.ConfusionMatrixPresenterImpl;
 import edu.oswego.csc480_hci521_2013.client.presenters.DataPanelPresenter;
 import edu.oswego.csc480_hci521_2013.client.presenters.RfParametersPresenter;
 import edu.oswego.csc480_hci521_2013.client.presenters.RfParametersPresenterImpl;
 import edu.oswego.csc480_hci521_2013.client.services.H2OServiceAsync;
 import edu.oswego.csc480_hci521_2013.client.services.RFViewPoller;
+import edu.oswego.csc480_hci521_2013.client.ui.ConfusionMatrixViewImpl;
 import edu.oswego.csc480_hci521_2013.client.ui.RfParametersViewImpl;
 import edu.oswego.csc480_hci521_2013.shared.h2o.json.RF;
 import edu.oswego.csc480_hci521_2013.shared.h2o.json.RFView;
@@ -184,12 +188,14 @@ public class DataPanelActivity extends AbstractPanelActivity implements
 //						addDataTab(e.getName());
 //					}
 //				});
-//		eventbus.addHandler(RFGenerateEvent.TYPE, new RFGenerateEventHandler() {
-//			@Override
-//			public void onStart(RFGenerateEvent e) {
-//				// addConfusionMatrixTab(e.getData());
-//			}
-//		});
+        eventBus.addHandler(RFGenerateEvent.TYPE, new RFGenerateEventHandler() {
+            @Override
+            public void onStart(RFGenerateEvent e) {
+                logger.log(Level.INFO, "Adding confusion matrix...");
+                addConfusionMatrixTab(e.getData());
+            }
+        });
+        
         eventBus.addHandler(RFProgressEvent.TYPE, new RFProgressEventHandler() {
             @Override
             public void onDataUpdate(RFProgressEvent e) {
@@ -342,5 +348,11 @@ public class DataPanelActivity extends AbstractPanelActivity implements
         });
 
         popUp.getView().showPopUp();
+    }
+    
+    private void addConfusionMatrixTab(RF rf) {
+        ConfusionMatrixPresenter presenter = new ConfusionMatrixPresenterImpl(new ConfusionMatrixViewImpl(), eventBus, rf);
+        String title = "Confusion Matrix<br>" + rf.getDataKey() + "<br>" + rf.getModelKey();
+        view.addVisTab(presenter.getView(), title);
     }
 }

@@ -19,6 +19,7 @@ import java.util.Map;
 
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.ui.IsWidget;
+import edu.oswego.csc480_hci521_2013.client.ui.ConfusionMatrixView;
 
 /**
  *
@@ -36,6 +37,7 @@ public interface DataPanelPresenter {
         void setPresenter(DataPanelPresenter presenter);
         void addDataTab(String title, List<Map<String, String>> data);
         void addDataTab(String title, TabView tab);
+        void addVisTab(ConfusionMatrixView view, String title);
         void removeDataTab(int index);
         void clear();
         int getTabCount();

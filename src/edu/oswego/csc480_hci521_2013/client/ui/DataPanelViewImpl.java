@@ -23,8 +23,10 @@ import java.util.logging.Logger;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.TextColumn;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TabPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -32,6 +34,7 @@ import com.google.gwt.user.client.ui.Widget;
 
 import edu.oswego.csc480_hci521_2013.client.presenters.DataPanelPresenter;
 import edu.oswego.csc480_hci521_2013.client.presenters.DataPanelPresenter.TabView;
+import edu.oswego.csc480_hci521_2013.shared.h2o.json.RFTreeView;
 
 public class DataPanelViewImpl extends Composite implements
 		DataPanelPresenter.View {
@@ -39,6 +42,7 @@ public class DataPanelViewImpl extends Composite implements
 	DataPanelPresenter presenter;
 
 	TabPanel tpData;
+    TabPanel tpVis;
 	static final Logger logger = Logger.getLogger(DoublePanelView.class
 			.getName());
 
@@ -106,4 +110,10 @@ public class DataPanelViewImpl extends Composite implements
 			tpData.selectTab(tpData.getWidgetCount()-1);
 	}
 
+    @Override
+    public void addVisTab(ConfusionMatrixView panel, String title) {
+        logger.log(Level.INFO, "adding vis tab: " + title);
+        tpVis.add(panel, title, true);
+        tpVis.selectTab(tpVis.getWidgetCount() - 1);
+    }
 }
