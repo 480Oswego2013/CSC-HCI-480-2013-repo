@@ -16,6 +16,4 @@ public interface DoublePanelPresenter {
     void addVisTab(String datakey, String modelkey, int tree);
 
     void addConfusionMatrixTab(RF randomForest);
-
-    Command getMenuCommand(String value);
 }

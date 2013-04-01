@@ -21,11 +21,8 @@ import com.google.gwt.place.shared.PlaceController;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
-import com.google.gwt.user.client.ui.MenuBar;
 import com.google.gwt.user.client.ui.MenuItem;
 
-import edu.oswego.csc480_hci521_2013.client.events.InspectDataEvent;
-import edu.oswego.csc480_hci521_2013.client.events.InspectDataEventHandler;
 import edu.oswego.csc480_hci521_2013.client.events.RFGenerateEvent;
 import edu.oswego.csc480_hci521_2013.client.events.RFGenerateEventHandler;
 import edu.oswego.csc480_hci521_2013.client.events.TreeVisEvent;
@@ -79,13 +76,6 @@ public class DoublePanelActivity extends AbstractActivity implements DoublePanel
 	}
 
     private void bind(EventBus eventBus) {
-        eventBus.addHandler(InspectDataEvent.TYPE, new InspectDataEventHandler() {
-            @Override
-            public void onViewData(InspectDataEvent e) {
-                logger.log(Level.INFO, "Adding dataset: " + e.getName());
-                addDataTab(e.getName());
-            }
-        });
         eventBus.addHandler(TreeVisEvent.TYPE, new TreeVisEventHandler() {
             @Override
             public void onViewData(TreeVisEvent e) {
@@ -176,13 +166,12 @@ public class DoublePanelActivity extends AbstractActivity implements DoublePanel
                 panelView.addVisTab(presenter.getView(), title);
     }
 
-    @Override
-    public Command getMenuCommand(final String value) {
+    private Command getMenuCommand(final String value) {
         return new Command() {
             @Override
             public void execute() {
-                eventBus.fireEvent(new InspectDataEvent(value));
-                logger.log(Level.INFO, "Selected dataset: " + value);
+                logger.log(Level.INFO, "Adding dataset: " + value);
+                addDataTab(value);
             }
         };
     }
