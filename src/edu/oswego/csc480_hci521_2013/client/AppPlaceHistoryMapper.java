@@ -4,7 +4,7 @@ import com.google.gwt.place.shared.PlaceHistoryMapper;
 import com.google.gwt.place.shared.WithTokenizers;
 
 import edu.oswego.csc480_hci521_2013.client.place.DoublePanelPlace;
-import edu.oswego.csc480_hci521_2013.client.place.PopoutPanelPlace;
+import edu.oswego.csc480_hci521_2013.client.place.PopoutDataPanelPlace;
 
 /**
  * PlaceHistoryMapper interface is used to attach all places which the
@@ -12,5 +12,5 @@ import edu.oswego.csc480_hci521_2013.client.place.PopoutPanelPlace;
  * annotation or by extending PlaceHistoryMapperWithFactory and creating a
  * separate TokenizerFactory.
  */
-@WithTokenizers({DoublePanelPlace.Tokenizer.class, PopoutPanelPlace.Tokenizer.class})
+@WithTokenizers({DoublePanelPlace.Tokenizer.class, PopoutDataPanelPlace.Tokenizer.class})
 public interface AppPlaceHistoryMapper extends PlaceHistoryMapper {}

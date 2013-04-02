@@ -25,4 +25,6 @@ public interface DataPanelPresenter {
     Scheduler.ScheduledCommand getTreeVisCommand(int index);
 
     DataPanelView getView();
+
+    String getDataKey();
 }

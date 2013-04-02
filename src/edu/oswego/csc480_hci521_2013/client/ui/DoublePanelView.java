@@ -24,4 +24,6 @@ public interface DoublePanelView extends IsWidget {
     void addVisTab(IsWidget panel, String title);
 
     void addMenuItem(MenuItem item);
+
+    void removeDataTab(int index);
 }

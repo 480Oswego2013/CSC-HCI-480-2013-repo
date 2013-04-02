@@ -4,9 +4,8 @@ import com.google.gwt.activity.shared.Activity;
 import com.google.gwt.activity.shared.ActivityMapper;
 import com.google.gwt.place.shared.Place;
 import com.google.gwt.place.shared.PlaceController;
-import edu.oswego.csc480_hci521_2013.client.activity.DoublePanelActivity;
 import edu.oswego.csc480_hci521_2013.client.place.DoublePanelPlace;
-import edu.oswego.csc480_hci521_2013.client.place.PopoutPanelPlace;
+import edu.oswego.csc480_hci521_2013.client.place.PopoutDataPanelPlace;
 import edu.oswego.csc480_hci521_2013.client.services.H2OServiceAsync;
 import edu.oswego.csc480_hci521_2013.client.ui.DoublePanelView;
 
@@ -28,12 +27,13 @@ public class AppActivityMapper implements ActivityMapper {
     public Activity getActivity(Place place) {
         if (place instanceof DoublePanelPlace) {
             return new DoublePanelActivity(
-                (DoublePanelPlace) place,
-                doubleView,
-                controller,
-                h2oService);
-        } else if (place instanceof PopoutPanelPlace) {
-            return null;
+                    (DoublePanelPlace) place,
+                    doubleView,
+                    controller,
+                    h2oService);
+        } else if (place instanceof PopoutDataPanelPlace) {
+            return new PopoutDataPanelActivity(
+                    (PopoutDataPanelPlace)place, h2oService);
         }
         return null;
     }

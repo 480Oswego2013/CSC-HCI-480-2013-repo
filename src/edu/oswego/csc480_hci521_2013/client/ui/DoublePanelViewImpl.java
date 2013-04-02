@@ -62,6 +62,11 @@ public class DoublePanelViewImpl extends Composite implements DoublePanelView
     }
 
     @Override
+    public void removeDataTab(int index) {
+        tpData.remove(index);
+    }
+
+    @Override
     public void addVisTab(IsWidget panel, String title) {
         logger.log(Level.INFO, "adding vis tab: " + title);
         tpVis.add(panel, title, true);

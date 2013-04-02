@@ -19,15 +19,21 @@ import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.place.shared.Place;
 import com.google.gwt.place.shared.PlaceController;
 import com.google.gwt.user.client.Command;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.gwt.user.client.ui.MenuItem;
+import edu.oswego.csc480_hci521_2013.client.AppPlaceHistoryMapper;
+import edu.oswego.csc480_hci521_2013.client.Entry;
+import edu.oswego.csc480_hci521_2013.client.events.PopoutDataPanelEvent;
+import edu.oswego.csc480_hci521_2013.client.events.PopoutDataPanelEventHandler;
 
 import edu.oswego.csc480_hci521_2013.client.events.RFGenerateEvent;
 import edu.oswego.csc480_hci521_2013.client.events.RFGenerateEventHandler;
 import edu.oswego.csc480_hci521_2013.client.events.TreeVisEvent;
 import edu.oswego.csc480_hci521_2013.client.events.TreeVisEventHandler;
 import edu.oswego.csc480_hci521_2013.client.place.DoublePanelPlace;
+import edu.oswego.csc480_hci521_2013.client.place.PopoutDataPanelPlace;
 import edu.oswego.csc480_hci521_2013.client.presenters.ConfusionMatrixPresenter;
 import edu.oswego.csc480_hci521_2013.client.presenters.ConfusionMatrixPresenterImpl;
 import edu.oswego.csc480_hci521_2013.client.presenters.DataPanelPresenter;
@@ -41,6 +47,7 @@ import edu.oswego.csc480_hci521_2013.client.ui.DoublePanelView;
 import edu.oswego.csc480_hci521_2013.client.ui.TreePanel;
 import edu.oswego.csc480_hci521_2013.shared.h2o.json.RF;
 import edu.oswego.csc480_hci521_2013.shared.h2o.json.RFTreeView;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -53,6 +60,8 @@ public class DoublePanelActivity extends AbstractActivity implements DoublePanel
     private PlaceController places;
     private EventBus eventBus;
     private H2OServiceAsync service;
+
+    private List<DataPanelPresenter> westTabs = new ArrayList<DataPanelPresenter>();
 
 	public DoublePanelActivity(DoublePanelView view, PlaceController places, EventBus eventBus, H2OServiceAsync service) {
         // FIXME: this constructor should go away...
@@ -87,6 +96,15 @@ public class DoublePanelActivity extends AbstractActivity implements DoublePanel
             public void onStart(RFGenerateEvent e) {
                 logger.log(Level.INFO, "Adding confusion matrix...");
                 addConfusionMatrixTab(e.getData());
+            }
+        });
+        eventBus.addHandler(PopoutDataPanelEvent.TYPE, new PopoutDataPanelEventHandler() {
+            @Override
+            public void onPopout(PopoutDataPanelEvent e) {
+                int index = westTabs.indexOf(e.getPresenter());
+                String datakey = westTabs.remove(index).getDataKey();
+                view.removeDataTab(index);
+                popout(datakey);
             }
         });
     }
@@ -132,6 +150,7 @@ public class DoublePanelActivity extends AbstractActivity implements DoublePanel
                 logger.log(Level.INFO, "Building data tab.");
                 DataPanelPresenter presenter = new DataPanelPresenterImpl(service, new DataPanelViewImpl(), eventBus, datakey, result);
                 view.addDataTab(presenter.getView(), datakey);
+                westTabs.add(presenter);
             }
         });
     }
@@ -148,9 +167,7 @@ public class DoublePanelActivity extends AbstractActivity implements DoublePanel
             @Override
             public void onSuccess(RFTreeView treeview) {
                 logger.log(Level.INFO, treeview.toString());
-                // TODO: inject this here...
-                DoublePanelViewImpl panelView = (DoublePanelViewImpl)view;
-                panelView.addVisTab(
+                view.addVisTab(
                     new TreePanel(treeview, datakey, modelkey, tree),
                     datakey + "<br>" + modelkey + "<br>tree " + (tree + 1)
                 );
@@ -175,4 +192,34 @@ public class DoublePanelActivity extends AbstractActivity implements DoublePanel
             }
         };
     }
+
+	private void popout(String datakey) {
+		logger.log(Level.INFO, "Popping panel: " + datakey);
+
+        PopoutDataPanelPlace place = new PopoutDataPanelPlace();
+        place.setDataKey(datakey);
+
+        // FIXME: this needs to be injected...
+		AppPlaceHistoryMapper historyMapper = Entry.getPlaceHistoryMapper();
+
+        String token = historyMapper.getToken(place);
+        String url = Window.Location.createUrlBuilder().setHash(token).buildString();
+        int width = Window.getClientWidth() / 2;
+        int height = Window.getClientHeight() / 2;
+        String features = "width=" + width + ",height=" + height + ",menubar=0,location=0,toolbar=0,status=0";
+
+        openWindow(this, url, "_blank", features, datakey);
+	}
+
+	public void popin(String datakey) {
+		logger.log(Level.INFO, "Adding panel back in!");
+		addDataTab(datakey);
+	}
+
+	private static native void openWindow(DoublePanelActivity parent, String url, String name, String features, String datakey)/*-{
+	    var window = $wnd.open(url, name, features);
+		window.onbeforeunload = function() {
+		    parent.@edu.oswego.csc480_hci521_2013.client.activity.DoublePanelActivity::popin(Ljava/lang/String;)(datakey);
+		}
+	}-*/;
 }

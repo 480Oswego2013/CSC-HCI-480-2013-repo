@@ -17,12 +17,15 @@ package edu.oswego.csc480_hci521_2013.client.presenters;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import edu.oswego.csc480_hci521_2013.client.events.PopoutDataPanelEvent;
 import edu.oswego.csc480_hci521_2013.client.events.RFGenerateEvent;
 import edu.oswego.csc480_hci521_2013.client.events.RFParameterEvent;
 import edu.oswego.csc480_hci521_2013.client.events.RFParameterEventHandler;
 import edu.oswego.csc480_hci521_2013.client.events.RFProgressEvent;
 import edu.oswego.csc480_hci521_2013.client.events.RFProgressEventHandler;
 import edu.oswego.csc480_hci521_2013.client.events.TreeVisEvent;
+import edu.oswego.csc480_hci521_2013.client.place.DoublePanelPlace.PanelType;
+import edu.oswego.csc480_hci521_2013.client.place.PopoutDataPanelPlace;
 import edu.oswego.csc480_hci521_2013.client.services.H2OServiceAsync;
 import edu.oswego.csc480_hci521_2013.client.services.RFViewPoller;
 import edu.oswego.csc480_hci521_2013.client.ui.DataPanelView;
@@ -55,9 +58,15 @@ public class DataPanelPresenterImpl implements DataPanelPresenter {
 
         view.setPresenter(this);
         view.setGenerateCommand(getGenerateCommand());
+        view.setPopoutCommand(getPopoutCommand());
         view.setColumns(data.get(0).keySet());
         view.setData(data);
         bind();
+    }
+
+    @Override
+    public String getDataKey() {
+        return datakey;
     }
 
     private void bind() {
@@ -122,7 +131,7 @@ public class DataPanelPresenterImpl implements DataPanelPresenter {
             public void execute() {
                 logger.log(Level.INFO, "Generating Forest");
                 final RfParametersPresenter popUp = new RfParametersPresenterImpl(datakey, new RfParametersViewImpl(), eventbus);
-                
+
                 //Call H2OService.getColumnHeaders
                 h2oService.getColumnHeaders(datakey, new AsyncCallback<ArrayList<String>>() {
                     @Override
@@ -139,6 +148,16 @@ public class DataPanelPresenterImpl implements DataPanelPresenter {
                 });
 
                 popUp.getView().showPopUp();
+            }
+        };
+    }
+
+    ScheduledCommand getPopoutCommand() {
+        return new ScheduledCommand() {
+            @Override
+            public void execute() {
+                logger.log(Level.INFO, "Popping out");
+                eventbus.fireEvent(new PopoutDataPanelEvent(DataPanelPresenterImpl.this));
             }
         };
     }
