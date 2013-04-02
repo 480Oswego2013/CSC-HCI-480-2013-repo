@@ -47,6 +47,7 @@ public class PopoutDataPanelActivity extends AbstractActivity {
             {
                 logger.log(Level.INFO, "Building data tab.");
 
+                // TODO: ideally we would want to hide the menu bar and add some sort of title header to the page...
                 DataPanelPresenter presenter = new DataPanelPresenterImpl(
                         h2oService, new DataPanelViewImpl(),
                         eventBus, datakey, result);

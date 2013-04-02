@@ -104,7 +104,7 @@ public class DoublePanelActivity extends AbstractActivity implements DoublePanel
                 int index = westTabs.indexOf(e.getPresenter());
                 String datakey = westTabs.remove(index).getDataKey();
                 view.removeDataTab(index);
-                popout(datakey);
+                popoutDataTab(datakey);
             }
         });
     }
@@ -193,7 +193,7 @@ public class DoublePanelActivity extends AbstractActivity implements DoublePanel
         };
     }
 
-	private void popout(String datakey) {
+	private void popoutDataTab(String datakey) {
 		logger.log(Level.INFO, "Popping panel: " + datakey);
 
         PopoutDataPanelPlace place = new PopoutDataPanelPlace();
@@ -208,18 +208,18 @@ public class DoublePanelActivity extends AbstractActivity implements DoublePanel
         int height = Window.getClientHeight() / 2;
         String features = "width=" + width + ",height=" + height + ",menubar=0,location=0,toolbar=0,status=0";
 
-        openWindow(this, url, "_blank", features, datakey);
+        openDataPanel(this, url, "_blank", features, datakey);
 	}
 
-	public void popin(String datakey) {
+	public void popinDataPanel(String datakey) {
 		logger.log(Level.INFO, "Adding panel back in!");
 		addDataTab(datakey);
 	}
 
-	private static native void openWindow(DoublePanelActivity parent, String url, String name, String features, String datakey)/*-{
+	private static native void openDataPanel(DoublePanelActivity parent, String url, String name, String features, String datakey)/*-{
 	    var window = $wnd.open(url, name, features);
 		window.onbeforeunload = function() {
-		    parent.@edu.oswego.csc480_hci521_2013.client.activity.DoublePanelActivity::popin(Ljava/lang/String;)(datakey);
+		    parent.@edu.oswego.csc480_hci521_2013.client.activity.DoublePanelActivity::popinDataPanel(Ljava/lang/String;)(datakey);
 		}
 	}-*/;
 }
