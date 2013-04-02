@@ -55,6 +55,10 @@ public class DataPanelViewImpl extends Composite implements
 		tpData = new TabPanel();
 		tpData.setSize("100%", "100%");
 		tpData.setAnimationEnabled(true);
+
+		tpVis = new TabPanel();
+		tpVis.setSize("100%", "100%");
+		tpVis.setAnimationEnabled(true);
 		
 		initWidget(tpData);
 	}
