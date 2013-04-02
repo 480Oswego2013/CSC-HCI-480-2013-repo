@@ -16,6 +16,7 @@ package edu.oswego.csc480_hci521_2013.client.presenters;
 
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.event.shared.EventBus;
+import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import edu.oswego.csc480_hci521_2013.client.events.PopoutDataPanelEvent;
 import edu.oswego.csc480_hci521_2013.client.events.RFGenerateEvent;
@@ -24,8 +25,6 @@ import edu.oswego.csc480_hci521_2013.client.events.RFParameterEventHandler;
 import edu.oswego.csc480_hci521_2013.client.events.RFProgressEvent;
 import edu.oswego.csc480_hci521_2013.client.events.RFProgressEventHandler;
 import edu.oswego.csc480_hci521_2013.client.events.TreeVisEvent;
-import edu.oswego.csc480_hci521_2013.client.place.DoublePanelPlace.PanelType;
-import edu.oswego.csc480_hci521_2013.client.place.PopoutDataPanelPlace;
 import edu.oswego.csc480_hci521_2013.client.services.H2OServiceAsync;
 import edu.oswego.csc480_hci521_2013.client.services.RFViewPoller;
 import edu.oswego.csc480_hci521_2013.client.ui.DataPanelView;
@@ -50,6 +49,8 @@ public class DataPanelPresenterImpl implements DataPanelPresenter {
     String datakey;
     RF randomForest;
 
+    private List<HandlerRegistration> handlers = new ArrayList<HandlerRegistration>();
+
     public DataPanelPresenterImpl(H2OServiceAsync service, DataPanelView panelView, EventBus eventBus, String datakey, List<Map<String, String>> data) {
         this.eventbus = eventBus;
         this.view = panelView;
@@ -69,8 +70,17 @@ public class DataPanelPresenterImpl implements DataPanelPresenter {
         return datakey;
     }
 
+
+    @Override
+    public void removed()
+    {
+        for (HandlerRegistration h: handlers) {
+            h.removeHandler();
+        }
+    }
+
     private void bind() {
-        eventbus.addHandler(RFProgressEvent.TYPE, new RFProgressEventHandler() {
+        handlers.add(eventbus.addHandler(RFProgressEvent.TYPE, new RFProgressEventHandler() {
             @Override
             public void onDataUpdate(RFProgressEvent e) {
                 if (isOurData(e.getData())) {
@@ -89,9 +99,9 @@ public class DataPanelPresenterImpl implements DataPanelPresenter {
                     }
                 }
             }
-        });
+        }));
 
-        eventbus.addHandler(RFParameterEvent.TYPE, new RFParameterEventHandler() {
+        handlers.add(eventbus.addHandler(RFParameterEvent.TYPE, new RFParameterEventHandler() {
             @Override
             public void onParams(RFParameterEvent event){
                 RFBuilder builder = event.getBuilder();
@@ -114,7 +124,7 @@ public class DataPanelPresenterImpl implements DataPanelPresenter {
                     }
                 });
             }
-        });
+        }));
     }
 
     private boolean isOurData(RFView data) {

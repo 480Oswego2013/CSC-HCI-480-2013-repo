@@ -102,7 +102,9 @@ public class DoublePanelActivity extends AbstractActivity implements DoublePanel
             @Override
             public void onPopout(PopoutDataPanelEvent e) {
                 int index = westTabs.indexOf(e.getPresenter());
-                String datakey = westTabs.remove(index).getDataKey();
+                DataPanelPresenter presenter = westTabs.remove(index);
+                String datakey = presenter.getDataKey();
+                presenter.removed();
                 view.removeDataTab(index);
                 popoutDataTab(datakey);
             }
