@@ -19,47 +19,41 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Grid;
+import com.google.gwt.user.client.ui.MenuItem;
 import com.google.gwt.user.client.ui.Widget;
+
+import edu.oswego.csc480_hci521_2013.client.presenters.ConfusionMatrixPresenter;
+
 import java.util.logging.Logger;
 
 public class ConfusionMatrixViewImpl extends AbstractConfusionMatrix {
 
     private static Binder uiBinder = GWT.create(Binder.class);
+    private ConfusionMatrixPresenter presenter;
     private static final Logger logger = Logger.getLogger(ConfusionMatrixViewImpl.class.getName());
 
     interface Binder extends UiBinder<Widget, ConfusionMatrixViewImpl> {
     }
 
-    @UiField
-    ConfusionMatrixView.Style style;
+    @UiField ConfusionMatrixView.Style style;
+    
+    @UiField MenuItem popOut;
+    @UiField MenuItem close;
 
-    @UiField
-    Element progress;
-    @UiField
-    FlexTable matrixTable;
-    @UiField
-    Element type;
-    @UiField
-    Element responseVariable;
-    @UiField
-    Element ntree;
-    @UiField
-    Element mtry;
-    @UiField
-    Element rowsSkipped;
-    @UiField
-    Element rows;
-    @UiField
-    Element classificationError;
+    @UiField Element progress;
+    @UiField FlexTable matrixTable;
+    @UiField Element type;
+    @UiField Element responseVariable;
+    @UiField Element ntree;
+    @UiField Element mtry;
+    @UiField Element rowsSkipped;
+    @UiField Element rows;
+    @UiField Element classificationError;
 
-    @UiField
-    Element treesGenerated;
-    @UiField
-    Grid treesTable;
-    @UiField
-    Element leavesMin, leavesMean, leavesMax;
-    @UiField
-    Element depthMin, depthMean, depthMax;
+    @UiField Element treesGenerated;
+    @UiField Grid treesTable;
+    @UiField Element leavesMin, leavesMean, leavesMax;
+    @UiField Element depthMin, depthMean, depthMax;
 
     public ConfusionMatrixViewImpl() {
         initWidget(uiBinder.createAndBindUi(this));
@@ -70,7 +64,15 @@ public class ConfusionMatrixViewImpl extends AbstractConfusionMatrix {
         return style;
     }
 
-    @Override
+    public MenuItem getPopOutItem() {
+		return popOut;
+	}
+
+	public MenuItem getCloseItem() {
+		return close;
+	}
+
+	@Override
     public Element getProgress() {
         return this.progress;
     }
@@ -149,4 +151,5 @@ public class ConfusionMatrixViewImpl extends AbstractConfusionMatrix {
     public Element getDepthMax() {
         return this.depthMax;
     }
+    
 }

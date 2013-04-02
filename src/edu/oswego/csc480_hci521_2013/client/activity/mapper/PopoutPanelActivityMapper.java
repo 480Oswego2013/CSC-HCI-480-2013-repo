@@ -11,8 +11,11 @@ import com.google.gwt.place.shared.PlaceController;
 import com.google.inject.Inject;
 
 import edu.oswego.csc480_hci521_2013.client.activity.DataPanelActivity;
-import edu.oswego.csc480_hci521_2013.client.place.PopoutPanelPlace;
-import edu.oswego.csc480_hci521_2013.client.place.PopoutPanelPlace.PanelType;
+import edu.oswego.csc480_hci521_2013.client.activity.VisPanelActivity;
+import edu.oswego.csc480_hci521_2013.client.place.popout.ConfusionMatrixPlace;
+import edu.oswego.csc480_hci521_2013.client.place.popout.DataPanelPlace;
+import edu.oswego.csc480_hci521_2013.client.place.popout.PopoutPlace;
+import edu.oswego.csc480_hci521_2013.client.place.popout.PopoutPlace.PopoutType;
 import edu.oswego.csc480_hci521_2013.client.presenters.DataPanelPresenter;
 import edu.oswego.csc480_hci521_2013.client.services.H2OServiceAsync;
 
@@ -23,14 +26,14 @@ public class PopoutPanelActivityMapper implements ActivityMapper {
     private Activity currentActivity;
     private EventBus eventBus;
     private H2OServiceAsync service;
-    private DataPanelPresenter.View panelView;
+    private DataPanelPresenter.View dataView;
     private PlaceController places;
     
     @Inject
 	public PopoutPanelActivityMapper(EventBus eventBus, H2OServiceAsync service, DataPanelPresenter.View panelView) {
 		this.eventBus = eventBus;
         this.service = service;
-        this.panelView = panelView;
+        this.dataView = panelView;
 	}
 
     public void setPlaceController(PlaceController places) {
@@ -42,28 +45,21 @@ public class PopoutPanelActivityMapper implements ActivityMapper {
 	    
 	    	logger.log(Level.INFO, "Mapping popout activity..."+place.getClass().getName());
 
-		// PopoutPanelPlace
-		if(place instanceof PopoutPanelPlace) {
+		// PopoutPlace
+		if(place instanceof DataPanelPlace) {
 		   	logger.log(Level.INFO, "   of type PopoutPanelPlace");
-			PopoutPanelPlace ppp = (PopoutPanelPlace)place;
-			PanelType type = ppp.getType();
+			PopoutPlace pp = (PopoutPlace)place;
+			PopoutType type = pp.getType();
 			
 			// Data panel
-			if(type == PanelType.DATA) {
-				currentActivity = new DataPanelActivity(ppp, eventBus, service, panelView, places);
-//				if(currentActivity == null)
-//					currentActivity = new DataPanelActivity(ppp, clientFactory);
-//				else
-//					currentActivity = currentActivity.getClass() == DataPanelActivity.class ?
-//							currentActivity : new DataPanelActivity(ppp, clientFactory);
+			if(type == PopoutType.DATA) {
+				DataPanelPlace dpp = (DataPanelPlace)pp;
+				currentActivity = new DataPanelActivity(dpp, eventBus, service, dataView, places);
 			
-			// Vis panel
-			} else if(type == PanelType.VIS) {
-				if(currentActivity == null)
-					currentActivity = new DataPanelActivity(ppp, eventBus, service, panelView, places);
-				else
-					currentActivity = currentActivity.getClass() == DataPanelActivity.class ?
-							currentActivity : new DataPanelActivity(ppp, eventBus, service, panelView, places);
+			// Confusion matrix
+			} else if(type == PopoutType.CM) {
+				ConfusionMatrixPlace cmp = (ConfusionMatrixPlace)pp;
+				currentActivity = new VisPanelActivity(cmp, eventBus, service, places);
 			}
 			
 		} else {

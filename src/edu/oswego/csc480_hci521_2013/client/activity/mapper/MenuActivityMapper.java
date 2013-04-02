@@ -21,7 +21,7 @@ import com.google.inject.Inject;
 
 import edu.oswego.csc480_hci521_2013.client.activity.MenuActivity;
 import edu.oswego.csc480_hci521_2013.client.place.DoublePanelPlace;
-import edu.oswego.csc480_hci521_2013.client.place.PopoutPanelPlace;
+import edu.oswego.csc480_hci521_2013.client.place.popout.DataPanelPlace;
 import edu.oswego.csc480_hci521_2013.client.ui.MenuView;
 
 public class MenuActivityMapper implements ActivityMapper {
@@ -43,7 +43,7 @@ public class MenuActivityMapper implements ActivityMapper {
 	public Activity getActivity(Place place) {
 		
 		// PopoutPanelPlace
-		if(place instanceof PopoutPanelPlace)
+		if(place instanceof DataPanelPlace)
 			currentActivity = null;
 		
 		// DoublePanelPlace

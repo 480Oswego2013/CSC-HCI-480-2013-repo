@@ -67,7 +67,7 @@ public class RfParametersViewImpl extends PopupPanel implements RfParametersPres
         builder.setNtree(numTrees.getValue());
         int classVarSelected = classVars.getSelectedIndex();
         String classVarVal = classVars.getValue(classVarSelected);
-        builder.setResponseVariable(classVarVal);
+//        builder.setResponseVariable(classVarVal);
         for(int i = 0; i < ignoreCols.getItemCount(); i++){
             if(ignoreCols.isItemSelected(i)){
                 Integer ignoreThis = Integer.valueOf(ignoreCols.getValue(i));

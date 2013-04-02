@@ -17,11 +17,18 @@ import com.google.gwt.dom.client.Element;
 import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.IsWidget;
+import com.google.gwt.user.client.ui.MenuItem;
+
+import edu.oswego.csc480_hci521_2013.client.presenters.ConfusionMatrixPresenter;
+
 import java.util.List;
 
 public interface ConfusionMatrixView extends IsWidget {
-
-    void hideProgress();
+	
+	MenuItem getPopOutItem();
+	MenuItem getCloseItem();
+	
+	void hideProgress();
 
     void setProgress(String progressUpdate);
 

@@ -18,13 +18,13 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.google.gwt.activity.shared.AbstractActivity;
+import com.google.gwt.place.shared.Place;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.IsWidget;
 
 import edu.oswego.csc480_hci521_2013.client.AppPlaceHistoryMapper;
 import edu.oswego.csc480_hci521_2013.client.Entry;
 import edu.oswego.csc480_hci521_2013.client.place.DoublePanelPlace.Location;
-import edu.oswego.csc480_hci521_2013.client.place.PopoutPanelPlace;
 
 public abstract class AbstractPanelActivity extends AbstractActivity {
 	
@@ -35,7 +35,22 @@ public abstract class AbstractPanelActivity extends AbstractActivity {
 	private IsWidget panel;
 	private String panelTitle;
 	
+	/**
+	 * Called when a pop-out window has requested this widget to return to the
+	 * parent window.
+	 * 
+	 * @param widget	Widget to be added
+	 * @param title		Widget title
+	 */
 	public abstract void addPanel(IsWidget widget, String title);
+	
+	/**
+	 * Called when a pop-out window has been created for this widget. In most
+	 * cases this method should simply remove the widget from its parent
+	 * container in order to give the "popping" appearance.
+	 * 
+	 * @param widget
+	 */
 	public abstract void popPanel(IsWidget widget);
 	
 	public AbstractPanelActivity(Location loc) {
@@ -50,7 +65,7 @@ public abstract class AbstractPanelActivity extends AbstractActivity {
 		return loc;
 	}
 	
-	public void popout(PopoutPanelPlace place, IsWidget panel, String title) {
+	public void popOut(Place place, IsWidget panel, String title) {
 		logger.log(Level.INFO, "Popping panel");
 		
 		this.panel = panel;
@@ -69,15 +84,14 @@ public abstract class AbstractPanelActivity extends AbstractActivity {
 		popPanel(panel);
 	}
 	
-	public void popin() {
-		logger.log(Level.INFO, "Adding panel back in!");
+	public void popIn() {
 		addPanel(panel, panelTitle);
 	}
 	
 	private static native void openWindow(AbstractPanelActivity parent, String url, String name, String features)/*-{
 	    var window = $wnd.open(url, name, features);
 		window.onbeforeunload = function() {
-		    parent.@edu.oswego.csc480_hci521_2013.client.activity.AbstractPanelActivity::popin()();
+		    parent.@edu.oswego.csc480_hci521_2013.client.activity.AbstractPanelActivity::popIn()();
 		}
 	}-*/;
 	

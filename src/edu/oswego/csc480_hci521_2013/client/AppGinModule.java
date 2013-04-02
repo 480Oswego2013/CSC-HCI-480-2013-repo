@@ -19,18 +19,18 @@ import com.google.gwt.event.shared.SimpleEventBus;
 import com.google.gwt.inject.client.AbstractGinModule;
 import com.google.inject.Singleton;
 
-import edu.oswego.csc480_hci521_2013.client.activity.MenuActivity;
 import edu.oswego.csc480_hci521_2013.client.activity.mapper.EastPanelActivityMapper;
 import edu.oswego.csc480_hci521_2013.client.activity.mapper.MenuActivityMapper;
 import edu.oswego.csc480_hci521_2013.client.activity.mapper.PopoutPanelActivityMapper;
 import edu.oswego.csc480_hci521_2013.client.activity.mapper.WestPanelActivityMapper;
 import edu.oswego.csc480_hci521_2013.client.presenters.DataPanelPresenter;
+import edu.oswego.csc480_hci521_2013.client.presenters.VisPanelPresenter;
 import edu.oswego.csc480_hci521_2013.client.services.H2OServiceAsync;
 import edu.oswego.csc480_hci521_2013.client.services.H2OServiceProvider;
 import edu.oswego.csc480_hci521_2013.client.ui.BasicMenuView;
 import edu.oswego.csc480_hci521_2013.client.ui.DataPanelViewImpl;
 import edu.oswego.csc480_hci521_2013.client.ui.MenuView;
-import edu.oswego.csc480_hci521_2013.client.ui.DoublePanelView;
+import edu.oswego.csc480_hci521_2013.client.ui.VisPanelViewImpl;
 
 public class AppGinModule extends AbstractGinModule {
     @Override
@@ -43,5 +43,6 @@ public class AppGinModule extends AbstractGinModule {
         bind(PopoutPanelActivityMapper.class);
         bind(H2OServiceAsync.class).toProvider(H2OServiceProvider.class).in(Singleton.class);
         bind(DataPanelPresenter.View.class).to(DataPanelViewImpl.class).in(Singleton.class);
+        bind(VisPanelPresenter.View.class).to(VisPanelViewImpl.class).in(Singleton.class);
     }    
 }

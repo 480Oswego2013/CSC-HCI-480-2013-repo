@@ -24,6 +24,7 @@ import edu.oswego.csc480_hci521_2013.client.activity.mapper.MenuActivityMapper;
 import edu.oswego.csc480_hci521_2013.client.activity.mapper.PopoutPanelActivityMapper;
 import edu.oswego.csc480_hci521_2013.client.activity.mapper.WestPanelActivityMapper;
 import edu.oswego.csc480_hci521_2013.client.presenters.DataPanelPresenter;
+import edu.oswego.csc480_hci521_2013.client.presenters.VisPanelPresenter;
 import edu.oswego.csc480_hci521_2013.client.services.H2OServiceAsync;
 import edu.oswego.csc480_hci521_2013.client.ui.MenuView;
 
@@ -37,4 +38,5 @@ public interface AppGinjector extends Ginjector {
     PopoutPanelActivityMapper getPopoutPanelActivityMapper();
     H2OServiceAsync getH2OServiceAsync();
     DataPanelPresenter.View getDataPanelView();
+    VisPanelPresenter.View getVisPanelView();
 }

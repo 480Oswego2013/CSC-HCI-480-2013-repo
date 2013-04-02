@@ -43,7 +43,7 @@ public class DataPanelViewImpl extends Composite implements
 
 	TabPanel tpData;
     TabPanel tpVis;
-	static final Logger logger = Logger.getLogger(DoublePanelView.class
+	static final Logger logger = Logger.getLogger(DataPanelViewImpl.class
 			.getName());
 
 	public DataPanelViewImpl() {

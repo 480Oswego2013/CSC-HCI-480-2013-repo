@@ -11,17 +11,31 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
 package edu.oswego.csc480_hci521_2013.client.presenters;
 
 import com.google.gwt.user.client.Command;
+import com.google.gwt.user.client.ui.IsWidget;
 
-import edu.oswego.csc480_hci521_2013.client.ui.ConfusionMatrixView;
+import edu.oswego.csc480_hci521_2013.client.presenters.DataPanelPresenter.TabView;
 import edu.oswego.csc480_hci521_2013.shared.h2o.json.RFView;
 
-public interface ConfusionMatrixPresenter {
+/**
+ *
+ */
+public interface VisPanelPresenter {
 
-    void setData(RFView data);
-
-    ConfusionMatrixView getView();
+	
+    
+    public interface View extends IsWidget {
+        void buildUi();
+        void setPresenter(VisPanelPresenter presenter);
+        void addVisTab(IsWidget panel, String title);
+        void removeTab(int index);
+        void clear();
+        int getTabCount();
+        int getActiveTabIndex();
+        TabView getTab(int index);
+    }
 
 }

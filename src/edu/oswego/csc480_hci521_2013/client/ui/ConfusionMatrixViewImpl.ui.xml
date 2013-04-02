@@ -24,9 +24,17 @@
         .cfmatrixHighlight {
             background-color: #e0ffe0;
         }
+		.container {
+			overflow-y: scroll;
+		}
     </ui:style>
 
-    <gwt:HTMLPanel>
+    <gwt:HTMLPanel styleName="{style.container}">
+        <gwt:MenuBar>
+            <gwt:MenuItem ui:field="popOut">Pop Out</gwt:MenuItem>
+            <gwt:MenuItem ui:field="close">Close</gwt:MenuItem>
+        </gwt:MenuBar>
+        
         <progress ui:field='progress' value="0" max="100"/>
 
         <h2>Confusion Matrix - <span ui:field='type'/></h2>

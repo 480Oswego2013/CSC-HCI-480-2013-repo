@@ -8,32 +8,37 @@ import com.google.gwt.place.shared.PlaceController;
 import com.google.inject.Inject;
 
 import edu.oswego.csc480_hci521_2013.client.activity.DataPanelActivity;
+import edu.oswego.csc480_hci521_2013.client.activity.VisPanelActivity;
 import edu.oswego.csc480_hci521_2013.client.place.DoublePanelPlace;
 import edu.oswego.csc480_hci521_2013.client.place.DoublePanelPlace.Location;
 import edu.oswego.csc480_hci521_2013.client.place.DoublePanelPlace.PanelType;
-import edu.oswego.csc480_hci521_2013.client.place.PopoutPanelPlace;
+import edu.oswego.csc480_hci521_2013.client.place.popout.DataPanelPlace;
+import edu.oswego.csc480_hci521_2013.client.presenters.DataPanelPresenter;
+import edu.oswego.csc480_hci521_2013.client.presenters.VisPanelPresenter;
 import edu.oswego.csc480_hci521_2013.client.presenters.DataPanelPresenter.View;
 import edu.oswego.csc480_hci521_2013.client.services.H2OServiceAsync;
 
 public class WestPanelActivityMapper implements ActivityMapper {
 
 	private Activity currentActivity;
-    private EventBus eventBus;
-    private H2OServiceAsync service;
-    private View panelView;
-    private PlaceController places;
-    
-    @Inject
-	public WestPanelActivityMapper(EventBus eventBus, H2OServiceAsync service, View panelView) {
+	private EventBus eventBus;
+	private H2OServiceAsync service;
+	private DataPanelPresenter.View dataView;
+    private VisPanelPresenter.View visView;
+    private PlaceController placeController;
+
+	@Inject
+	public WestPanelActivityMapper(EventBus eventBus, H2OServiceAsync service, DataPanelPresenter.View dataView, VisPanelPresenter.View visView) {
 		this.eventBus = eventBus;
         this.service = service;
-        this.panelView = panelView;
+        this.dataView = dataView;
+        this.visView = visView;
 	}
 
-    public void setPlaceController(PlaceController places) {
-        this.places = places;
-    }
-    
+	public void setPlaceController(PlaceController places) {
+		this.placeController = places;
+	}
+
 	@Override
 	public Activity getActivity(Place place) {
 
@@ -43,23 +48,16 @@ public class WestPanelActivityMapper implements ActivityMapper {
 			PanelType type = dpp.getWest();
 
 			// Data panel
-			if (type == PanelType.DATA) {
-                //EventBus eventBus, H2OServiceAsync service, View panelView, PlaceController places
-				currentActivity = new DataPanelActivity(Location.EAST, dpp, eventBus, service, panelView, places);
-//				if (currentActivity == null)
-//					currentActivity = new DataPanelActivity(Location.WEST, dpp,
-//							clientFactory);
-//				else
-//					currentActivity = currentActivity.getClass() == DataPanelActivity.class ? currentActivity
-//							: new DataPanelActivity(Location.WEST, dpp,
-//									clientFactory);
+			if (type == PanelType.DATA)
+				currentActivity = new DataPanelActivity(Location.EAST, dpp,
+						eventBus, service, dataView, placeController);
 
-				// Vis panel
-			} else if (type == PanelType.VIS) {
-				currentActivity = null;
-			}
+			// Vis panel
+			else if (type == PanelType.VIS)
+				currentActivity = new VisPanelActivity(Location.EAST, dpp,
+						eventBus, service, visView, placeController);
 
-		} else if (place instanceof PopoutPanelPlace) {
+		} else if (place instanceof DataPanelPlace) {
 			currentActivity = null;
 		}
 

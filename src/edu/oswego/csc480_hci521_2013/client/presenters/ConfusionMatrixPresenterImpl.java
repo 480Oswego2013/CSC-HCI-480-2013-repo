@@ -13,26 +13,36 @@
 // limitations under the License.
 package edu.oswego.csc480_hci521_2013.client.presenters;
 
-import edu.oswego.csc480_hci521_2013.client.presenters.adapters.ConfusionMatrixAdapter;
-import edu.oswego.csc480_hci521_2013.client.ui.ConfusionMatrixView;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import com.google.gwt.user.client.Command;
 import com.google.web.bindery.event.shared.EventBus;
+
+import edu.oswego.csc480_hci521_2013.client.activity.VisPanelActivity;
 import edu.oswego.csc480_hci521_2013.client.events.RFProgressEvent;
 import edu.oswego.csc480_hci521_2013.client.events.RFProgressEventHandler;
+import edu.oswego.csc480_hci521_2013.client.place.popout.ConfusionMatrixPlace;
+import edu.oswego.csc480_hci521_2013.client.presenters.adapters.ConfusionMatrixAdapter;
+import edu.oswego.csc480_hci521_2013.client.ui.ConfusionMatrixView;
 import edu.oswego.csc480_hci521_2013.shared.h2o.json.RF;
 import edu.oswego.csc480_hci521_2013.shared.h2o.json.RFView;
-import java.util.List;
-import java.util.logging.Level;
 
 public class ConfusionMatrixPresenterImpl implements ConfusionMatrixPresenter {
 
+	static final Logger logger = Logger.getLogger(ConfusionMatrixPresenterImpl.class
+			.getName());
+	
     RF randomForest;
     EventBus eventbus;
     ConfusionMatrixView view;
+    VisPanelActivity parent;
 
-    public ConfusionMatrixPresenterImpl(ConfusionMatrixView view, EventBus eventBus, RF randomForest) {
+    public ConfusionMatrixPresenterImpl(VisPanelActivity parent, ConfusionMatrixView view, EventBus eventBus, RF randomForest) {
         this.view = view;
         this.eventbus = eventBus;
         this.randomForest = randomForest;
+        this.parent = parent;
 
         bind();
     }
@@ -60,8 +70,29 @@ public class ConfusionMatrixPresenterImpl implements ConfusionMatrixPresenter {
     public void setData(RFView data) {
         updateView(this.view, data);
     }
+    
+	public Command getPopOutCommand() {		
+		return new Command() {
+            @Override
+            public void execute() {
+            	ConfusionMatrixPlace place = new ConfusionMatrixPlace();
+        		place.setDataKey(randomForest.getDataKey());
+        		place.setTreeCount(randomForest.getNtree());
+        		place.setIgnoreCols(new int[]{}); //TODO
+        		
+        		logger.log(Level.INFO, "Popping out CM panel...");
+        		logger.log(Level.INFO, randomForest.getDataKey() + " "+ randomForest.getNtree());
+        		parent.popOut(place, view, "Confusion Matrix");
+            }
+        };
+	}
 
-    public static void updateView(ConfusionMatrixView matrixView, RFView data) {
+	public Command getCloseCommand() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+    public void updateView(ConfusionMatrixView matrixView, RFView data) {
         ConfusionMatrixAdapter adapter = new ConfusionMatrixAdapter(data);
         if (data.getResponse().isPoll()) {
             matrixView.setProgress(adapter.getProgress());
@@ -89,10 +120,14 @@ public class ConfusionMatrixPresenterImpl implements ConfusionMatrixPresenter {
         matrixView.setDepthMin(adapter.getDepthMin());
         matrixView.setDepthMean(adapter.getDepthMean());
         matrixView.setDepthMax(adapter.getDepthMax());
+        
+        matrixView.getPopOutItem().setScheduledCommand(getPopOutCommand());
+        matrixView.getCloseItem().setScheduledCommand(getCloseCommand());
     }
 
     @Override
     public ConfusionMatrixView getView() {
         return view;
     }
+
 }

@@ -16,7 +16,6 @@ import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.gwt.user.client.ui.IsWidget;
 
 import edu.oswego.csc480_hci521_2013.client.events.RFGenerateEvent;
-import edu.oswego.csc480_hci521_2013.client.events.RFGenerateEventHandler;
 import edu.oswego.csc480_hci521_2013.client.events.RFParameterEvent;
 import edu.oswego.csc480_hci521_2013.client.events.RFParameterEventHandler;
 import edu.oswego.csc480_hci521_2013.client.events.RFProgressEvent;
@@ -24,16 +23,13 @@ import edu.oswego.csc480_hci521_2013.client.events.RFProgressEventHandler;
 import edu.oswego.csc480_hci521_2013.client.events.TreeVisEvent;
 import edu.oswego.csc480_hci521_2013.client.place.DoublePanelPlace;
 import edu.oswego.csc480_hci521_2013.client.place.DoublePanelPlace.Location;
-import edu.oswego.csc480_hci521_2013.client.place.PopoutPanelPlace;
-import edu.oswego.csc480_hci521_2013.client.place.PopoutPanelPlace.PanelType;
-import edu.oswego.csc480_hci521_2013.client.presenters.ConfusionMatrixPresenter;
-import edu.oswego.csc480_hci521_2013.client.presenters.ConfusionMatrixPresenterImpl;
+import edu.oswego.csc480_hci521_2013.client.place.popout.DataPanelPlace;
+import edu.oswego.csc480_hci521_2013.client.place.popout.PopoutPlace.PopoutType;
 import edu.oswego.csc480_hci521_2013.client.presenters.DataPanelPresenter;
 import edu.oswego.csc480_hci521_2013.client.presenters.RfParametersPresenter;
 import edu.oswego.csc480_hci521_2013.client.presenters.RfParametersPresenterImpl;
 import edu.oswego.csc480_hci521_2013.client.services.H2OServiceAsync;
 import edu.oswego.csc480_hci521_2013.client.services.RFViewPoller;
-import edu.oswego.csc480_hci521_2013.client.ui.ConfusionMatrixViewImpl;
 import edu.oswego.csc480_hci521_2013.client.ui.RfParametersViewImpl;
 import edu.oswego.csc480_hci521_2013.shared.h2o.json.RF;
 import edu.oswego.csc480_hci521_2013.shared.h2o.json.RFView;
@@ -63,7 +59,7 @@ public class DataPanelActivity extends AbstractPanelActivity implements
         dataKeys = place.getDataKeys();
     }
 
-    public DataPanelActivity(PopoutPanelPlace place, EventBus eventBus, H2OServiceAsync service, View panelView, PlaceController places) {
+    public DataPanelActivity(DataPanelPlace place, EventBus eventBus, H2OServiceAsync service, View panelView, PlaceController places) {
         this.view = panelView;
         this.eventBus = eventBus;
         this.h2oService = service;
@@ -71,8 +67,11 @@ public class DataPanelActivity extends AbstractPanelActivity implements
         dataKeys = new String[]{place.getDataKey()};
         isPopout = true;
     }
-
-    // Activity lifecycle methods
+    
+	//==========================================================================
+	// Activity lifecycle methods
+	//==========================================================================
+    
     @Override
     public void start(AcceptsOneWidget panel, EventBus eventBus) {
         this.view.setPresenter(this);
@@ -127,9 +126,10 @@ public class DataPanelActivity extends AbstractPanelActivity implements
     public void addPanel(IsWidget panel, String title) {
         view.addDataTab(title, (TabView) panel);
     }
-
-    // Presenter methods
     
+	//==========================================================================
+	// Presenter methods
+	//==========================================================================
 
     @Override
     public Command getGenerateCommand() {
@@ -157,11 +157,10 @@ public class DataPanelActivity extends AbstractPanelActivity implements
         return new Command() {
             @Override
             public void execute() {
-                PopoutPanelPlace place = new PopoutPanelPlace();
+                DataPanelPlace place = new DataPanelPlace();
                 TabView active = view.getTab(view.getActiveTabIndex());
-                place.setType(PanelType.DATA);
                 place.setDataKey(dataKeys[view.getActiveTabIndex()]);
-                popout(place, active, active.getDataKey());
+                popOut(place, active, active.getDataKey());
             }
         };
     }
@@ -178,23 +177,11 @@ public class DataPanelActivity extends AbstractPanelActivity implements
         };
     }
 
-    // Utility methods
+	//==========================================================================
+	// Helper methods
+	//==========================================================================
+    
     private void bind() {
-
-//		eventbus.addHandler(InspectDataEvent.TYPE,
-//				new InspectDataEventHandler() {
-//					@Override
-//					public void onViewData(InspectDataEvent e) {
-//						addDataTab(e.getName());
-//					}
-//				});
-        eventBus.addHandler(RFGenerateEvent.TYPE, new RFGenerateEventHandler() {
-            @Override
-            public void onStart(RFGenerateEvent e) {
-                logger.log(Level.INFO, "Adding confusion matrix...");
-                addConfusionMatrixTab(e.getData());
-            }
-        });
         
         eventBus.addHandler(RFProgressEvent.TYPE, new RFProgressEventHandler() {
             @Override
@@ -242,6 +229,7 @@ public class DataPanelActivity extends AbstractPanelActivity implements
                 });
             }
         });
+        
     }
 
     private boolean isOurData(RFView data) {
@@ -350,9 +338,4 @@ public class DataPanelActivity extends AbstractPanelActivity implements
         popUp.getView().showPopUp();
     }
     
-    private void addConfusionMatrixTab(RF rf) {
-        ConfusionMatrixPresenter presenter = new ConfusionMatrixPresenterImpl(new ConfusionMatrixViewImpl(), eventBus, rf);
-        String title = "Confusion Matrix<br>" + rf.getDataKey() + "<br>" + rf.getModelKey();
-        view.addVisTab(presenter.getView(), title);
-    }
 }
