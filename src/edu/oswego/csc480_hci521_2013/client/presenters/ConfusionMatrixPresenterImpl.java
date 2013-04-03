@@ -13,21 +13,25 @@
 // limitations under the License.
 package edu.oswego.csc480_hci521_2013.client.presenters;
 
+import com.google.web.bindery.event.shared.EventBus;
+import com.google.web.bindery.event.shared.HandlerRegistration;
 import edu.oswego.csc480_hci521_2013.client.presenters.adapters.ConfusionMatrixAdapter;
 import edu.oswego.csc480_hci521_2013.client.ui.ConfusionMatrixView;
-import com.google.web.bindery.event.shared.EventBus;
 import edu.oswego.csc480_hci521_2013.client.events.RFProgressEvent;
 import edu.oswego.csc480_hci521_2013.client.events.RFProgressEventHandler;
 import edu.oswego.csc480_hci521_2013.shared.h2o.json.RF;
 import edu.oswego.csc480_hci521_2013.shared.h2o.json.RFView;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
 
-public class ConfusionMatrixPresenterImpl implements ConfusionMatrixPresenter {
+public class ConfusionMatrixPresenterImpl implements ConfusionMatrixPresenter, TabPanelPresenter {
 
     RF randomForest;
     EventBus eventbus;
     ConfusionMatrixView view;
+    RFView data;
+
+    private List<HandlerRegistration> handlers = new ArrayList<HandlerRegistration>();
 
     public ConfusionMatrixPresenterImpl(ConfusionMatrixView view, EventBus eventBus, RF randomForest) {
         this.view = view;
@@ -38,26 +42,57 @@ public class ConfusionMatrixPresenterImpl implements ConfusionMatrixPresenter {
     }
 
     private void bind() {
-        eventbus.addHandler(RFProgressEvent.TYPE, new RFProgressEventHandler() {
+        handlers.add(eventbus.addHandler(RFProgressEvent.TYPE, new RFProgressEventHandler() {
             @Override
             public void onDataUpdate(RFProgressEvent e) {
+                // FIXME: the event needs to contain a reference to this view in some way so we know the requester...
                 if (isOurData(e.getData())) {
                     setData(e.getData());
                 }
             }
-        });
+        }));
+    }
+
+    @Override
+    public void added()
+    {
+        bind();
+    }
+
+    @Override
+    public void removed()
+    {
+        for (HandlerRegistration h: handlers) {
+            h.removeHandler();
+        }
+        handlers.clear();
     }
 
     private boolean isOurData(RFView data) {
+        // TODO: this should compare the out of bag error field as well
+        //       we need to get that from the confusion matrix type...
         if (data.getDataKey().equals(randomForest.getDataKey())
-                && data.getModelKey().equals(randomForest.getModelKey())) {
+                && data.getModelKey().equals(randomForest.getModelKey())
+                && data.getNtree() == randomForest.getNtree()
+                && data.getResponseVariable() == randomForest.getResponseVariable())
+        {
             return true;
         }
         return false;
     }
 
+    public RF getRandomForest() {
+        return randomForest;
+    }
+
+    @Override
+    public RFView getData() {
+        return data;
+    }
+
     @Override
     public void setData(RFView data) {
+        this.data = data;
         updateView(this.view, data);
     }
 

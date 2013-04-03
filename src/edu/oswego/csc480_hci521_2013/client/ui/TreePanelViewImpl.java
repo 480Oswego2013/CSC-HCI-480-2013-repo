@@ -27,12 +27,11 @@ import edu.oswego.csc480_hci521_2013.shared.h2o.json.RFTreeView;
 /**
  *
  */
-public class TreePanel extends Composite implements IsWidget {
-    // TODO: this should have an interface...
+public class TreePanelViewImpl extends Composite implements TreePanelView {
 
     private static Binder uiBinder = GWT.create(Binder.class);
 
-    interface Binder extends UiBinder<Widget, TreePanel> {
+    interface Binder extends UiBinder<Widget, TreePanelViewImpl> {
     }
 
     private RFTreeView data;
@@ -44,7 +43,7 @@ public class TreePanel extends Composite implements IsWidget {
     @UiField
     Element canvas;
 
-    public TreePanel(RFTreeView data, String datakey, String modelkey, int treeIndex) {
+    public TreePanelViewImpl(RFTreeView data, String datakey, String modelkey, int treeIndex) {
         this.data = data;
         this.datakey = datakey;
         this.modelkey = modelkey;

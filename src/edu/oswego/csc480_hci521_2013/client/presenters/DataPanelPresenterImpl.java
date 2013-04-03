@@ -15,10 +15,9 @@
 package edu.oswego.csc480_hci521_2013.client.presenters;
 
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
-import com.google.gwt.event.shared.EventBus;
-import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import edu.oswego.csc480_hci521_2013.client.events.PopoutDataPanelEvent;
+import com.google.web.bindery.event.shared.EventBus;
+import com.google.web.bindery.event.shared.HandlerRegistration;
 import edu.oswego.csc480_hci521_2013.client.events.RFGenerateEvent;
 import edu.oswego.csc480_hci521_2013.client.events.RFParameterEvent;
 import edu.oswego.csc480_hci521_2013.client.events.RFParameterEventHandler;
@@ -40,7 +39,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class DataPanelPresenterImpl implements DataPanelPresenter {
+public class DataPanelPresenterImpl implements DataPanelPresenter, TabPanelPresenter {
 
     static final Logger logger = Logger.getLogger(DataPanelPresenterImpl.class.getName());
     EventBus eventbus;
@@ -48,6 +47,7 @@ public class DataPanelPresenterImpl implements DataPanelPresenter {
     H2OServiceAsync h2oService;
     String datakey;
     RF randomForest;
+    List<Map<String, String>> data;
 
     private List<HandlerRegistration> handlers = new ArrayList<HandlerRegistration>();
 
@@ -56,10 +56,10 @@ public class DataPanelPresenterImpl implements DataPanelPresenter {
         this.view = panelView;
         this.h2oService = service;
         this.datakey = datakey;
+        this.data = data;
 
         view.setPresenter(this);
         view.setGenerateCommand(getGenerateCommand());
-        view.setPopoutCommand(getPopoutCommand());
         view.setColumns(data.get(0).keySet());
         view.setData(data);
         bind();
@@ -70,6 +70,11 @@ public class DataPanelPresenterImpl implements DataPanelPresenter {
         return datakey;
     }
 
+    @Override
+    public void added()
+    {
+        bind();
+    }
 
     @Override
     public void removed()
@@ -77,6 +82,7 @@ public class DataPanelPresenterImpl implements DataPanelPresenter {
         for (HandlerRegistration h: handlers) {
             h.removeHandler();
         }
+        handlers.clear();
     }
 
     private void bind() {
@@ -158,16 +164,6 @@ public class DataPanelPresenterImpl implements DataPanelPresenter {
                 });
 
                 popUp.getView().showPopUp();
-            }
-        };
-    }
-
-    ScheduledCommand getPopoutCommand() {
-        return new ScheduledCommand() {
-            @Override
-            public void execute() {
-                logger.log(Level.INFO, "Popping out");
-                eventbus.fireEvent(new PopoutDataPanelEvent(DataPanelPresenterImpl.this));
             }
         };
     }

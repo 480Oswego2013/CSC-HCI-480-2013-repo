@@ -27,6 +27,4 @@ public interface DataPanelPresenter {
     DataPanelView getView();
 
     String getDataKey();
-
-    void removed();
 }

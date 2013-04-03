@@ -6,10 +6,10 @@ import com.google.gwt.place.shared.Place;
 import com.google.gwt.place.shared.PlaceTokenizer;
 import com.google.gwt.place.shared.Prefix;
 
-public class PopoutDataPanelPlace extends Place {
+public class DataTablePlace extends Place {
 
-    static final Logger logger = Logger.getLogger(PopoutDataPanelPlace.class
-            .getName());
+    private static final Logger logger = Logger.getLogger(
+            DataTablePlace.class.getName());
 
     private String dataKey;
 
@@ -21,12 +21,12 @@ public class PopoutDataPanelPlace extends Place {
         this.dataKey = dataKey;
     }
 
-    @Prefix("PopoutData")
-    public static class Tokenizer implements PlaceTokenizer<PopoutDataPanelPlace> {
+    @Prefix("DataTable")
+    public static class Tokenizer implements PlaceTokenizer<DataTablePlace> {
         static final Logger logger = Logger.getLogger(Tokenizer.class.getName());
 
         @Override
-        public String getToken(PopoutDataPanelPlace place) {
+        public String getToken(DataTablePlace place) {
             TokenParser tp = new TokenParser();
             tp.addArgument("datakey", place.getDataKey());
             String token = tp.serialize();
@@ -35,17 +35,20 @@ public class PopoutDataPanelPlace extends Place {
         }
 
         @Override
-        public PopoutDataPanelPlace getPlace(String token) {
+        public DataTablePlace getPlace(String token) {
             logger.info("Parsing token: " + token);
             TokenParser tp = new TokenParser(token);
 
-            PopoutDataPanelPlace popupPanelPlace = new PopoutDataPanelPlace();
+            DataTablePlace place = new DataTablePlace();
             String dataKey = tp.getValue("datakey");
             if (dataKey != null) {
-                popupPanelPlace.setDataKey(dataKey);
+                place.setDataKey(dataKey);
+            }
+            else {
+                // TODO: handle invalid arguments
             }
 
-            return popupPanelPlace;
+            return place;
         }
     }
 }

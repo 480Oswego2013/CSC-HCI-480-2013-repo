@@ -18,6 +18,8 @@ import edu.oswego.csc480_hci521_2013.shared.h2o.json.RFView;
 
 public interface ConfusionMatrixPresenter {
 
+    RFView getData();
+
     void setData(RFView data);
 
     ConfusionMatrixView getView();

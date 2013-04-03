@@ -44,7 +44,6 @@ public class DataPanelViewImpl extends Composite implements DataPanelView {
 
     @UiField MenuBar visbar;
     @UiField MenuItem generate;
-    @UiField MenuItem popout;
     @UiField MenuBar treebar;
     @UiField MenuItem trees;
     @UiField DataGrid<Map<String, String>> dataTable;
@@ -57,11 +56,6 @@ public class DataPanelViewImpl extends Composite implements DataPanelView {
     @Override
     public void setGenerateCommand(ScheduledCommand command) {
         generate.setScheduledCommand(command);
-    }
-
-    @Override
-    public void setPopoutCommand(ScheduledCommand command) {
-        popout.setScheduledCommand(command);
     }
 
     @Override

@@ -50,10 +50,10 @@ public class DoublePanelViewImpl extends Composite implements DoublePanelView
     }
 
     @Override
-    public void addDataTab(IsWidget panel, String title)
+    public void addDataTab(IsWidget panel, IsWidget title)
     {
         logger.log(Level.INFO, "adding data tab: " + title);
-        tpData.add(panel, title, false);
+        tpData.add(panel, title);
         tpData.selectTab(tpData.getWidgetCount() - 1);
         if (dummyDataLabel != null) {
             tpData.remove(0);
@@ -67,14 +67,19 @@ public class DoublePanelViewImpl extends Composite implements DoublePanelView
     }
 
     @Override
-    public void addVisTab(IsWidget panel, String title) {
+    public void addVisTab(IsWidget panel, IsWidget title) {
         logger.log(Level.INFO, "adding vis tab: " + title);
-        tpVis.add(panel, title, true);
+        tpVis.add(panel, title);
         tpVis.selectTab(tpVis.getWidgetCount() - 1);
         if (dummyVisLabel != null) {
             tpVis.remove(0);
             dummyVisLabel = null;
         }
+    }
+
+    @Override
+    public void removeVisTab(int index) {
+        tpVis.remove(index);
     }
 
     @Override

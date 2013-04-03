@@ -27,51 +27,53 @@
     </ui:style>
 
     <gwt:HTMLPanel>
-        <progress ui:field='progress' value="0" max="100"/>
+        <div style="overflow: auto;">
+            <progress ui:field='progress' value="0" max="100"/>
 
-        <h2>Confusion Matrix - <span ui:field='type'/></h2>
-        <dl class="{style.inline}">
-            <dt>Response Variable:</dt>
-            <dd ui:field='responseVariable'/>
-            <dt>Number of Trees:</dt>
-            <dd ui:field='ntree'/>
-            <dt>mtry:</dt>
-            <dd ui:field='mtry'/>
-            <dt>Rows Used/Skipped:</dt>
-            <dd>
-                <span ui:field='rows' />/<span ui:field='rowsSkipped' />
-            </dd>
-            <dt>Classification Error:</dt>
-            <dd ui:field='classificationError'/>
-        </dl>
-        <div style="clear: left;"/>
-        <gwt:FlexTable ui:field='matrixTable'/>
+            <h2>Confusion Matrix - <span ui:field='type'/></h2>
+            <dl class="{style.inline}">
+                <dt>Response Variable:</dt>
+                <dd ui:field='responseVariable'/>
+                <dt>Number of Trees:</dt>
+                <dd ui:field='ntree'/>
+                <dt>mtry:</dt>
+                <dd ui:field='mtry'/>
+                <dt>Rows Used/Skipped:</dt>
+                <dd>
+                    <span ui:field='rows' />/<span ui:field='rowsSkipped' />
+                </dd>
+                <dt>Classification Error:</dt>
+                <dd ui:field='classificationError'/>
+            </dl>
+            <div style="clear: left;"/>
+            <gwt:FlexTable ui:field='matrixTable'/>
 
-        <h2>Trees</h2>
-        <dl class="{style.inline}">
-            <dt>Trees Generated:</dt>
-            <dd ui:field='treesGenerated'/>
-        </dl>
-        <div style="clear: left;"/>
-        <gwt:Grid ui:field='treesTable'>
-            <gwt:row>
-                <gwt:cell></gwt:cell>
-                <gwt:cell styleName='{style.tableHeader}'>Min</gwt:cell>
-                <gwt:cell styleName='{style.tableHeader}'>Mean</gwt:cell>
-                <gwt:cell styleName='{style.tableHeader}'>Max</gwt:cell>
-            </gwt:row>
-            <gwt:row>
-                <gwt:cell styleName='{style.tableHeader}'>Leaves</gwt:cell>
-                <gwt:cell><dd ui:field='leavesMin'/></gwt:cell>
-                <gwt:cell><dd ui:field='leavesMean'/></gwt:cell>
-                <gwt:cell><dd ui:field='leavesMax'/></gwt:cell>
-            </gwt:row>
-            <gwt:row>
-                <gwt:cell styleName='{style.tableHeader}'>Depth</gwt:cell>
-                <gwt:cell><dd ui:field='depthMin'/></gwt:cell>
-                <gwt:cell><dd ui:field='depthMean'/></gwt:cell>
-                <gwt:cell><dd ui:field='depthMax'/></gwt:cell>
-            </gwt:row>
-        </gwt:Grid>
+            <h2>Trees</h2>
+            <dl class="{style.inline}">
+                <dt>Trees Generated:</dt>
+                <dd ui:field='treesGenerated'/>
+            </dl>
+            <div style="clear: left;"/>
+            <gwt:Grid ui:field='treesTable'>
+                <gwt:row>
+                    <gwt:cell></gwt:cell>
+                    <gwt:cell styleName='{style.tableHeader}'>Min</gwt:cell>
+                    <gwt:cell styleName='{style.tableHeader}'>Mean</gwt:cell>
+                    <gwt:cell styleName='{style.tableHeader}'>Max</gwt:cell>
+                </gwt:row>
+                <gwt:row>
+                    <gwt:cell styleName='{style.tableHeader}'>Leaves</gwt:cell>
+                    <gwt:cell><dd ui:field='leavesMin'/></gwt:cell>
+                    <gwt:cell><dd ui:field='leavesMean'/></gwt:cell>
+                    <gwt:cell><dd ui:field='leavesMax'/></gwt:cell>
+                </gwt:row>
+                <gwt:row>
+                    <gwt:cell styleName='{style.tableHeader}'>Depth</gwt:cell>
+                    <gwt:cell><dd ui:field='depthMin'/></gwt:cell>
+                    <gwt:cell><dd ui:field='depthMean'/></gwt:cell>
+                    <gwt:cell><dd ui:field='depthMax'/></gwt:cell>
+                </gwt:row>
+            </gwt:Grid>
+        </div>
     </gwt:HTMLPanel>
 </ui:UiBinder>

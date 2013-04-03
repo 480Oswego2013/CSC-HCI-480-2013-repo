@@ -2,9 +2,9 @@
  *
  */
 package edu.oswego.csc480_hci521_2013.client.presenters;
+import com.google.web.bindery.event.shared.EventBus;
 import java.util.List;
 
-import com.google.gwt.event.shared.EventBus;
 import edu.oswego.csc480_hci521_2013.client.events.RFParameterEvent;
 import edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders.RFBuilder;
 

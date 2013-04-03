@@ -1,6 +1,7 @@
 package edu.oswego.csc480_hci521_2013.client.presenters;
 
 import com.google.gwt.place.shared.Place;
+import edu.oswego.csc480_hci521_2013.client.ui.TabLabelView;
 import edu.oswego.csc480_hci521_2013.shared.h2o.json.RF;
 
 /**
@@ -15,4 +16,6 @@ public interface DoublePanelPresenter {
     void addVisTab(String datakey, String modelkey, int tree);
 
     void addConfusionMatrixTab(RF randomForest);
+
+    void popout(TabLabelView tab);
 }

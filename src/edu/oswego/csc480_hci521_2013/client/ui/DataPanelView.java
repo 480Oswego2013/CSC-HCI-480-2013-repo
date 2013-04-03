@@ -14,8 +14,6 @@ public interface DataPanelView extends IsWidget {
 
     void setGenerateCommand(Scheduler.ScheduledCommand command);
 
-    void setPopoutCommand(Scheduler.ScheduledCommand command);
-
     void setData(List<Map<String, String>> data);
 
     void setColumns(Set<String> columns);

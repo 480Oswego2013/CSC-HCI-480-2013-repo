@@ -11,6 +11,17 @@ public class RF extends H2OResponse {
     private int response_variable;
     private boolean out_of_bag_error_estimate;
 
+    RF() {
+    }
+
+    public RF(String dataKey, String modelKey, int ntree, int responseVariable, boolean oobError) {
+        this.data_key = dataKey;
+        this.model_key = modelKey;
+        this.ntree = ntree;
+        this.response_variable = responseVariable;
+        this.out_of_bag_error_estimate = oobError;
+    }
+
     public String getDataKey() {
         return data_key;
     }

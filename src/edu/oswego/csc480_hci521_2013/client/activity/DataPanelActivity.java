@@ -6,10 +6,8 @@ import java.util.logging.Logger;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
-import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.IsWidget;
 
-import edu.oswego.csc480_hci521_2013.client.place.PopoutDataPanelPlace;
+import edu.oswego.csc480_hci521_2013.client.place.DataTablePlace;
 import edu.oswego.csc480_hci521_2013.client.presenters.DataPanelPresenter;
 import edu.oswego.csc480_hci521_2013.client.presenters.DataPanelPresenterImpl;
 import edu.oswego.csc480_hci521_2013.client.services.H2OServiceAsync;
@@ -18,15 +16,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 
-public class PopoutDataPanelActivity extends AbstractActivity {
+public class DataPanelActivity extends AbstractActivity {
 
-    static final Logger logger = Logger.getLogger(PopoutDataPanelActivity.class
-            .getName());
+    static final Logger logger = Logger.getLogger(
+            DataPanelActivity.class.getName());
 
     H2OServiceAsync h2oService;
     String datakey;
 
-    public PopoutDataPanelActivity(PopoutDataPanelPlace place, H2OServiceAsync h2oService) {
+    public DataPanelActivity(DataTablePlace place, H2OServiceAsync h2oService) {
         this.h2oService = h2oService;
         datakey = place.getDataKey();
     }
@@ -55,4 +53,11 @@ public class PopoutDataPanelActivity extends AbstractActivity {
             }
         });
     }
+
+	public static native void openPanel(DoublePanelActivity parent, String url, String name, String features, String datakey)/*-{
+	    var window = $wnd.open(url, name, features);
+		window.onbeforeunload = function() {
+		    parent.@edu.oswego.csc480_hci521_2013.client.activity.DoublePanelActivity::popinDataPanel(Ljava/lang/String;)(datakey);
+		}
+	}-*/;
 }

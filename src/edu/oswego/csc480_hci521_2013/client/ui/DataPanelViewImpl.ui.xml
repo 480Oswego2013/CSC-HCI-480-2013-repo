@@ -11,7 +11,6 @@
                 <gwt:MenuBar ui:field='treebar' vertical="true">
                 </gwt:MenuBar>
             </gwt:MenuItem>
-            <gwt:MenuItem ui:field='popout'>Pop Out</gwt:MenuItem>
         </gwt:MenuBar>
 
         <br/>

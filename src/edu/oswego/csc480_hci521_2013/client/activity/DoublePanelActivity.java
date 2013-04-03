@@ -25,29 +25,32 @@ import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.gwt.user.client.ui.MenuItem;
 import edu.oswego.csc480_hci521_2013.client.AppPlaceHistoryMapper;
 import edu.oswego.csc480_hci521_2013.client.Entry;
-import edu.oswego.csc480_hci521_2013.client.events.PopoutDataPanelEvent;
-import edu.oswego.csc480_hci521_2013.client.events.PopoutDataPanelEventHandler;
 
 import edu.oswego.csc480_hci521_2013.client.events.RFGenerateEvent;
 import edu.oswego.csc480_hci521_2013.client.events.RFGenerateEventHandler;
 import edu.oswego.csc480_hci521_2013.client.events.TreeVisEvent;
 import edu.oswego.csc480_hci521_2013.client.events.TreeVisEventHandler;
+import edu.oswego.csc480_hci521_2013.client.place.ConfusionMatrixPlace;
 import edu.oswego.csc480_hci521_2013.client.place.DoublePanelPlace;
-import edu.oswego.csc480_hci521_2013.client.place.PopoutDataPanelPlace;
-import edu.oswego.csc480_hci521_2013.client.presenters.ConfusionMatrixPresenter;
+import edu.oswego.csc480_hci521_2013.client.place.DataTablePlace;
+import edu.oswego.csc480_hci521_2013.client.place.TreeVisPlace;
 import edu.oswego.csc480_hci521_2013.client.presenters.ConfusionMatrixPresenterImpl;
-import edu.oswego.csc480_hci521_2013.client.presenters.DataPanelPresenter;
 import edu.oswego.csc480_hci521_2013.client.presenters.DataPanelPresenterImpl;
 import edu.oswego.csc480_hci521_2013.client.presenters.DoublePanelPresenter;
+import edu.oswego.csc480_hci521_2013.client.presenters.TabPanelPresenter;
+import edu.oswego.csc480_hci521_2013.client.presenters.TreePanelPresenterImpl;
 import edu.oswego.csc480_hci521_2013.client.services.H2OServiceAsync;
 import edu.oswego.csc480_hci521_2013.client.ui.ConfusionMatrixViewImpl;
 import edu.oswego.csc480_hci521_2013.client.ui.DataPanelViewImpl;
-import edu.oswego.csc480_hci521_2013.client.ui.DoublePanelViewImpl;
 import edu.oswego.csc480_hci521_2013.client.ui.DoublePanelView;
-import edu.oswego.csc480_hci521_2013.client.ui.TreePanel;
+import edu.oswego.csc480_hci521_2013.client.ui.TabLabelView;
+import edu.oswego.csc480_hci521_2013.client.ui.TabLabelViewImpl;
+import edu.oswego.csc480_hci521_2013.client.ui.TreePanelViewImpl;
 import edu.oswego.csc480_hci521_2013.shared.h2o.json.RF;
 import edu.oswego.csc480_hci521_2013.shared.h2o.json.RFTreeView;
+import edu.oswego.csc480_hci521_2013.shared.h2o.json.RFView;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -56,33 +59,33 @@ import java.util.logging.Logger;
 public class DoublePanelActivity extends AbstractActivity implements DoublePanelPresenter {
 
     static final Logger logger = Logger.getLogger(DoublePanelActivity.class.getName());
-	private DoublePanelView view;
+    private DoublePanelView view;
     private PlaceController places;
     private EventBus eventBus;
     private H2OServiceAsync service;
+    private TabManager dataTabs = new TabManager();
+    private TabManager visTabs = new TabManager();
 
-    private List<DataPanelPresenter> westTabs = new ArrayList<DataPanelPresenter>();
-
-	public DoublePanelActivity(DoublePanelView view, PlaceController places, EventBus eventBus, H2OServiceAsync service) {
+    public DoublePanelActivity(DoublePanelView view, PlaceController places, EventBus eventBus, H2OServiceAsync service) {
         // FIXME: this constructor should go away...
         this(null, view, places, service);
-	}
+    }
 
-	public DoublePanelActivity(DoublePanelPlace place, DoublePanelView view, PlaceController places, H2OServiceAsync service) {
+    public DoublePanelActivity(DoublePanelPlace place, DoublePanelView view, PlaceController places, H2OServiceAsync service) {
         // TODO: handle the place, it will carry args for what we should display.
-		this.view = view;
+        this.view = view;
         this.places = places;
         this.service = service;
-	}
+    }
 
-	@Override
-	public void start(AcceptsOneWidget containerWidget, EventBus eventBus) {
+    @Override
+    public void start(AcceptsOneWidget containerWidget, EventBus eventBus) {
         this.eventBus = eventBus;
-		containerWidget.setWidget(view);
+        containerWidget.setWidget(view);
         bind(eventBus);
         loadParsedDataMenu();
         logger.log(Level.INFO, "DoublePanelActivity started");
-	}
+    }
 
     private void bind(EventBus eventBus) {
         eventBus.addHandler(TreeVisEvent.TYPE, new TreeVisEventHandler() {
@@ -98,61 +101,49 @@ public class DoublePanelActivity extends AbstractActivity implements DoublePanel
                 addConfusionMatrixTab(e.getData());
             }
         });
-        eventBus.addHandler(PopoutDataPanelEvent.TYPE, new PopoutDataPanelEventHandler() {
-            @Override
-            public void onPopout(PopoutDataPanelEvent e) {
-                int index = westTabs.indexOf(e.getPresenter());
-                DataPanelPresenter presenter = westTabs.remove(index);
-                String datakey = presenter.getDataKey();
-                presenter.removed();
-                view.removeDataTab(index);
-                popoutDataTab(datakey);
-            }
-        });
     }
 
-    private void loadParsedDataMenu()
-    {
+    private void loadParsedDataMenu() {
         service.getParsedDataKeys(new AsyncCallback<List<String>>() {
             @Override
-            public void onFailure(Throwable caught)
-            {
+            public void onFailure(Throwable caught) {
                 logger.log(Level.SEVERE, caught.toString());
             }
 
             @Override
-            public void onSuccess(List<String> result)
-            {
-                for (String key: result) {
+            public void onSuccess(List<String> result) {
+                for (String key : result) {
                     view.addMenuItem(new MenuItem(key, false, getMenuCommand(key)));
                 }
             }
         });
     }
 
-	@Override
-	public void goTo(Place place) {
-		this.places.goTo(place);
-	}
+    @Override
+    public void goTo(Place place) {
+        this.places.goTo(place);
+    }
 
     @Override
     public void addDataTab(final String datakey) {
+        logger.log(Level.INFO, "Creating new data tab: " + datakey);
         this.service.getParsedData(datakey, new AsyncCallback<List<Map<String, String>>>() {
             @Override
-            public void onFailure(Throwable caught)
-            {
+            public void onFailure(Throwable caught) {
                 logger.log(Level.INFO, "Failure adding data tab.");
                 logger.log(Level.SEVERE, caught.toString());
                 // FIXME: do a message box or something...
             }
 
             @Override
-            public void onSuccess(List<Map<String, String>> result)
-            {
-                logger.log(Level.INFO, "Building data tab.");
-                DataPanelPresenter presenter = new DataPanelPresenterImpl(service, new DataPanelViewImpl(), eventBus, datakey, result);
-                view.addDataTab(presenter.getView(), datakey);
-                westTabs.add(presenter);
+            public void onSuccess(List<Map<String, String>> result) {
+                logger.log(Level.INFO, "Building data tab: " + datakey);
+                DataPanelPresenterImpl presenter = new DataPanelPresenterImpl(service, new DataPanelViewImpl(), eventBus, datakey, result);
+                TabLabelView label = new TabLabelViewImpl();
+                label.setLabel(datakey);
+                label.setPresenter(DoublePanelActivity.this);
+                view.addDataTab(presenter.getView(), label);
+                dataTabs.addTab(label, presenter);
             }
         });
     }
@@ -168,21 +159,39 @@ public class DoublePanelActivity extends AbstractActivity implements DoublePanel
 
             @Override
             public void onSuccess(RFTreeView treeview) {
+                TreePanelPresenterImpl presenter = new TreePanelPresenterImpl(
+                        new TreePanelViewImpl(treeview, datakey, modelkey, tree),
+                        treeview, datakey, modelkey, tree);
                 logger.log(Level.INFO, treeview.toString());
-                view.addVisTab(
-                    new TreePanel(treeview, datakey, modelkey, tree),
-                    datakey + "<br>" + modelkey + "<br>tree " + (tree + 1)
-                );
+                TabLabelView label = new TabLabelViewImpl();
+                label.setLabel(datakey + "<br>" + modelkey + "<br>tree " + (tree + 1));
+                label.setPresenter(DoublePanelActivity.this);
+                view.addVisTab(presenter.getView(), label);
+                visTabs.addTab(label, presenter);
             }
         });
     }
 
     @Override
     public void addConfusionMatrixTab(RF rf) {
-        ConfusionMatrixPresenter presenter = new ConfusionMatrixPresenterImpl(new ConfusionMatrixViewImpl(), eventBus, rf);
+        ConfusionMatrixPresenterImpl presenter = new ConfusionMatrixPresenterImpl(new ConfusionMatrixViewImpl(), eventBus, rf);
         String title = "Confusion Matrix<br>" + rf.getDataKey() + "<br>" + rf.getModelKey();
-        DoublePanelViewImpl panelView = (DoublePanelViewImpl)view;
-                panelView.addVisTab(presenter.getView(), title);
+        TabLabelView label = new TabLabelViewImpl();
+        label.setLabel(title);
+        label.setPresenter(this);
+        view.addVisTab(presenter.getView(), label);
+        visTabs.addTab(label, presenter);
+    }
+
+    public void addConfusionMatrixTab(RF rf, RFView rfview) {
+        ConfusionMatrixPresenterImpl presenter = new ConfusionMatrixPresenterImpl(new ConfusionMatrixViewImpl(), eventBus, rf);
+        presenter.setData(rfview);
+        String title = "Confusion Matrix<br>" + rf.getDataKey() + "<br>" + rf.getModelKey();
+        TabLabelView label = new TabLabelViewImpl();
+        label.setLabel(title);
+        label.setPresenter(this);
+        view.addVisTab(presenter.getView(), label);
+        visTabs.addTab(label, presenter);
     }
 
     private Command getMenuCommand(final String value) {
@@ -195,14 +204,9 @@ public class DoublePanelActivity extends AbstractActivity implements DoublePanel
         };
     }
 
-	private void popoutDataTab(String datakey) {
-		logger.log(Level.INFO, "Popping panel: " + datakey);
-
-        PopoutDataPanelPlace place = new PopoutDataPanelPlace();
-        place.setDataKey(datakey);
-
+    private void popoutConfusionMatrixTab(ConfusionMatrixPlace place, int id) {
         // FIXME: this needs to be injected...
-		AppPlaceHistoryMapper historyMapper = Entry.getPlaceHistoryMapper();
+        AppPlaceHistoryMapper historyMapper = Entry.getPlaceHistoryMapper();
 
         String token = historyMapper.getToken(place);
         String url = Window.Location.createUrlBuilder().setHash(token).buildString();
@@ -210,18 +214,134 @@ public class DoublePanelActivity extends AbstractActivity implements DoublePanel
         int height = Window.getClientHeight() / 2;
         String features = "width=" + width + ",height=" + height + ",menubar=0,location=0,toolbar=0,status=0";
 
-        openDataPanel(this, url, "_blank", features, datakey);
-	}
+        ConfusionMatrixActivity.openPanel(this, url, "_blank", features, Integer.toString(id));
+    }
 
-	public void popinDataPanel(String datakey) {
-		logger.log(Level.INFO, "Adding panel back in!");
-		addDataTab(datakey);
-	}
+    private void popoutTreeVisTab(TreeVisPlace place, int id) {
+        // FIXME: this needs to be injected...
+        AppPlaceHistoryMapper historyMapper = Entry.getPlaceHistoryMapper();
 
-	private static native void openDataPanel(DoublePanelActivity parent, String url, String name, String features, String datakey)/*-{
-	    var window = $wnd.open(url, name, features);
-		window.onbeforeunload = function() {
-		    parent.@edu.oswego.csc480_hci521_2013.client.activity.DoublePanelActivity::popinDataPanel(Ljava/lang/String;)(datakey);
-		}
-	}-*/;
+        String token = historyMapper.getToken(place);
+        String url = Window.Location.createUrlBuilder().setHash(token).buildString();
+        int width = Window.getClientWidth() / 2;
+        int height = Window.getClientHeight() / 2;
+        String features = "width=" + width + ",height=" + height + ",menubar=0,location=0,toolbar=0,status=0";
+
+        TreeVisActivity.openPanel(this, url, "_blank", features, Integer.toString(id));
+    }
+
+    private void popoutDataTab(DataTablePlace place, int id) {
+        logger.log(Level.INFO, "Popping data panel: " + place.getDataKey());
+
+        // FIXME: this needs to be injected...
+        AppPlaceHistoryMapper historyMapper = Entry.getPlaceHistoryMapper();
+
+        String token = historyMapper.getToken(place);
+        String url = Window.Location.createUrlBuilder().setHash(token).buildString();
+        int width = Window.getClientWidth() / 2;
+        int height = Window.getClientHeight() / 2;
+        String features = "width=" + width + ",height=" + height + ",menubar=0,location=0,toolbar=0,status=0";
+
+        DataPanelActivity.openPanel(this, url, "_blank", features, Integer.toString(id));
+    }
+
+    public void popinDataPanel(String id) {
+        logger.log(Level.INFO, "Adding data panel back in!");
+        TabLabelView tab = dataTabs.unpopTab(Integer.parseInt(id));
+        TabPanelPresenter p = dataTabs.getPresenter(tab);
+        // FIXME: reusing presenters/view does not work yet...
+        //p.added();
+        dataTabs.deleteTab(tab);
+        addDataTab(((DataPanelPresenterImpl) p).getDataKey());
+    }
+
+    public void popinVisPanel(String id) {
+        logger.log(Level.INFO, "Adding vis panel back in!");
+        TabLabelView tab = visTabs.unpopTab(Integer.parseInt(id));
+        TabPanelPresenter p = visTabs.getPresenter(tab);
+        // FIXME: reusing presenters/view does not work yet...
+        //p.added();
+        visTabs.deleteTab(tab);
+        if (p instanceof ConfusionMatrixPresenterImpl) {
+            ConfusionMatrixPresenterImpl cp = (ConfusionMatrixPresenterImpl) p;
+            addConfusionMatrixTab(cp.getRandomForest(), cp.getData());
+        }
+        else {
+            TreePanelPresenterImpl tp = (TreePanelPresenterImpl) p;
+            addVisTab(tp.getDatakey(), tp.getModelkey(), tp.getTreeIndex());
+        }
+    }
+
+    @Override
+    public void popout(TabLabelView tab) {
+        if (dataTabs.hasTab(tab)) {
+            int index = dataTabs.popTab(tab);
+            view.removeDataTab(index);
+            TabPanelPresenter p = dataTabs.getPresenter(tab);
+            p.removed();
+            String datakey = ((DataPanelPresenterImpl) p).getDataKey();
+            DataTablePlace place = new DataTablePlace();
+            place.setDataKey(datakey);
+            popoutDataTab(place, tab.hashCode());
+        } else if (visTabs.hasTab(tab)) {
+            int index = visTabs.popTab(tab);
+            view.removeVisTab(index);
+            TabPanelPresenter p = visTabs.getPresenter(tab);
+            p.removed();
+            if (p instanceof ConfusionMatrixPresenterImpl) {
+                ConfusionMatrixPresenterImpl cp = (ConfusionMatrixPresenterImpl) p;
+                ConfusionMatrixPlace place = new ConfusionMatrixPlace();
+                place.setRandomForest(cp.getRandomForest());
+                popoutConfusionMatrixTab(place, tab.hashCode());
+            }
+            else {
+                TreePanelPresenterImpl tp = (TreePanelPresenterImpl) p;
+                TreeVisPlace place = new TreeVisPlace();
+                place.setDataKey(tp.getDatakey());
+                place.setModelKey(tp.getModelkey());
+                place.setTree(tp.getTreeIndex());
+                popoutTreeVisTab(place, tab.hashCode());
+            }
+        } else {
+            logger.log(Level.SEVERE, "Unknown tab!");
+        }
+    }
+
+    private static class TabManager {
+
+        List<TabLabelView> tabList = new ArrayList<TabLabelView>();
+        Map<TabLabelView, TabPanelPresenter> panels = new HashMap<TabLabelView, TabPanelPresenter>();
+        Map<Integer, TabLabelView> popped = new HashMap<Integer, TabLabelView>();
+
+        boolean hasTab(TabLabelView tab) {
+            return panels.containsKey(tab);
+        }
+
+        TabPanelPresenter getPresenter(TabLabelView tab) {
+            return panels.get(tab);
+        }
+
+        void addTab(TabLabelView tab, TabPanelPresenter presenter) {
+            panels.put(tab, presenter);
+            tabList.add(tab);
+        }
+
+        int popTab(TabLabelView tab) {
+            int index = tabList.indexOf(tab);
+            tabList.remove(tab);
+            popped.put(tab.hashCode(), tab);
+            return index;
+        }
+
+        TabLabelView unpopTab(Integer id) {
+            TabLabelView t = popped.remove(id);
+            tabList.add(t);
+            return t;
+        }
+
+        void deleteTab(TabLabelView tab) {
+            tabList.remove(tab);
+            panels.remove(tab);
+        }
+    }
 }

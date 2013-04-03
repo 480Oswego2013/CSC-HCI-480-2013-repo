@@ -19,11 +19,13 @@ import com.google.gwt.user.client.ui.MenuItem;
 
 public interface DoublePanelView extends IsWidget {
 
-    void addDataTab(IsWidget panel, String title);
+    void addDataTab(IsWidget panel, IsWidget title);
 
-    void addVisTab(IsWidget panel, String title);
+    void addVisTab(IsWidget panel, IsWidget title);
 
     void addMenuItem(MenuItem item);
 
     void removeDataTab(int index);
+
+    void removeVisTab(int index);
 }
