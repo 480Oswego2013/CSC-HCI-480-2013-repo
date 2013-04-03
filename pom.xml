@@ -22,8 +22,33 @@
     <artifactId>CSC480_HCI521_2013</artifactId>
     <packaging>war</packaging>
     <version>1.0-SNAPSHOT</version>
-    <name>CSC480_HCI521_2013</name>
-    <url>http://maven.apache.org</url>
+    <name>hViewO</name>
+    <url>https://sites.google.com/a/oswego.edu/csc-480-hci-521-suny-oswego-spring-2013/home</url>
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+            <comments>A business-friendly OSS license</comments>
+        </license>
+    </licenses>
+    <issueManagement>
+        <system>Github</system>
+        <url>https://github.com/480Oswego2013/CSC-HCI-480-2013-repo/issues</url>
+    </issueManagement>
+    <ciManagement>
+        <system>jenkins</system>
+        <url>http://mavenbuilder.cloudapp.net:8080/</url>
+    </ciManagement>
+    <scm>
+      <connection>scm:git:https://github.com/480Oswego2013/CSC-HCI-480-2013-repo.git</connection>
+      <developerConnection>scm:git:https://github.com/480Oswego2013/CSC-HCI-480-2013-repo.git</developerConnection>
+      <tag>HEAD</tag>
+      <url>https://github.com/480Oswego2013/CSC-HCI-480-2013-repo</url>
+    </scm>
+    <prerequisites>
+        <maven>3</maven>
+    </prerequisites>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -44,7 +69,7 @@
                         <goals>
                             <goal>check</goal>
                         </goals>
-                        <phase>process-sources</phase>
+                        <phase>compile</phase>
                         <configuration>
                             <!-- TODO: maybe we want this on in the future? -->
                             <failOnError>false</failOnError>
@@ -184,6 +209,24 @@
                 <configuration>
                     <includeTests>true</includeTests>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-pmd-plugin</artifactId>
+                <version>3.0.1</version>
+                <configuration>
+                    <includeTests>true</includeTests>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-project-info-reports-plugin</artifactId>
+                <version>2.6</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>2.9</version>
             </plugin>
         </plugins>
     </reporting>
