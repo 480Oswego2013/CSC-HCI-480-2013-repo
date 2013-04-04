@@ -5,11 +5,10 @@
 
     <gwt:HTMLPanel>
         <div>
-            <div ui:field="label" style="float:left;" />
-            <div style="float:right; width:1em;">
-                <gwt:PushButton ui:field='pop' width="1em">&uarr;</gwt:PushButton>
+            <div style="float:right; margin-right:5px; margin-top:1px; width:.25em; height:.25em; font-size:.25em;">
+                <gwt:PushButton ui:field='pop' width=".25em" height=".25em">&and;</gwt:PushButton>
             </div>
-            <div style="clear:both;" />
+            <div ui:field="label"/>
         </div>
     </gwt:HTMLPanel>
 </ui:UiBinder>
