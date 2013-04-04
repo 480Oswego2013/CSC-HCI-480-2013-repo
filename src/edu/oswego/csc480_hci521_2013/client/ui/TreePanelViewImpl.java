@@ -16,10 +16,11 @@ package edu.oswego.csc480_hci521_2013.client.ui;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
+import com.google.gwt.dom.client.Style;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Widget;
 import edu.oswego.csc480_hci521_2013.client.overlay.Sigma;
 import edu.oswego.csc480_hci521_2013.shared.h2o.json.RFTreeView;
@@ -42,6 +43,8 @@ public class TreePanelViewImpl extends Composite implements TreePanelView {
 
     @UiField
     Element canvas;
+    @UiField
+    Element panel;
 
     public TreePanelViewImpl(RFTreeView data, String datakey, String modelkey, int treeIndex) {
         this.data = data;
@@ -58,10 +61,17 @@ public class TreePanelViewImpl extends Composite implements TreePanelView {
     }
 
     @Override
-    protected void onAttach() {
-        super.onAttach();
+    protected void onLoad() {
         // NOTE: we have to wait until our canvas is added to the page
         //       before we can call javascript to render the graph in it.
-        Sigma.callSigma(canvasId, data.getTree().toJson(), data.getDepth(), data.getLeaves());
+        //       the timer to delay rendering is needed to force an update
+        //       of the canvas, normal dom manipulation does not seem to work.
+        new Timer() {
+            @Override
+            public void run() {
+                Sigma.callSigma(canvasId, data.getTree().toJson(),
+                        data.getDepth(), data.getLeaves());
+            }
+        }.schedule(1);
     }
 }
