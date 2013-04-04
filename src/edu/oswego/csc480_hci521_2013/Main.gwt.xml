@@ -28,11 +28,6 @@
 	<!-- Specify the app entry point class. -->
 	<entry-point class='edu.oswego.csc480_hci521_2013.client.Entry' />
 
-	<!-- Use ClientFactoryImpl by default -->
-	<replace-with class="edu.oswego.csc480_hci521_2013.client.ClientFactoryImpl">
-		<when-type-is class="edu.oswego.csc480_hci521_2013.client.ClientFactory" />
-	</replace-with>
-
 	<!-- Specify the paths for translatable code -->
 	<source path='client' />
 	<source path='shared' />
