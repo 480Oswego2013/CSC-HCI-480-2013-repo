@@ -4,10 +4,7 @@
     xmlns:gwt='urn:import:com.google.gwt.user.client.ui'>
 
     <ui:style type='edu.oswego.csc480_hci521_2013.client.ui.RfParametersViewImpl.Style'>
-        .tableHeader {
-            background-color: #e0e0e0;
-            font-weight: bold;
-        }
+        .error {color: red;}
     </ui:style>
 
     <gwt:HTMLPanel>
@@ -17,6 +14,11 @@
     		<td colspan="2">
 		        <h2>Random Forest Parameters</h2>
 	        </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <gwt:Label styleName='{style.error}' ui:field="errorLabel"  width="100%" />
+            </td>
         </tr>
         <tr>
 	        <td>

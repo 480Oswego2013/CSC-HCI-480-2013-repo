@@ -13,6 +13,7 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.IntegerBox;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -31,7 +32,7 @@ public class RfParametersViewImpl extends PopupPanel implements RfParametersPres
     static final Logger logger = Logger.getLogger(RfParametersPresenter.View.class.getName());
 
     interface Style extends CssResource {
-        String tableHeader(); 
+        String error();
     }
 
     interface Binder extends UiBinder<Widget, RfParametersViewImpl> {}
@@ -39,12 +40,12 @@ public class RfParametersViewImpl extends PopupPanel implements RfParametersPres
     private RfParametersPresenter presenter;
     private List<String> columnHeaders; //Headers of the data columns from the data source.
 
-    @UiField Style style;
     @UiField ListBox classVars;
     @UiField IntegerBox numTrees;
     @UiField ListBox ignoreCols;
     @UiField Button submit;
     @UiField Button cancel;
+    @UiField Label errorLabel;
 
     public RfParametersViewImpl() { 
         setWidget(uiBinder.createAndBindUi(this));
@@ -64,7 +65,13 @@ public class RfParametersViewImpl extends PopupPanel implements RfParametersPres
     @UiHandler("submit")
     public void onSubmitClick(ClickEvent event){
         RFBuilder builder = new RFBuilder(presenter.getDataKey());
-        builder.setNtree(numTrees.getValue());
+
+        //TODO: Should probably alert the user instead of defaulting to 50.
+        if(numTrees == null || numTrees.getValue() == null || numTrees.getValue() <= 0)
+            builder.setNtree(50);
+        else
+            builder.setNtree(numTrees.getValue());
+
         int classVarSelected = classVars.getSelectedIndex();
         String classVarVal = classVars.getValue(classVarSelected);
         builder.setResponseVariable(classVarVal);
@@ -76,7 +83,7 @@ public class RfParametersViewImpl extends PopupPanel implements RfParametersPres
         }
         logger.log(Level.INFO, "BUILDER: "+ builder.build());
         presenter.fireRFParameterEvent(builder);
-        this.hide();
+        //this.hide();
     }
 
     @UiHandler("cancel")
@@ -115,6 +122,14 @@ public class RfParametersViewImpl extends PopupPanel implements RfParametersPres
                 me.setPopupPosition(left, top);
             }
         });
+    }
+
+    public void hidePopup(){
+	    this.hide();
+    }
+
+    public void setError(String error){
+	    errorLabel.setText(error);
     }
 
     @Override
