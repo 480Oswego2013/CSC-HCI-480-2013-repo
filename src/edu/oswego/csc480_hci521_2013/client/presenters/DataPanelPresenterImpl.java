@@ -15,6 +15,7 @@
 package edu.oswego.csc480_hci521_2013.client.presenters;
 
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.web.bindery.event.shared.EventBus;
 import com.google.web.bindery.event.shared.HandlerRegistration;
@@ -48,6 +49,8 @@ public class DataPanelPresenterImpl implements DataPanelPresenter, TabPanelPrese
     String datakey;
     RF randomForest;
     List<Map<String, String>> data;
+    RfParametersPresenter popUp;
+
 
     private List<HandlerRegistration> handlers = new ArrayList<HandlerRegistration>();
 
@@ -115,7 +118,7 @@ public class DataPanelPresenterImpl implements DataPanelPresenter, TabPanelPrese
                     @Override
                     public void onFailure(Throwable thrwbl) {
                         logger.log(Level.SEVERE, thrwbl.toString());
-                        // FIXME: do a message box or something...
+			popUp.getView().setError(thrwbl.getMessage());
                     }
 
                     @Override
@@ -127,6 +130,7 @@ public class DataPanelPresenterImpl implements DataPanelPresenter, TabPanelPrese
 
                         view.forestStarted();
                         new RFViewPoller(eventbus, h2oService, randomForest).start();
+			popUp.getView().hidePopup();
                     }
                 });
             }
@@ -146,7 +150,7 @@ public class DataPanelPresenterImpl implements DataPanelPresenter, TabPanelPrese
             @Override
             public void execute() {
                 logger.log(Level.INFO, "Generating Forest");
-                final RfParametersPresenter popUp = new RfParametersPresenterImpl(datakey, new RfParametersViewImpl(), eventbus);
+                popUp = new RfParametersPresenterImpl(datakey, new RfParametersViewImpl(), eventbus);
 
                 //Call H2OService.getColumnHeaders
                 h2oService.getColumnHeaders(datakey, new AsyncCallback<ArrayList<String>>() {
