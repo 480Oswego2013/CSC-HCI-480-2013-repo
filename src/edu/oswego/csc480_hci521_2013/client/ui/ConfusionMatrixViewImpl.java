@@ -23,6 +23,7 @@ import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.Widget;
 import java.util.logging.Logger;
+import edu.oswego.csc480_hci521_2013.shared.h2o.json.RFView.ConfusionMatrix;
 
 public class ConfusionMatrixViewImpl extends AbstractConfusionMatrix {
 

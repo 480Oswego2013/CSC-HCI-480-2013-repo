@@ -18,7 +18,7 @@ package edu.oswego.csc480_hci521_2013.shared.h2o.json;
 /**
  *
  */
-public class RF extends H2OResponse {
+public class RF extends AbstractResponse {
 
     private String data_key;
     private String model_key;
@@ -35,6 +35,9 @@ public class RF extends H2OResponse {
         this.ntree = ntree;
         this.response_variable = responseVariable;
         this.out_of_bag_error_estimate = oobError;
+    }
+
+    private RF() {
     }
 
     public String getDataKey() {
@@ -59,6 +62,10 @@ public class RF extends H2OResponse {
 
     @Override
     public String toString() {
-        return "RF{" + "data_key=" + data_key + ", model_key=" + model_key + ", ntree=" + ntree + ", response_variable=" + response_variable + ", out_of_bag_error_estimate=" + out_of_bag_error_estimate + " " + super.toString() + '}';
+        return "RF{" + "data_key=" + data_key + ", model_key=" + model_key
+                + ", ntree=" + ntree
+                + ", response_variable=" + response_variable
+                + ", out_of_bag_error_estimate=" + out_of_bag_error_estimate
+                + super.toString() + '}';
     }
 }

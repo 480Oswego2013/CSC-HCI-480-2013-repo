@@ -16,7 +16,7 @@
 package edu.oswego.csc480_hci521_2013.shared.h2o.json;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
-import java.util.Map;
+import java.util.HashMap;
 
 /**
  *
@@ -33,9 +33,12 @@ public class ResponseStatus implements IsSerializable
     private String node;
     private int time;
     private String redirect_request;
-    private Map<String, String> redirect_request_args;
+    private HashMap<String, String> redirect_request_args;
     private int progress;
     private int progress_total;
+
+    private ResponseStatus() {
+    }
 
     public String getStatus()
     {
@@ -62,7 +65,7 @@ public class ResponseStatus implements IsSerializable
         return redirect_request;
     }
 
-    public Map<String, String> getRedirectRequestArgs()
+    public HashMap<String, String> getRedirectRequestArgs()
     {
         return redirect_request_args;
     }

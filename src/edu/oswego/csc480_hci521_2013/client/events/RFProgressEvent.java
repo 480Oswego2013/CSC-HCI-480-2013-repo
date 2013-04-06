@@ -23,7 +23,7 @@ import edu.oswego.csc480_hci521_2013.shared.h2o.json.RFView;
  */
 public class RFProgressEvent extends GwtEvent<RFProgressEventHandler> {
 
-    public static Type<RFProgressEventHandler> TYPE = new Type<RFProgressEventHandler>();
+    public static final Type<RFProgressEventHandler> TYPE = new Type<RFProgressEventHandler>();
 
     private RFView data;
 

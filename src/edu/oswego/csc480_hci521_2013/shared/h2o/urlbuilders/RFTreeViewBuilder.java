@@ -15,35 +15,45 @@
  */
 package edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders;
 
+import java.util.HashMap;
+
 /**
  *
  */
-public class RFTreeViewBuilder extends AbstractBuilder
-{
+public class RFTreeViewBuilder extends AbstractBuilder {
 
-    RFTreeViewBuilder()
-    {
+    static final String NAME = "RFTreeView";
+
+    RFTreeViewBuilder() {
     }
 
-    public RFTreeViewBuilder(String dataKey, String modelKey)
-    {
-        super("RFTreeView.json");
+    RFTreeViewBuilder(HashMap<String, String> args) {
+        super(NAME);
+        setArgs(args);
+    }
+
+    public RFTreeViewBuilder(String dataKey, String modelKey) {
+        super(NAME);
         addArg("data_key", dataKey);
         addArg("model_key", modelKey);
     }
 
-    public RFTreeViewBuilder setTreeNumber(int value)
-    {
+    public RFTreeViewBuilder setTreeNumber(int value) {
         if (value < 0) {
             throw new IllegalArgumentException("tree number must be positive");
         }
-        addArg("tree_number", new Integer(value).toString());
+        addArg("tree_number", Integer.valueOf(value).toString());
         return this;
     }
 
-    public RFTreeViewBuilder setResponseVariable(int value)
-    {
-        addArg("response_variable", new Integer(value).toString());
+    /**
+     * Column name.
+     *
+     * @param value
+     * @return
+     */
+    public RFTreeViewBuilder setResponseVariable(int value) {
+        addArg("response_variable", Integer.valueOf(value).toString());
         return this;
     }
 }

@@ -15,6 +15,7 @@
  */
 package edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders;
 
+import edu.oswego.csc480_hci521_2013.server.ServerUrlEncoder;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -26,6 +27,8 @@ import static org.junit.Assert.*;
  *
  */
 public class StoreViewBuilderTest {
+
+    UrlEncoder encoder;
 
     public StoreViewBuilderTest() {
     }
@@ -40,6 +43,7 @@ public class StoreViewBuilderTest {
 
     @Before
     public void setUp() {
+        encoder = new ServerUrlEncoder();
     }
 
     @After
@@ -51,12 +55,11 @@ public class StoreViewBuilderTest {
      */
     @Test
     public void testSetView() {
-        System.out.println("setView");
         Integer view = 25;
         StoreViewBuilder instance = new StoreViewBuilder();
         String expResult = "http://localhost:54321/StoreView.json?view=25";
         StoreViewBuilder result = instance.setView(view);
-        assertEquals(expResult, result.build());
+        assertEquals(expResult, result.build(encoder));
     }
 
     /**
@@ -64,12 +67,11 @@ public class StoreViewBuilderTest {
      */
     @Test
     public void testSetOffset() {
-        System.out.println("setOffset");
         Integer offset = 51;
         StoreViewBuilder instance = new StoreViewBuilder();
         String expResult = "http://localhost:54321/StoreView.json?offset=51";
         StoreViewBuilder result = instance.setOffset(offset);
-        assertEquals(expResult, result.build());
+        assertEquals(expResult, result.build(encoder));
     }
 
     /**
@@ -77,11 +79,10 @@ public class StoreViewBuilderTest {
      */
     @Test
     public void testSetFilter() {
-        System.out.println("setFilter");
         String value = "blerg";
         StoreViewBuilder instance = new StoreViewBuilder();
         String expResult = "http://localhost:54321/StoreView.json?filter=blerg";
         StoreViewBuilder result = instance.setFilter(value);
-        assertEquals(expResult, result.build());
+        assertEquals(expResult, result.build(encoder));
     }
 }

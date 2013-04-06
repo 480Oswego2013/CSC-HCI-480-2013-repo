@@ -23,7 +23,7 @@ import edu.oswego.csc480_hci521_2013.shared.h2o.json.RF;
  */
 public class TreeVisEvent extends GwtEvent<TreeVisEventHandler> {
 
-    public static Type<TreeVisEventHandler> TYPE = new Type<TreeVisEventHandler>();
+    public static final Type<TreeVisEventHandler> TYPE = new Type<TreeVisEventHandler>();
 
     private RF data;
     private int index;
