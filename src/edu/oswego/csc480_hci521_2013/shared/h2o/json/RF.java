@@ -26,9 +26,6 @@ public class RF extends AbstractResponse {
     private int response_variable;
     private boolean out_of_bag_error_estimate;
 
-    RF() {
-    }
-
     public RF(String dataKey, String modelKey, int ntree, int responseVariable, boolean oobError) {
         this.data_key = dataKey;
         this.model_key = modelKey;

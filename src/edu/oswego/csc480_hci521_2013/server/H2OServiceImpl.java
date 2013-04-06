@@ -28,6 +28,8 @@ import edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders.RFBuilder;
 import edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders.RFTreeViewBuilder;
 import edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders.RFViewBuilder;
 import edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders.StoreViewBuilder;
+import java.util.ArrayList;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -44,19 +46,15 @@ public class H2OServiceImpl extends RemoteServiceServlet implements H2OService {
         return rest.get(builder, StoreView.class);
     }
 
-    public ArrayList<String> getColumnHeaders(String dataKey) throws Exception{
+    public ArrayList<String> getColumnHeaders(String dataKey) throws RestException {
         try {
-            String url = new InspectBuilder(dataKey).build();
-            logger.log(Level.INFO, url.toString());
-            String json = rest.fetch(url);
-            logger.log(Level.INFO, json);
-            Inspect val = rest.parse(json, Inspect.class);
+            Inspect val = rest.get(new InspectBuilder(dataKey), Inspect.class);
             logger.log(Level.INFO, val.toString());
 
             ArrayList<String> columnHeaders = new ArrayList<String>();
 
             //Iterate through Arraylist of ColumnDef
-            for(ColumnDef column : val.getCols()){
+            for(Inspect.Column column : val.getCols()){
                 columnHeaders.add(column.getName());
             }
 
@@ -64,9 +62,6 @@ public class H2OServiceImpl extends RemoteServiceServlet implements H2OService {
         } catch (RestException e) {
             logger.log(Level.SEVERE, e.getMessage(), e);
             throw e;
-        } catch (Exception e) {
-            logger.log(Level.SEVERE, e.getMessage(), e);
-            throw new IllegalStateException(e);
         }
     }
 

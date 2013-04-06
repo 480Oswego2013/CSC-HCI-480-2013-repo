@@ -20,9 +20,9 @@ import com.google.gwt.user.client.ui.Widget;
 import edu.oswego.csc480_hci521_2013.client.presenters.RfParametersPresenter;
 import edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders.RFBuilder;
 
-/** 
+/**
  * @author Michael Hayes
- * TODO: Confirm that H2O has a way of auto-detecting which column should be used as a 
+ * TODO: Confirm that H2O has a way of auto-detecting which column should be used as a
  *      classification variable by default and implement that here.
  * TODO: Need better way to handle other default value such as number of trees.
  * TODO: Input sanity checks such as numTrees is an integer.
@@ -47,7 +47,7 @@ public class RfParametersViewImpl extends PopupPanel implements RfParametersPres
     @UiField Button cancel;
     @UiField Label errorLabel;
 
-    public RfParametersViewImpl() { 
+    public RfParametersViewImpl() {
         setWidget(uiBinder.createAndBindUi(this));
     }
 
@@ -57,7 +57,7 @@ public class RfParametersViewImpl extends PopupPanel implements RfParametersPres
     //Called when classVars selection is changed.
     @UiHandler("classVars")
     public void onChange(ChangeEvent event){
-        int selectedIndex = classVars.getSelectedIndex(); 
+        int selectedIndex = classVars.getSelectedIndex();
         String selectedName = classVars.getValue(selectedIndex);
         setIgnoreColumns(selectedName);
     }
@@ -81,7 +81,6 @@ public class RfParametersViewImpl extends PopupPanel implements RfParametersPres
                 builder.setIgnore(ignoreThis);
             }
         }
-        logger.log(Level.INFO, "BUILDER: "+ builder.build());
         presenter.fireRFParameterEvent(builder);
         //this.hide();
     }
@@ -92,7 +91,7 @@ public class RfParametersViewImpl extends PopupPanel implements RfParametersPres
     }
 
     public void setHeaders(List<String> headers){
-       this.columnHeaders = headers; 
+       this.columnHeaders = headers;
         for(String column : columnHeaders){
             classVars.addItem(column);
         }

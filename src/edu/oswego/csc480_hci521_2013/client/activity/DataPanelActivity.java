@@ -12,8 +12,8 @@ import edu.oswego.csc480_hci521_2013.client.presenters.DataPanelPresenter;
 import edu.oswego.csc480_hci521_2013.client.presenters.DataPanelPresenterImpl;
 import edu.oswego.csc480_hci521_2013.client.services.H2OServiceAsync;
 import edu.oswego.csc480_hci521_2013.client.ui.DataPanelViewImpl;
-import java.util.List;
-import java.util.Map;
+import edu.oswego.csc480_hci521_2013.shared.h2o.json.Inspect;
+import edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders.InspectBuilder;
 import java.util.logging.Level;
 
 public class DataPanelActivity extends AbstractActivity {
@@ -31,18 +31,17 @@ public class DataPanelActivity extends AbstractActivity {
 
     @Override
     public void start(final AcceptsOneWidget panel, final EventBus eventBus) {
-        h2oService.getParsedData(datakey, new AsyncCallback<List<Map<String, String>>>() {
+        h2oService.getData(new InspectBuilder(datakey), new AsyncCallback<Inspect>() {
+
             @Override
-            public void onFailure(Throwable caught)
-            {
+            public void onFailure(Throwable caught) {
                 logger.log(Level.INFO, "Failure adding data tab.");
                 logger.log(Level.SEVERE, caught.toString());
                 // FIXME: do a message box or something...
             }
 
             @Override
-            public void onSuccess(List<Map<String, String>> result)
-            {
+            public void onSuccess(Inspect result) {
                 logger.log(Level.INFO, "Building data tab.");
 
                 // TODO: ideally we would want to hide the menu bar and add some sort of title header to the page...
@@ -54,10 +53,10 @@ public class DataPanelActivity extends AbstractActivity {
         });
     }
 
-	public static native void openPanel(DoublePanelActivity parent, String url, String name, String features, String datakey)/*-{
-	    var window = $wnd.open(url, name, features);
-		window.onbeforeunload = function() {
-		    parent.@edu.oswego.csc480_hci521_2013.client.activity.DoublePanelActivity::popinDataPanel(Ljava/lang/String;)(datakey);
-		}
-	}-*/;
+    public static native void openPanel(DoublePanelActivity parent, String url, String name, String features, String datakey)/*-{
+        var window = $wnd.open(url, name, features);
+        window.onbeforeunload = function() {
+            parent.@edu.oswego.csc480_hci521_2013.client.activity.DoublePanelActivity::popinDataPanel(Ljava/lang/String;)(datakey);
+        }
+    }-*/;
 }

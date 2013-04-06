@@ -16,7 +16,6 @@
 package edu.oswego.csc480_hci521_2013.client.presenters;
 
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.web.bindery.event.shared.EventBus;
 import com.google.web.bindery.event.shared.HandlerRegistration;
@@ -30,14 +29,18 @@ import edu.oswego.csc480_hci521_2013.client.services.H2OServiceAsync;
 import edu.oswego.csc480_hci521_2013.client.services.RFViewPoller;
 import edu.oswego.csc480_hci521_2013.client.ui.DataPanelView;
 import edu.oswego.csc480_hci521_2013.client.ui.RfParametersViewImpl;
+import edu.oswego.csc480_hci521_2013.shared.h2o.json.Inspect;
 import edu.oswego.csc480_hci521_2013.shared.h2o.json.RF;
 import edu.oswego.csc480_hci521_2013.shared.h2o.json.RFView;
 import edu.oswego.csc480_hci521_2013.shared.h2o.json.ResponseStatus;
 import edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders.RFBuilder;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -49,13 +52,15 @@ public class DataPanelPresenterImpl implements DataPanelPresenter, TabPanelPrese
     H2OServiceAsync h2oService;
     String datakey;
     RF randomForest;
-    List<Map<String, String>> data;
+    Inspect data;
     RfParametersPresenter popUp;
 
 
     private List<HandlerRegistration> handlers = new ArrayList<HandlerRegistration>();
 
-    public DataPanelPresenterImpl(H2OServiceAsync service, DataPanelView panelView, EventBus eventBus, String datakey, List<Map<String, String>> data) {
+    public DataPanelPresenterImpl(H2OServiceAsync service,
+            DataPanelView panelView, EventBus eventBus, String datakey,
+            Inspect data) {
         this.eventbus = eventBus;
         this.view = panelView;
         this.h2oService = service;
@@ -64,8 +69,23 @@ public class DataPanelPresenterImpl implements DataPanelPresenter, TabPanelPrese
 
         view.setPresenter(this);
         view.setGenerateCommand(getGenerateCommand());
-        view.setColumns(data.get(0).keySet());
-        view.setData(data);
+
+        Set<String> colNames = new HashSet<String>();
+        for (Inspect.Column col : data.getCols()) {
+            colNames.add(col.getName());
+        }
+        view.setColumns(colNames);
+
+        // FIXME: This most likely will not return all rows, we need to implement paging
+        List<Map<String, String>> rowData = new ArrayList<Map<String, String>>();
+        for (Inspect.Row row : data.getRows()) {
+            Map<String, String> rowMap = new HashMap<String, String>();
+            rowData.add(rowMap);
+            for (Inspect.Column column : data.getCols()) {
+                rowMap.put(column.getName(), row.getData(column.getName()).toString());
+            }
+        }
+        view.setData(rowData);
         bind();
     }
 

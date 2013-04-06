@@ -38,7 +38,7 @@ import java.util.ArrayList;
 @RemoteServiceRelativePath("h2oService")
 public interface H2OService extends RemoteService
 {
-    ArrayList<String> getColumnHeaders(String dataKey) throws Exception;
+    ArrayList<String> getColumnHeaders(String dataKey) throws RestException;
     StoreView getDataStores(StoreViewBuilder builder) throws RestException;
     Inspect getData(InspectBuilder builder) throws RestException;
     RFTreeView getTreeView(RFTreeViewBuilder builder) throws RestException;

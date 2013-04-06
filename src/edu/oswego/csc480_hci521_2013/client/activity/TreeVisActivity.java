@@ -8,6 +8,7 @@ import edu.oswego.csc480_hci521_2013.client.place.TreeVisPlace;
 import edu.oswego.csc480_hci521_2013.client.services.H2OServiceAsync;
 import edu.oswego.csc480_hci521_2013.client.ui.TreePanelViewImpl;
 import edu.oswego.csc480_hci521_2013.shared.h2o.json.RFTreeView;
+import edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders.RFTreeViewBuilder;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -33,7 +34,8 @@ public class TreeVisActivity extends AbstractActivity {
 
     @Override
     public void start(final AcceptsOneWidget panel, final EventBus eventBus) {
-        h2oService.getTreeView(datakey, modelkey, tree,
+        h2oService.getTreeView(new RFTreeViewBuilder(datakey, modelkey)
+                .setTreeNumber(tree),
                 new AsyncCallback<RFTreeView>() {
             @Override
             public void onFailure(Throwable thrwbl) {
@@ -51,10 +53,10 @@ public class TreeVisActivity extends AbstractActivity {
         });
     }
 
-	public static native void openPanel(DoublePanelActivity parent, String url, String name, String features, String datakey)/*-{
-	    var window = $wnd.open(url, name, features);
-		window.onbeforeunload = function() {
-		    parent.@edu.oswego.csc480_hci521_2013.client.activity.DoublePanelActivity::popinVisPanel(Ljava/lang/String;)(datakey);
-		}
-	}-*/;
+    public static native void openPanel(DoublePanelActivity parent, String url, String name, String features, String datakey)/*-{
+        var window = $wnd.open(url, name, features);
+        window.onbeforeunload = function() {
+            parent.@edu.oswego.csc480_hci521_2013.client.activity.DoublePanelActivity::popinVisPanel(Ljava/lang/String;)(datakey);
+        }
+    }-*/;
 }

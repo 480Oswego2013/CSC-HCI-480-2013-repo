@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and 
  * limitations under the License.
  */
+package edu.oswego.csc480_hci521_2013.server.json.deserializers;
 
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;

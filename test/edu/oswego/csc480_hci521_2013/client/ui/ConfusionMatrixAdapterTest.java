@@ -15,13 +15,11 @@
 package edu.oswego.csc480_hci521_2013.client.ui;
 
 import edu.oswego.csc480_hci521_2013.client.presenters.adapters.ConfusionMatrixAdapter;
-import edu.oswego.csc480_hci521_2013.shared.h2o.json.ConfusionMatrix;
 import static org.mockito.Mockito.when;
 
 import edu.oswego.csc480_hci521_2013.shared.h2o.json.RFView;
+import edu.oswego.csc480_hci521_2013.shared.h2o.json.RFView.ConfusionMatrix;
 import edu.oswego.csc480_hci521_2013.shared.h2o.json.ResponseStatus;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -103,11 +101,7 @@ public class ConfusionMatrixAdapterTest {
     @Test
     public void getConfusionMatrixTest()
     {
-        List<List<Integer>> scores = new ArrayList<List<Integer>>(Arrays.asList(
-                new ArrayList<Integer>(Arrays.asList(1,0,0)),
-                new ArrayList<Integer>(Arrays.asList(0,1,0)),
-                new ArrayList<Integer>(Arrays.asList(0,0,1))
-                ));
+        Integer[][] scores = new Integer[][] {{1,0,0},{0,1,0},{0,0,1}};
 
         when(matrix.getScores()).thenReturn(scores);
         when(randomForest.getConfusionMatrix()).thenReturn(matrix);

@@ -36,10 +36,10 @@ public class ConfusionMatrixActivity extends AbstractActivity {
         new RFViewPoller(eventBus, h2oService, randomForest).start();
     }
 
-	public static native void openPanel(DoublePanelActivity parent, String url, String name, String features, String datakey)/*-{
-	    var window = $wnd.open(url, name, features);
-		window.onbeforeunload = function() {
-		    parent.@edu.oswego.csc480_hci521_2013.client.activity.DoublePanelActivity::popinVisPanel(Ljava/lang/String;)(datakey);
-		}
-	}-*/;
+    public static native void openPanel(DoublePanelActivity parent, String url, String name, String features, String datakey)/*-{
+        var window = $wnd.open(url, name, features);
+        window.onbeforeunload = function() {
+            parent.@edu.oswego.csc480_hci521_2013.client.activity.DoublePanelActivity::popinVisPanel(Ljava/lang/String;)(datakey);
+        }
+    }-*/;
 }

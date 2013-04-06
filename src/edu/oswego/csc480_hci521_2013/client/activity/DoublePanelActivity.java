@@ -42,6 +42,8 @@ import edu.oswego.csc480_hci521_2013.client.presenters.DoublePanelPresenter;
 import edu.oswego.csc480_hci521_2013.client.presenters.TabPanelPresenter;
 import edu.oswego.csc480_hci521_2013.client.presenters.TreePanelPresenterImpl;
 import edu.oswego.csc480_hci521_2013.client.services.H2OServiceAsync;
+import edu.oswego.csc480_hci521_2013.client.ui.ConfusionMatrixViewImpl;
+import edu.oswego.csc480_hci521_2013.client.ui.DataPanelViewImpl;
 import edu.oswego.csc480_hci521_2013.client.ui.DoublePanelView;
 import edu.oswego.csc480_hci521_2013.client.ui.TabLabelView;
 import edu.oswego.csc480_hci521_2013.client.ui.TabLabelViewImpl;
@@ -51,10 +53,10 @@ import edu.oswego.csc480_hci521_2013.shared.h2o.json.RF;
 import edu.oswego.csc480_hci521_2013.shared.h2o.json.RFTreeView;
 import edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders.InspectBuilder;
 import edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders.RFTreeViewBuilder;
-import java.util.ArrayList;
 import edu.oswego.csc480_hci521_2013.shared.h2o.json.RFView;
+import edu.oswego.csc480_hci521_2013.shared.h2o.json.StoreView;
+import edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders.StoreViewBuilder;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -109,16 +111,29 @@ public class DoublePanelActivity extends AbstractActivity implements DoublePanel
     }
 
     private void loadParsedDataMenu() {
-        service.getParsedDataKeys(new AsyncCallback<List<String>>() {
+        service.getDataStores(new StoreViewBuilder()
+                .setFilter(".hex").setView(1024),
+                new AsyncCallback<StoreView>() {
+
             @Override
             public void onFailure(Throwable caught) {
+                // FIXME: we need some sort of general error handler
                 logger.log(Level.SEVERE, caught.toString());
             }
 
             @Override
-            public void onSuccess(List<String> result) {
-                for (String key : result) {
-                    view.addMenuItem(new MenuItem(key, false, getMenuCommand(key)));
+            public void onSuccess(StoreView result) {
+                for (StoreView.Row row : result.getKeys()) {
+                    // NOTE: there is no way to know from this if it is parsed or not,
+                    //       but the naming convention is that parsed data ends in .hex
+                    //       we could possibly do an inspect call on each piece to
+                    //       check if it is parsed or not...
+                    // TODO: we should check if there are more items still available.
+                    if (row.getKey().endsWith(".hex")) {
+                        String key = row.getKey();
+                        view.addMenuItem(new MenuItem(key, false,
+                                getMenuCommand(key)));
+                    }
                 }
             }
         });
@@ -131,10 +146,9 @@ public class DoublePanelActivity extends AbstractActivity implements DoublePanel
 
     @Override
     public void addDataTab(final String datakey) {
-        clientFactory.getH2OService().getData(new InspectBuilder(datakey),
-                new AsyncCallback<Inspect>() {
         logger.log(Level.INFO, "Creating new data tab: " + datakey);
-        this.service.getParsedData(datakey, new AsyncCallback<List<Map<String, String>>>() {
+        service.getData(new InspectBuilder(datakey),
+                new AsyncCallback<Inspect>() {
             @Override
             public void onFailure(Throwable caught) {
                 logger.log(Level.INFO, "Failure adding data tab.");
@@ -146,18 +160,9 @@ public class DoublePanelActivity extends AbstractActivity implements DoublePanel
             public void onSuccess(Inspect result)
             {
                 logger.log(Level.INFO, "Building data tab: " + datakey);
-                // FIXME: This most likely will not return all rows, we need to implement paging
-                List<Map<String, String>> data = new ArrayList<Map<String, String>>();
-                for (Inspect.Row row : result.getRows()) {
-                    Map<String, String> rowMap = new HashMap<String, String>();
-                    data.add(rowMap);
-                    for (Inspect.Column column : result.getCols()) {
-                        rowMap.put(column.getName(), row.getData(column.getName()).toString());
-                    }
-                }
-
-                DataPanelPresenter presenter = new DataPanelPresenterImpl(clientFactory, datakey, data);
-                DataPanelPresenterImpl presenter = new DataPanelPresenterImpl(service, new DataPanelViewImpl(), eventBus, datakey, result);
+                DataPanelPresenterImpl presenter = new DataPanelPresenterImpl(
+                        service, new DataPanelViewImpl(), eventBus, datakey,
+                        result);
                 TabLabelView label = new TabLabelViewImpl();
                 label.setLabel(datakey);
                 label.setPresenter(DoublePanelActivity.this);
@@ -170,8 +175,7 @@ public class DoublePanelActivity extends AbstractActivity implements DoublePanel
 
     @Override
     public void addVisTab(final String datakey, final String modelkey, final int tree) {
-        this.service.getTreeView(datakey, modelkey, tree, new AsyncCallback<RFTreeView>() {
-        clientFactory.getH2OService().getTreeView(
+        service.getTreeView(
                 new RFTreeViewBuilder(datakey, modelkey).setTreeNumber(tree),
                 new AsyncCallback<RFTreeView>() {
             @Override
@@ -197,7 +201,9 @@ public class DoublePanelActivity extends AbstractActivity implements DoublePanel
 
     @Override
     public void addConfusionMatrixTab(RF rf) {
-        ConfusionMatrixPresenterImpl presenter = new ConfusionMatrixPresenterImpl(new ConfusionMatrixViewImpl(), eventBus, rf);
+        ConfusionMatrixPresenterImpl presenter
+                = new ConfusionMatrixPresenterImpl(
+                new ConfusionMatrixViewImpl(), eventBus, rf);
         String title = "Confusion Matrix<br>" + rf.getDataKey() + "<br>" + rf.getModelKey();
         TabLabelView label = new TabLabelViewImpl();
         label.setLabel(title);
@@ -207,7 +213,9 @@ public class DoublePanelActivity extends AbstractActivity implements DoublePanel
     }
 
     public void addConfusionMatrixTab(RF rf, RFView rfview) {
-        ConfusionMatrixPresenterImpl presenter = new ConfusionMatrixPresenterImpl(new ConfusionMatrixViewImpl(), eventBus, rf);
+        ConfusionMatrixPresenterImpl presenter
+                = new ConfusionMatrixPresenterImpl(
+                new ConfusionMatrixViewImpl(), eventBus, rf);
         presenter.setData(rfview);
         String title = "Confusion Matrix<br>" + rf.getDataKey() + "<br>" + rf.getModelKey();
         TabLabelView label = new TabLabelViewImpl();

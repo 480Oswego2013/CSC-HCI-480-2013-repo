@@ -14,6 +14,7 @@
 package edu.oswego.csc480_hci521_2013.client.presenters.adapters;
 
 import edu.oswego.csc480_hci521_2013.shared.h2o.json.RFView;
+import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -45,15 +46,24 @@ public class ConfusionMatrixAdapter {
     }
 
     public List<String> getHeaders() {
-        return rfView.getConfusionMatrix().getHeader();
+        if (rfView.getConfusionMatrix().getHeader() != null) {
+            return Arrays.asList(rfView.getConfusionMatrix().getHeader());
+        }
+        return new ArrayList<String>();
     }
 
     public List<List<Integer>> getScores() {
-        return rfView.getConfusionMatrix().getScores();
+        List<List<Integer>> scores = new ArrayList<List<Integer>>();
+        if (rfView.getConfusionMatrix().getScores() != null) {
+            for (Integer[] row : rfView.getConfusionMatrix().getScores()) {
+                scores.add(Arrays.asList(row));
+            }
+        }
+        return scores;
     }
 
     public List<String> getTotals() {
-        List<List<Integer>> scores = rfView.getConfusionMatrix().getScores();
+        List<List<Integer>> scores = getScores();
         int[] totals = new int[scores.size()];
         for (int i = 0; i < scores.size(); i++) {
             List<Integer> row = scores.get(i);
@@ -70,7 +80,7 @@ public class ConfusionMatrixAdapter {
 
     public List<String> getErrors() {
         List<String> labels = new ArrayList<String>();
-        List<List<Integer>> scores = rfView.getConfusionMatrix().getScores();
+        List<List<Integer>> scores = getScores();
         int overall = 0;
         int[] totals = new int[scores.size()];
         for (int i = 0; i < scores.size(); i++) {
