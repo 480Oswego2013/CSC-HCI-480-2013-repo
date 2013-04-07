@@ -113,7 +113,7 @@ public class DataPanelPresenterImpl implements DataPanelPresenter, TabPanelPrese
         handlers.add(eventbus.addHandler(RFProgressEvent.TYPE, new RFProgressEventHandler() {
             @Override
             public void onDataUpdate(RFProgressEvent e) {
-                if (isOurData(e.getData())) {
+                if (e.getSource().equals(randomForest)) {
                     RFView rfview = e.getData();
                     logger.log(Level.INFO, rfview.toString());
                     ResponseStatus status = rfview.getResponse();
@@ -133,7 +133,10 @@ public class DataPanelPresenterImpl implements DataPanelPresenter, TabPanelPrese
 
         handlers.add(eventbus.addHandler(RFParameterEvent.TYPE, new RFParameterEventHandler() {
             @Override
-            public void onParams(RFParameterEvent event){
+            public void onParams(RFParameterEvent event) {
+                if (!event.getSource().equals(popUp)) {
+                    return;
+                }
                 RFBuilder builder = event.getBuilder();
                 h2oService.generateRandomForest(builder, new AsyncCallback<RF>() {
                     @Override
@@ -144,6 +147,8 @@ public class DataPanelPresenterImpl implements DataPanelPresenter, TabPanelPrese
 
                     @Override
                     public void onSuccess(RF rf) {
+                        // TODO: this needs some sort of source to know it can from this presenter
+                        //       or we just get all events from all dialogs...
                         logger.log(Level.INFO, "Forest Started");
                         randomForest = rf;
 
@@ -158,14 +163,6 @@ public class DataPanelPresenterImpl implements DataPanelPresenter, TabPanelPrese
         }));
     }
 
-    private boolean isOurData(RFView data) {
-        if (data.getDataKey().equals(randomForest.getDataKey())
-                && data.getModelKey().equals(randomForest.getModelKey())) {
-            return true;
-        }
-        return false;
-    }
-
     ScheduledCommand getGenerateCommand() {
         return new ScheduledCommand() {
             @Override
@@ -173,7 +170,7 @@ public class DataPanelPresenterImpl implements DataPanelPresenter, TabPanelPrese
                 logger.log(Level.INFO, "Generating Forest");
                 popUp = new RfParametersPresenterImpl(datakey, new RfParametersViewImpl(), eventbus);
 
-                //Call H2OService.getColumnHeaders
+                // FIXME: make this use inspect call
                 h2oService.getColumnHeaders(datakey, new AsyncCallback<ArrayList<String>>() {
                     @Override
                     public void onFailure(Throwable thrwbl) {

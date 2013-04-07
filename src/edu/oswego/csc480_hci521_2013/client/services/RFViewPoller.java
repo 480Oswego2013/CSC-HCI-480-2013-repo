@@ -77,7 +77,7 @@ public class RFViewPoller {
 
             @Override
             public void onSuccess(final RFView rfview) {
-                eventbus.fireEvent(new RFProgressEvent(rfview));
+                eventbus.fireEvent(new RFProgressEvent(randomForest, rfview));
                 if (rfview.getResponse().isPoll()) {
                     timer.schedule(DELAY);
                 }

@@ -16,6 +16,7 @@
 package edu.oswego.csc480_hci521_2013.client.events;
 
 import com.google.gwt.event.shared.GwtEvent;
+import edu.oswego.csc480_hci521_2013.shared.h2o.json.RF;
 import edu.oswego.csc480_hci521_2013.shared.h2o.json.RFView;
 
 /**
@@ -25,10 +26,16 @@ public class RFProgressEvent extends GwtEvent<RFProgressEventHandler> {
 
     public static final Type<RFProgressEventHandler> TYPE = new Type<RFProgressEventHandler>();
 
+    private RF source;
     private RFView data;
 
-    public RFProgressEvent(RFView data) {
+    public RFProgressEvent(RF source, RFView data) {
+        this.source = source;
         this.data = data;
+    }
+
+    public RF getSource() {
+        return source;
     }
 
     public RFView getData() {

@@ -47,8 +47,7 @@ public class ConfusionMatrixPresenterImpl implements ConfusionMatrixPresenter, T
         handlers.add(eventbus.addHandler(RFProgressEvent.TYPE, new RFProgressEventHandler() {
             @Override
             public void onDataUpdate(RFProgressEvent e) {
-                // FIXME: the event needs to contain a reference to this view in some way so we know the requester...
-                if (isOurData(e.getData())) {
+                if (e.getSource().equals(randomForest)) {
                     setData(e.getData());
                 }
             }
@@ -68,19 +67,6 @@ public class ConfusionMatrixPresenterImpl implements ConfusionMatrixPresenter, T
             h.removeHandler();
         }
         handlers.clear();
-    }
-
-    private boolean isOurData(RFView data) {
-        // TODO: this should compare the out of bag error field as well
-        //       we need to get that from the confusion matrix type...
-        if (data.getDataKey().equals(randomForest.getDataKey())
-                && data.getModelKey().equals(randomForest.getModelKey())
-                && data.getNtree() == randomForest.getNtree()
-                && data.getResponseVariable() == randomForest.getResponseVariable())
-        {
-            return true;
-        }
-        return false;
     }
 
     public RF getRandomForest() {

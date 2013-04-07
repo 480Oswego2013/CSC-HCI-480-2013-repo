@@ -16,6 +16,7 @@
 package edu.oswego.csc480_hci521_2013.client.events;
 
 import com.google.gwt.event.shared.GwtEvent;
+import edu.oswego.csc480_hci521_2013.client.presenters.RfParametersPresenter;
 import edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders.RFBuilder;
 /**
  *
@@ -24,10 +25,16 @@ public class RFParameterEvent extends GwtEvent<RFParameterEventHandler> {
 
     public static Type<RFParameterEventHandler> TYPE = new Type<RFParameterEventHandler>();
 
+    private RfParametersPresenter source;
     private RFBuilder builder;
 
-    public RFParameterEvent(RFBuilder builder) {
+    public RFParameterEvent(RfParametersPresenter source, RFBuilder builder) {
+        this.source = source;
         this.builder = builder;
+    }
+
+    public RfParametersPresenter getSource() {
+        return source;
     }
 
     public RFBuilder getBuilder() {
