@@ -19,7 +19,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import edu.oswego.csc480_hci521_2013.server.json.deserializers.InspectRowDeserializer;
+import edu.oswego.csc480_hci521_2013.server.json.deserializers
+        .InspectRowDeserializer;
 import edu.oswego.csc480_hci521_2013.shared.h2o.H2OException;
 import edu.oswego.csc480_hci521_2013.shared.h2o.RestException;
 import edu.oswego.csc480_hci521_2013.shared.h2o.json.H2OResponse;
@@ -37,7 +38,8 @@ import java.util.logging.Logger;
  */
 public class RestHandler {
 
-    static final Logger logger = Logger.getLogger(RestHandler.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(
+            RestHandler.class.getName());
     private Gson gson;
     private UrlEncoder encoder = new ServerUrlEncoder();
 
@@ -57,7 +59,8 @@ public class RestHandler {
     public String fetch(String query) throws RestException {
         try {
             URL url = new URL(query);
-            BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream()));
+            BufferedReader in = new BufferedReader(
+                    new InputStreamReader(url.openStream()));
             StringBuilder json = new StringBuilder();
             String line;
             while ((line = in.readLine()) != null) {
@@ -66,7 +69,7 @@ public class RestHandler {
             in.close();
             return json.toString();
         } catch (Exception e) {
-            logger.log(Level.SEVERE, e.getMessage(), e);
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new RestException(e);
         }
     }
@@ -86,7 +89,7 @@ public class RestHandler {
         JsonObject response = parser.parse(json).getAsJsonObject();
         T sv = gson.fromJson(response, responseType);
         if (sv.getResponse().isError()) {
-            logger.log(Level.SEVERE, sv.getError());
+            LOGGER.log(Level.SEVERE, sv.getError());
             throw new H2OException(sv.getError());
         }
         return sv;
@@ -95,11 +98,11 @@ public class RestHandler {
     public <T extends H2OResponse> T get(H2ORequest request, Class<T> responseType) throws RestException
     {
         String url = request.build(encoder);
-        logger.log(Level.FINEST, url.toString());
+        LOGGER.log(Level.INFO, url.toString());
         String json = fetch(url);
-        logger.log(Level.FINEST, json);
+        LOGGER.log(Level.INFO, json);
         T val = parse(json, responseType);
-        logger.log(Level.FINEST, val.toString());
+        LOGGER.log(Level.INFO, val.toString());
         return val;
     }
 }

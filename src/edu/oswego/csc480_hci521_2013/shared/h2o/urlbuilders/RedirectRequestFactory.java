@@ -21,11 +21,12 @@ import java.util.HashMap;
 /**
  *
  */
-public class RedirectRequestFactory
-{
-    public static H2ORequest getRequest(ResponseStatus status) {
+public class RedirectRequestFactory {
+
+    public static H2ORequest getRequest(final ResponseStatus status) {
         if (!status.isRedirect()) {
-            throw new IllegalArgumentException("Not a redirect status: " + status.getStatus());
+            throw new IllegalArgumentException("Not a redirect status: "
+                    + status.getStatus());
         }
         String request = status.getRedirectRequest();
         HashMap<String, String> args = status.getRedirectRequestArgs();

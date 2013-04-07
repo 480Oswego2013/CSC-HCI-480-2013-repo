@@ -43,9 +43,7 @@ public class RFViewBuilder extends AbstractBuilder {
 
     public RFViewBuilder(RF forest)
     {
-        super("RFView.json");
-        addArg("data_key", forest.getDataKey());
-        addArg("model_key", forest.getModelKey());
+        this(forest.getDataKey(), forest.getModelKey());
         setResponseVariable(forest.getResponseVariable());
     }
 
