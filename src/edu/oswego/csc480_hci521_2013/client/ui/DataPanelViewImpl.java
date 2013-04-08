@@ -16,7 +16,11 @@ package edu.oswego.csc480_hci521_2013.client.ui;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
+import com.google.gwt.dom.client.Element;
+import com.google.gwt.dom.client.Style;
+import com.google.gwt.dom.client.Style.WhiteSpace;
 import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.uibinder.client.UiFactory;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.cellview.client.HasKeyboardSelectionPolicy;
@@ -30,11 +34,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-/**
- *
- */
+
 public class DataPanelViewImpl extends Composite implements DataPanelView {
 
+    interface GridResources extends DataGrid.Resources {
+        @Source({DataGrid.Style.DEFAULT_CSS, "DataPanelViewImpl.css"})
+        GridStyle dataGridStyle();
+    }
+
+    interface GridStyle extends DataGrid.Style {
+    }
+    
     interface Binder extends UiBinder<Widget, DataPanelViewImpl> {
     }
 
@@ -46,11 +56,17 @@ public class DataPanelViewImpl extends Composite implements DataPanelView {
     @UiField MenuItem generate;
     @UiField MenuBar treebar;
     @UiField MenuItem trees;
-    @UiField DataGrid<Map<String, String>> dataTable;
+    @UiField
+    DataGrid<Map<String, String>> dataTable;
 
+    @UiFactory DataGrid<Map<String, String>> makeDataGrid() { 
+        DataGrid.Resources resources = GWT.create(GridResources.class);
+        return new DataGrid<Map<String, String>>(15, resources);        
+    }
     public DataPanelViewImpl() {
         initWidget(uiBinder.createAndBindUi(this));
         dataTable.setKeyboardSelectionPolicy(HasKeyboardSelectionPolicy.KeyboardSelectionPolicy.DISABLED);
+        
     }
 
     @Override
