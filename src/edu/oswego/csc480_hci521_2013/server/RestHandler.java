@@ -88,7 +88,15 @@ public class RestHandler {
         JsonParser parser = new JsonParser();
         JsonObject response = parser.parse(json).getAsJsonObject();
         T sv = gson.fromJson(response, responseType);
-        if (sv.getResponse().isError()) {
+        // NOTE: sometimes response is null...
+        if (sv.getResponse() == null) {
+            LOGGER.log(Level.WARNING, "H2O Response Info is null!");
+            if (sv.getError() != null) {
+                LOGGER.log(Level.SEVERE, sv.getError());
+                throw new H2OException(sv.getError());
+            }
+        }
+        else if (sv.getResponse().isError()) {
             LOGGER.log(Level.SEVERE, sv.getError());
             throw new H2OException(sv.getError());
         }

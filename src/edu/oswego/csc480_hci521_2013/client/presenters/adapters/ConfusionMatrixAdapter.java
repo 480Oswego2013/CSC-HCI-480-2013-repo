@@ -48,7 +48,8 @@ public class ConfusionMatrixAdapter {
     }
 
     public List<String> getHeaders() {
-        if (rfView.getConfusionMatrix().getHeader() != null) {
+        if (rfView.getConfusionMatrix() != null
+                && rfView.getConfusionMatrix().getHeader() != null) {
             return Arrays.asList(rfView.getConfusionMatrix().getHeader());
         }
         return new ArrayList<String>();
@@ -56,7 +57,8 @@ public class ConfusionMatrixAdapter {
 
     public List<List<Integer>> getScores() {
         List<List<Integer>> scores = new ArrayList<List<Integer>>();
-        if (rfView.getConfusionMatrix().getScores() != null) {
+        if (rfView.getConfusionMatrix() != null
+                && rfView.getConfusionMatrix().getScores() != null) {
             for (Integer[] row : rfView.getConfusionMatrix().getScores()) {
                 scores.add(Arrays.asList(row));
             }
@@ -109,15 +111,24 @@ public class ConfusionMatrixAdapter {
     }
 
     public String getClassificationError() {
-        return Double.toString(rfView.getConfusionMatrix().getClassificationError());
+        if (rfView.getConfusionMatrix() != null) {
+            return Double.toString(rfView.getConfusionMatrix().getClassificationError());
+        }
+        return null;
     }
 
     public String getRowsSkipped() {
-        return Integer.toString(rfView.getConfusionMatrix().getRowsSkipped());
+        if (rfView.getConfusionMatrix() != null) {
+            return Integer.toString(rfView.getConfusionMatrix().getRowsSkipped());
+        }
+        return null;
     }
 
     public String getRows() {
-        return Integer.toString(rfView.getConfusionMatrix().getRows());
+        if (rfView.getConfusionMatrix() != null) {
+            return Integer.toString(rfView.getConfusionMatrix().getRows());
+        }
+        return null;
     }
 
     public String getResponseVariable() {
@@ -130,8 +141,7 @@ public class ConfusionMatrixAdapter {
 
     public String getMtry() {
 
-        if (this.rfView.getMtry() < 0)
-        {
+        if (this.rfView.getMtry() < 0) {
             return "All";
         }
 
@@ -143,30 +153,51 @@ public class ConfusionMatrixAdapter {
     }
 
     public String getLeavesMin() {
-        return Double.toString(this.rfView.getTrees().getLeaves().getMin());
+        if (rfView.getTrees().getLeaves() != null) {
+            return Double.toString(this.rfView.getTrees().getLeaves().getMin());
+        }
+        return null;
     }
 
     public String getLeavesMean() {
-        return Double.toString(this.rfView.getTrees().getLeaves().getMean());
+        if (rfView.getTrees().getLeaves() != null) {
+            return Double.toString(this.rfView.getTrees().getLeaves().getMean());
+        }
+        return null;
     }
 
     public String getLeavesMax() {
-        return Double.toString(this.rfView.getTrees().getLeaves().getMax());
+        if (rfView.getTrees().getLeaves() != null) {
+           return Double.toString(this.rfView.getTrees().getLeaves().getMax());
+        }
+        return null;
     }
 
     public String getDepthMin() {
-        return Double.toString(this.rfView.getTrees().getDepth().getMin());
+        if (rfView.getTrees().getDepth() != null) {
+            return Double.toString(this.rfView.getTrees().getDepth().getMin());
+        }
+        return null;
     }
 
     public String getDepthMean() {
-        return Double.toString(this.rfView.getTrees().getDepth().getMean());
+        if (rfView.getTrees().getDepth() != null) {
+            return Double.toString(this.rfView.getTrees().getDepth().getMean());
+        }
+        return null;
     }
 
     public String getDepthMax() {
-        return Double.toString(this.rfView.getTrees().getDepth().getMax());
+        if (rfView.getTrees().getDepth() != null) {
+            return Double.toString(this.rfView.getTrees().getDepth().getMax());
+        }
+        return null;
     }
 
     public String getMatrixType() {
-        return this.rfView.getConfusionMatrix().getType();
+        if (rfView.getConfusionMatrix() != null) {
+            return this.rfView.getConfusionMatrix().getType();
+        }
+        return null;
     }
 }
