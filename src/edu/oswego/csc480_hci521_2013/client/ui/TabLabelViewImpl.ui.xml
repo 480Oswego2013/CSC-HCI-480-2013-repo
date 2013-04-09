@@ -20,10 +20,12 @@
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
     xmlns:gwt='urn:import:com.google.gwt.user.client.ui'>
 
-    <gwt:HorizontalPanel spacing="5">
-        <gwt:HTMLPanel >
-            <div ui:field="label" style="margin-top:3px"/>
-        </gwt:HTMLPanel>
-        <gwt:PushButton  width="100px" ui:field='pop'>New Window</gwt:PushButton>
-    </gwt:HorizontalPanel>
+    <gwt:HTMLPanel>
+        <div>
+            <div style="float:right; margin-right:5px; margin-top:1px; width:.25em; height:.25em; font-size:.25em;">
+                <gwt:PushButton ui:field='pop' width=".25em" height=".25em">&and;</gwt:PushButton>
+            </div>
+            <div ui:field="label"/>
+        </div>
+    </gwt:HTMLPanel>
 </ui:UiBinder>
