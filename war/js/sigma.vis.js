@@ -26,6 +26,7 @@ function init(canvas, json, depth, leaves) {
   var lth = 0;
 
   if(depth <= 10){
+	console.log("depth <= 10");
     minNS = .5;
     maxNS = 3;
     maxR = 16
@@ -48,7 +49,7 @@ function init(canvas, json, depth, leaves) {
     edgeColor: '000',
     labelThreshold: lth,
     //defaultEdgeType: 'curve',
-    defaultLabelColor: '#fff'
+    defaultLabelColor: '#000'
   }).graphProperties({
     minNodeSize: minNS,
     maxNodeSize: maxNS,
@@ -74,6 +75,21 @@ function init(canvas, json, depth, leaves) {
       console.log(node.field + " " + node.condition + " " + node.value);
     }
 
+    var nodeColor = '#000';
+
+    //Set color of node
+    if(parent == null){
+      nodeColor = '#facd4a';
+    }
+    else if (node.label != null){
+      nodeColor = '#9de24f';
+    }
+    else{
+      nodeColor = '#5ac3b6';
+    }
+
+    console.log("Color: "+nodeColor);
+
     //Create node (leaf)
     if (node.label !== null){
       //Construct ID, increment leafCount
@@ -82,12 +98,13 @@ function init(canvas, json, depth, leaves) {
       //Add node
       sigInst.addNode(leafID, {
         label: node.label,
-        x: node.indexDispX*nodeScale,
-        y: node.levelDispY*nodeScale,
-        color: '#9de24f'
+        y: node.indexDispX*nodeScale,
+        x: node.levelDispY*nodeScale,
+        color: nodeColor
       });
       console.log(leafID);
     }
+
     //Create node (internal)
     else {
       //Construct ID
@@ -95,9 +112,9 @@ function init(canvas, json, depth, leaves) {
       //Add node
       sigInst.addNode( nodeID, {
         label: node.field + " " + node.condition + " " + node.value,
-        x: node.indexDispX*nodeScale,
-        y: node.levelDispY*nodeScale,
-        color: '#5ac3b6'
+        y: node.indexDispX*nodeScale,
+        x: node.levelDispY*nodeScale,
+        color: nodeColor
       });
       console.log(nodeID);
     }
