@@ -16,6 +16,7 @@
 package edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
@@ -85,7 +86,7 @@ public class InspectBuilderTest {
             String pageValue = (String)pageField.get(instance);
             assertEquals("/"+page, pageValue);
             
-            // Test if argument is added to inherited "args" Map<String, String>.
+            // Test if argument is added to inherited HashMap<String, ArrayList<String>> args.
             Field argsField = InspectBuilder.class.getSuperclass().getDeclaredField("args");
             argsField.setAccessible(true);
             HashMap<String, String> arg=(HashMap<String, String>)argsField.get(instance);
@@ -118,7 +119,7 @@ public class InspectBuilderTest {
             assertNotNull(expResult);
             assertTrue(expResult instanceof InspectBuilder);
             
-            // Test if "view" is added to inherited "args" Map<String, String>.
+            // Test if "view" is added to inherited HashMap<String, ArrayList<String>> args.
             Field argsField = InspectBuilder.class.getSuperclass().getDeclaredField("args");
             argsField.setAccessible(true);
             HashMap<String, String> args = (HashMap<String, String>) argsField.get(instance);
@@ -152,7 +153,7 @@ public class InspectBuilderTest {
             assertNotNull(expResult);
             assertTrue(expResult instanceof InspectBuilder);
                         
-            // Test if "Offset" is added to inherited "multiargs" List<Arg>.
+            // Test if "Offset" is added to inherited HashMap<String, ArrayList<String>> args.
             Field argsField = InspectBuilder.class.getSuperclass().getDeclaredField("args");
             argsField.setAccessible(true);
             Map<String, String> args = (Map<String, String>) argsField.get(instance);
