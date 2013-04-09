@@ -24,18 +24,15 @@ import edu.oswego.csc480_hci521_2013.shared.h2o.json.StoreView;
 import edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders.InspectBuilder;
 import edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders.RFBuilder;
 import edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders.RFTreeViewBuilder;
-import edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders.RFViewBuilder;
 import edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders.StoreViewBuilder;
 import edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders.RFViewBuilder;
 
-import java.util.ArrayList;
 
 /**
  *
  */
 public interface H2OServiceAsync
 {
-    void getColumnHeaders(String dataKey, AsyncCallback<ArrayList<String>> callback);
     void getDataStores(StoreViewBuilder builder, AsyncCallback<StoreView> callback);
     void getData(InspectBuilder builder, AsyncCallback<Inspect> callback);
     void getTreeView(RFTreeViewBuilder builder, AsyncCallback<RFTreeView> callback);
