@@ -23,7 +23,8 @@ import edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders.RFBuilder;
  */
 public class RFParameterEvent extends GwtEvent<RFParameterEventHandler> {
 
-    public static Type<RFParameterEventHandler> TYPE = new Type<RFParameterEventHandler>();
+    public static final Type<RFParameterEventHandler> TYPE
+            = new Type<RFParameterEventHandler>();
 
     private RfParametersPresenter source;
     private RFBuilder builder;

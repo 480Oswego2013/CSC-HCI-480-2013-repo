@@ -33,6 +33,7 @@ import edu.oswego.csc480_hci521_2013.shared.h2o.json.Inspect;
 import edu.oswego.csc480_hci521_2013.shared.h2o.json.RF;
 import edu.oswego.csc480_hci521_2013.shared.h2o.json.RFView;
 import edu.oswego.csc480_hci521_2013.shared.h2o.json.ResponseStatus;
+import edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders.InspectBuilder;
 import edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders.RFBuilder;
 
 import java.util.ArrayList;
@@ -142,7 +143,7 @@ public class DataPanelPresenterImpl implements DataPanelPresenter, TabPanelPrese
                     @Override
                     public void onFailure(Throwable thrwbl) {
                         logger.log(Level.SEVERE, thrwbl.toString());
-			popUp.getView().setError(thrwbl.getMessage());
+                        popUp.getView().setError(thrwbl.getMessage());
                     }
 
                     @Override
@@ -155,8 +156,9 @@ public class DataPanelPresenterImpl implements DataPanelPresenter, TabPanelPrese
                         eventbus.fireEvent(new RFGenerateEvent(rf));
 
                         view.forestStarted();
-                        new RFViewPoller(eventbus, h2oService, randomForest).start();
-			popUp.getView().hidePopup();
+                        new RFViewPoller(eventbus, h2oService, randomForest)
+                                .start();
+                        popUp.getView().hidePopup();
                     }
                 });
             }
@@ -168,19 +170,26 @@ public class DataPanelPresenterImpl implements DataPanelPresenter, TabPanelPrese
             @Override
             public void execute() {
                 logger.log(Level.INFO, "Generating Forest");
-                popUp = new RfParametersPresenterImpl(datakey, new RfParametersViewImpl(), eventbus);
+                popUp = new RfParametersPresenterImpl(datakey,
+                        new RfParametersViewImpl(), eventbus);
 
-                // FIXME: make this use inspect call
-                h2oService.getColumnHeaders(datakey, new AsyncCallback<ArrayList<String>>() {
+                h2oService.getData(new InspectBuilder(datakey).setOffset(-1L),
+                        new AsyncCallback<Inspect>() {
                     @Override
-                    public void onFailure(Throwable thrwbl) {
-                        logger.log(Level.SEVERE, thrwbl.toString());
+                    public void onFailure(final Throwable caught) {
+                        logger.log(Level.SEVERE, caught.toString());
                         // FIXME: do a message box or something...
                     }
 
                     @Override
-                    public void onSuccess(ArrayList<String> columnHeaders) {
+                    public void onSuccess(final Inspect result) {
                         logger.log(Level.INFO, "Headers received");
+                        List<String> columnHeaders = new ArrayList<String>();
+                        for (Inspect.Column col : result.getCols()) {
+                            // TODO: we could try and check the type so we
+                            //       dont put in columns that are invalid.
+                            columnHeaders.add(col.getName());
+                        }
                         popUp.setHeaders(columnHeaders);
                     }
                 });
