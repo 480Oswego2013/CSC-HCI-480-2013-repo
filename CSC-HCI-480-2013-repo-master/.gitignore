@@ -1,0 +1,68 @@
+*.class
+
+# Package Files #
+*.jar
+*.war
+*.ear
+/nbproject/
+nbbuild.xml
+manifest.mf
+/build/
+/dist/
+/target/
+
+# Allow maven ant task library
+!/lib/maven-ant-tasks-2.1.3.jar
+
+
+##############################
+## Ignore all Eclipse files ##
+##############################
+
+*.pydevproject
+.project
+.metadata
+bin/
+tmp/
+*.tmp
+*.bak
+*.swp
+*~.nib
+local.properties
+.classpath
+.settings/
+.loadpath
+
+# External tool builders
+.externalToolBuilders/
+
+# Locally stored "Eclipse launch configurations"
+*.launch
+
+# CDT-specific
+.cproject
+
+# PDT-specific
+.buildpath
+
+
+#######################
+## Ignore GWT caches ##
+#######################
+
+war/Main/
+gwt-unitCache/
+test-classes/
+war/WEB-INF/deploy/
+war/WEB-INF/classes/
+.gwt
+
+# Allow jars in war lib
+!war/WEB-INF/lib/*.jar
+
+
+
+#######################
+##  Ignore OS Files  ##
+#######################
+*.DS_Store
