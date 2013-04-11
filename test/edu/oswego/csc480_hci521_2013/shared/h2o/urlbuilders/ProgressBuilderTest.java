@@ -15,6 +15,8 @@
  */
 package edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders;
 
+import static org.junit.Assert.assertEquals;
+
 import java.util.HashMap;
 
 import org.junit.After;
@@ -47,8 +49,8 @@ public class ProgressBuilderTest {
         args.put("test1", "test2");
         instance = new ProgressBuilder(args);
         encoder = new ServerUrlEncoder();
-        String expResult = "http://localhost:54321?";
-        assert (expResult.equalsIgnoreCase("http://localhost:54321/Progress.json?test1=test2"));
+        String expResult = "http://localhost:54321/Progress.json?test1=test2";
+        assertEquals(expResult, instance.build(encoder));
     }
 
     /**Tests the ProgressBuilder constructor that takes a HashMap<String, String>, with integer strings ranging from -10
@@ -66,7 +68,7 @@ public class ProgressBuilderTest {
         encoder = new ServerUrlEncoder();
         String expResult = "http://localhost:54321/Progress.json?-10=-10&3=3&2=2&10=10&1=1&0=0&7=7&-2=-2&6=6&-1"
                 + "=-1&5=5&-4=-4&-3=-3&4=4&-6=-6&-5=-5&-8=-8&9=9&-7=-7&8=8&-9=-9";
-        assert (expResult.equalsIgnoreCase(instance.build(encoder)));
+        assertEquals(expResult, instance.build(encoder));
     }
    
     /**Tests the ProgressBuilder constructor that takes a job and a destination key. 
@@ -79,8 +81,8 @@ public class ProgressBuilderTest {
         String destinationKey = "2";
         instance = new ProgressBuilder(job, destinationKey);
         encoder = new ServerUrlEncoder();
-        String expResult = "destination_key=2&job=1";
-        assert (expResult.equalsIgnoreCase(instance.build(encoder)));
+        String expResult = "http://localhost:54321/Progress.json?destination_key=2&job=1";
+        assertEquals(expResult, instance.build(encoder));
     }
 
     @AfterClass
