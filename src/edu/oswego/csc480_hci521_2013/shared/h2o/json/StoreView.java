@@ -15,19 +15,24 @@
  */
 package edu.oswego.csc480_hci521_2013.shared.h2o.json;
 
+import com.google.gson.annotations.SerializedName;
 import com.google.gwt.user.client.rpc.IsSerializable;
 import java.util.Arrays;
 
 /**
- *
+ * Represents the H2O StoreView json response.
+ * @see edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders.StoreViewBuilder
  */
 public class StoreView extends AbstractResponse {
 
-    private Row[] keys;
-    private int num_keys;
-    private String cloud_name;
-    private String node_name;
+    private Row[] keys = null;
+    private int numKeys = 0;
+    private String cloudName = null;
+    private String nodeName = null;
 
+    /**
+     * No arg constructor needed for GWT-RPC.
+     */
     private StoreView() {
     }
 
@@ -36,37 +41,45 @@ public class StoreView extends AbstractResponse {
     }
 
     public int getNumKeys() {
-        return num_keys;
+        return numKeys;
     }
 
     public String getCloudName() {
-        return cloud_name;
+        return cloudName;
     }
 
     public String getNodeName() {
-        return node_name;
+        return nodeName;
     }
 
     @Override
     public String toString() {
         return "StoreView{" + "keys=" + Arrays.toString(keys)
-                + ", num_keys=" + num_keys + ", cloud_name=" + cloud_name
-                + ", node_name=" + node_name + super.toString() + '}';
+                + ", num_keys=" + numKeys + ", cloud_name=" + cloudName
+                + ", node_name=" + nodeName + super.toString() + '}';
     }
 
     public static class Row implements IsSerializable {
 
-        private String key;
-        private int value_size_bytes;
-        private String rows; // not always a number
-        private String cols; // not always a number
-        private Column col_0;
-        private Column col_1;
-        private Column col_2;
-        private Column col_3;
-        private Column col_4;
-        private String value;
+        private String key = null;
+        private int valueSizeBytes = 0;
+        private String rows = null; // not always a number
+        private String cols = null; // not always a number
+        @SerializedName("col_0")
+        private Column col0 = null;
+        @SerializedName("col_1")
+        private Column col1 = null;
+        @SerializedName("col_2")
+        private Column col2 = null;
+        @SerializedName("col_3")
+        private Column col3 = null;
+        @SerializedName("col_4")
+        private Column col4 = null;
+        private String value = null;
 
+        /**
+         * No arg constructor needed for GWT-RPC.
+         */
         private Row() {
         }
 
@@ -75,7 +88,7 @@ public class StoreView extends AbstractResponse {
         }
 
         public int getValueSizeBytes() {
-            return value_size_bytes;
+            return valueSizeBytes;
         }
 
         public String getRows() {
@@ -87,23 +100,23 @@ public class StoreView extends AbstractResponse {
         }
 
         public Column getCol0() {
-            return col_0;
+            return col0;
         }
 
         public Column getCol1() {
-            return col_1;
+            return col1;
         }
 
         public Column getCol2() {
-            return col_2;
+            return col2;
         }
 
         public Column getCol3() {
-            return col_3;
+            return col3;
         }
 
         public Column getCol4() {
-            return col_4;
+            return col4;
         }
 
         public String getValue() {
@@ -113,19 +126,22 @@ public class StoreView extends AbstractResponse {
         @Override
         public String toString() {
             return "Row{" + "key=" + key
-                    + ", value_size_bytes=" + value_size_bytes
-                    + ", rows=" + rows + ", cols=" + cols + ", col_0=" + col_0
-                    + ", col_1=" + col_1 + ", col_2=" + col_2 + ", col_3="
-                    + col_3 + ", col_4=" + col_4 + ", value=" + value + '}';
+                    + ", value_size_bytes=" + valueSizeBytes
+                    + ", rows=" + rows + ", cols=" + cols + ", col_0=" + col0
+                    + ", col_1=" + col1 + ", col_2=" + col2 + ", col_3="
+                    + col3 + ", col_4=" + col4 + ", value=" + value + '}';
         }
 
         public static class Column implements IsSerializable {
 
-            private String header;
-            private String min;
-            private String mean;
-            private String max;
+            private String header = null;
+            private String min = null;
+            private String mean = null;
+            private String max = null;
 
+            /**
+             * No arg constructor needed for GWT-RPC.
+             */
             private Column() {
             }
 

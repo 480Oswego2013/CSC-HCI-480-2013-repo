@@ -13,22 +13,10 @@
  * See the License for the specific language governing permissions and 
  * limitations under the License.
  */
-package edu.oswego.csc480_hci521_2013.shared.h2o.json;
-
-import com.google.gwt.user.client.rpc.IsSerializable;
-
 /**
- * Interface for h2o responses.
+ * These classes are representations of the H2O json responses.
+ *
+ * They are generated using gson. https://code.google.com/p/google-gson/
+ * They are serialized back and forth between client and server using GWT-RPC.
  */
-public interface H2OResponse extends IsSerializable {
-
-    /**
-     * @return The error message, if any
-     */
-    String getError();
-
-    /**
-     * @return The ResponseStatus object containing general response information
-     */
-    ResponseStatus getResponse();
-}
+package edu.oswego.csc480_hci521_2013.shared.h2o.json;

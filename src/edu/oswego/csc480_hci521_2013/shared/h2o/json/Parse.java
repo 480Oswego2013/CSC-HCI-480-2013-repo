@@ -16,22 +16,33 @@
 package edu.oswego.csc480_hci521_2013.shared.h2o.json;
 
 /**
- *
+ * Represents the H2O Parse json response.
+ * @see edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders.ParseBuilder
  */
 public class Parse extends AbstractResponse {
 
-    private String destination_key;
+    /**
+     * The name of the parsed data.
+     */
+    private String destinationKey = null;
 
+    /**
+     * No arg constructor needed for GWT-RPC.
+     */
     private Parse() {
     }
 
+    /**
+     *
+     * @return the name of the parsed data.
+     */
     public String getDestinationKey() {
-        return destination_key;
+        return destinationKey;
     }
 
     @Override
     public String toString() {
-        return "Parse{" + "destination_key=" + destination_key
+        return "Parse{" + "destination_key=" + destinationKey
                 + super.toString() + '}';
     }
 }
