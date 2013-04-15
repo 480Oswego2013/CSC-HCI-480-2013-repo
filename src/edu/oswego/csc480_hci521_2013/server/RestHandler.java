@@ -15,6 +15,7 @@
  */
 package edu.oswego.csc480_hci521_2013.server;
 
+import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
@@ -44,13 +45,16 @@ public class RestHandler {
     private UrlEncoder encoder = new ServerUrlEncoder();
 
     public RestHandler() {
-        GsonBuilder gb = new GsonBuilder();
-        gb.registerTypeAdapter(Inspect.Row.class, new InspectRowDeserializer());
-        gson = gb.create();
+        gson = new GsonBuilder()
+                .registerTypeAdapter(
+                    Inspect.Row.class, new InspectRowDeserializer())
+                .setFieldNamingPolicy(
+                    FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
+                .create();
     }
 
     /**
-     * Fetch the json string
+     * Fetch the json string.
      *
      * @param query the url
      * @return json string
@@ -75,7 +79,7 @@ public class RestHandler {
     }
 
     /**
-     * parse the json string into a response object
+     * parse the json string into a response object.
      *
      * @param <T> the type of the response object
      * @param json the json string
@@ -83,7 +87,8 @@ public class RestHandler {
      * @return
      * @throws RestException
      */
-    public <T extends H2OResponse> T parse(String json, Class<T> responseType) throws H2OException
+    public <T extends H2OResponse> T parse(String json, Class<T> responseType)
+            throws H2OException
     {
         JsonParser parser = new JsonParser();
         JsonObject response = parser.parse(json).getAsJsonObject();
@@ -103,7 +108,17 @@ public class RestHandler {
         return sv;
     }
 
-    public <T extends H2OResponse> T get(H2ORequest request, Class<T> responseType) throws RestException
+    /**
+     * Handles both fetch and parse.
+     *
+     * @param <T>
+     * @param request
+     * @param responseType
+     * @return
+     * @throws RestException
+     */
+    public <T extends H2OResponse> T get(H2ORequest request,
+            Class<T> responseType) throws RestException
     {
         String url = request.build(encoder);
         LOGGER.log(Level.INFO, url.toString());

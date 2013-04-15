@@ -15,6 +15,8 @@
  */
 package edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders;
 
+import static org.junit.Assert.assertEquals;
+
 import java.util.HashMap;
 
 import org.junit.After;
@@ -51,9 +53,9 @@ public class RFViewBuilderTest {
 		}
 		instance = new RFViewBuilder(args);
 		encoder = new ServerUrlEncoder();
-		String expResult = "http://localhost:54321/Progress.json?-10=-10&3=3&2=2&10=10&1=1&0=0&7=7&-2=-2&6=6&-1"
-				+ "=-1&5=5&-4=-4&-3=-3&4=4&-6=-6&-5=-5&-8=-8&9=9&-7=-7&8=8&-9=-9";
-		assert (expResult.equalsIgnoreCase(instance.build(encoder)));
+		String expResult = "http://localhost:54321/RFView.json?-10=-10&3=3&2=2&10=10&1=1&0=0&7=7&-2=" +
+				"-2&6=6&-1=-1&5=5&-4=-4&-3=-3&4=4&-6=-6&-5=-5&-8=-8&9=9&-7=-7&8=8&-9=-9";
+		assertEquals(expResult, instance.build(encoder));
 	}
 
 	/**Tests the model and data key constructor for RFViewBuilder
@@ -66,7 +68,7 @@ public class RFViewBuilderTest {
 		instance = new RFViewBuilder(dataKey, modelKey);
 		encoder = new ServerUrlEncoder();
 		String expResult = "http://localhost:54321/RFView.json?model_key=modelKey&data_key=dataKey";
-		assert (expResult.equals(instance.build(encoder)));
+		assertEquals(expResult, instance.build(encoder));
 	}
 
 	/**Tests the random forest constructor for RFViewBuilder
@@ -83,7 +85,7 @@ public class RFViewBuilderTest {
 		RF randomForest = new RF(dataKey, modelKey, nTree, responseVariable, oobError);
 		instance = new RFViewBuilder(randomForest);
 		encoder = new ServerUrlEncoder();
-		assert (expResult.equals(instance.build(encoder)));
+		assertEquals(expResult, instance.build(encoder));
 	}
 
 	/**Tests the set response variable method
@@ -96,7 +98,7 @@ public class RFViewBuilderTest {
 		instance = new RFViewBuilder();
 		encoder = new ServerUrlEncoder();
 		instance.setResponseVariable(1);
-		assert (instance.build(encoder).equals(expResult));
+		assertEquals(expResult, instance.build(encoder));
 	}
 
 	/**Tests the setNtree method
@@ -109,7 +111,7 @@ public class RFViewBuilderTest {
 		instance = new RFViewBuilder();
 		encoder = new ServerUrlEncoder();
 		instance.setNtree(1);
-		assert (instance.build(encoder).equals(expResult));
+		assertEquals(expResult, instance.build(encoder));
 	}
 
 	/**Tests the set class weights method
@@ -126,7 +128,7 @@ public class RFViewBuilderTest {
 		instance = new RFViewBuilder();
 		encoder = new ServerUrlEncoder();
 		instance.setClassWeights(weights);
-		assert (instance.build(encoder).equals(expResult));
+		assertEquals(expResult, instance.build(encoder));
 	}
 
 	/**Tests the setNoConfustionMatrix method
@@ -141,7 +143,7 @@ public class RFViewBuilderTest {
 		assert (instance.build(encoder).equals(expResult));
 		instance.setNoConfusionMatrix(false);
 		expResult = "http://localhost:54321null?no_confusion_matrix=0";
-		assert (instance.build(encoder).equals(expResult));
+		assertEquals(expResult, instance.build(encoder));
 	}
 
 	/**Tests the clearConfusionMatrixCache method
@@ -153,11 +155,11 @@ public class RFViewBuilderTest {
 		instance = new RFViewBuilder();
 		encoder = new ServerUrlEncoder();
 		instance.clearConfusionMatrixCache(true);
-		assert (instance.build(encoder).equals(expResult));
+		assertEquals(expResult, instance.build(encoder));
 
 		expResult = "http://localhost:54321null?clear_confusion_matrix=0";
 		instance.clearConfusionMatrixCache(false);
-		assert (instance.build(encoder).equals(expResult));
+		assertEquals(expResult, instance.build(encoder));
 	}
 
 	@AfterClass

@@ -43,8 +43,8 @@
         }
     </ui:style>
 
-    <gwt:HTMLPanel>
-        <div style="overflow: auto;">
+    <gwt:ScrollPanel width="98.2%" height="92%">
+        <gwt:HTMLPanel>
             <progress ui:field='progress' value="0" max="100"/>
 
             <h2>Confusion Matrix - <span ui:field='type'/></h2>
@@ -91,6 +91,6 @@
                     <gwt:cell><dd ui:field='depthMax'/></gwt:cell>
                 </gwt:row>
             </gwt:Grid>
-        </div>
-    </gwt:HTMLPanel>
+        </gwt:HTMLPanel>
+    </gwt:ScrollPanel>
 </ui:UiBinder>

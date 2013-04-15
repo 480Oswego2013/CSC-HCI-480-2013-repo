@@ -19,32 +19,36 @@ import com.google.gwt.user.client.rpc.IsSerializable;
 import java.util.Arrays;
 
 /**
- *
+ * Represents the H2O RFView json response.
+ * @see edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders.RFViewBuilder
  */
 public class RFView extends AbstractResponse {
 
-    private String data_key;
-    private String model_key;
-    private int response_variable;
-    private int ntree;
-    private int mtry;
-    private String confusion_key;
-    private ConfusionMatrix confusion_matrix;
-    private TreeProperties trees;
+    private String dataKey = null;
+    private String modelKey = null;
+    private int responseVariable = 0;
+    private int ntree = 0;
+    private int mtry = 0;
+    private String confusionKey = null;
+    private ConfusionMatrix confusionMatrix = null;
+    private TreeProperties trees = null;
 
+    /**
+     * No arg constructor needed for GWT-RPC.
+     */
     private RFView() {
     }
 
     public String getDataKey() {
-        return data_key;
+        return dataKey;
     }
 
     public String getModelKey() {
-        return model_key;
+        return modelKey;
     }
 
     public int getResponseVariable() {
-        return response_variable;
+        return responseVariable;
     }
 
     public int getNtree() {
@@ -56,11 +60,11 @@ public class RFView extends AbstractResponse {
     }
 
     public String getConfusionKey() {
-        return confusion_key;
+        return confusionKey;
     }
 
     public ConfusionMatrix getConfusionMatrix() {
-        return confusion_matrix;
+        return confusionMatrix;
     }
 
     public TreeProperties getTrees() {
@@ -69,24 +73,27 @@ public class RFView extends AbstractResponse {
 
     @Override
     public String toString() {
-        return "RFView{" + "data_key=" + data_key + ", model_key=" + model_key
-                + ", response_variable=" + response_variable
+        return "RFView{" + "data_key=" + dataKey + ", model_key=" + modelKey
+                + ", response_variable=" + responseVariable
                 + ", ntree=" + ntree + ", mtry=" + mtry
-                + ", confusion_key=" + confusion_key
-                + ", confusion_matrix=" + confusion_matrix + ", trees=" + trees
+                + ", confusion_key=" + confusionKey
+                + ", confusion_matrix=" + confusionMatrix + ", trees=" + trees
                 + super.toString() + '}';
     }
 
     public static class ConfusionMatrix implements IsSerializable {
 
-        private String type;
-        private float classification_error;
-        private int rows_skipped;
-        private int rows;
-        private String[] header;
-        private Integer[][] scores;
-        private int used_trees;
+        private String type = null;
+        private float classificationError = 0;
+        private int rowsSkipped = 0;
+        private int rows = 0;
+        private String[] header = null;
+        private Integer[][] scores = null;
+        private int usedTrees = 0;
 
+        /**
+         * No arg constructor needed for GWT-RPC.
+         */
         private ConfusionMatrix() {
         }
 
@@ -95,11 +102,11 @@ public class RFView extends AbstractResponse {
         }
 
         public float getClassificationError() {
-            return classification_error;
+            return classificationError;
         }
 
         public int getRowsSkipped() {
-            return rows_skipped;
+            return rowsSkipped;
         }
 
         public int getRows() {
@@ -115,32 +122,35 @@ public class RFView extends AbstractResponse {
         }
 
         public int getUsedTrees() {
-            return used_trees;
+            return usedTrees;
         }
 
         @Override
         public String toString() {
             return "ConfusionMatrix{" + "type=" + type
-                    + ", classification_erro=" + classification_error
-                    + ", rows_skipped=" + rows_skipped
+                    + ", classification_erro=" + classificationError
+                    + ", rows_skipped=" + rowsSkipped
                     + ", rows=" + rows
                     + ", header=" + Arrays.toString(header)
                     + ", scores=" + Arrays.deepToString(scores)
-                    + ", used_trees=" + used_trees + '}';
+                    + ", used_trees=" + usedTrees + '}';
         }
     }
 
     public static class TreeProperties implements IsSerializable {
 
-        private int number_built;
-        private MinMeanMax depth;
-        private MinMeanMax leaves;
+        private int numberBuilt = 0;
+        private MinMeanMax depth = null;
+        private MinMeanMax leaves = null;
 
+        /**
+         * No arg constructor needed for GWT-RPC.
+         */
         private TreeProperties() {
         }
 
         public int getNumberBuilt() {
-            return number_built;
+            return numberBuilt;
         }
 
         public MinMeanMax getDepth() {
@@ -153,16 +163,19 @@ public class RFView extends AbstractResponse {
 
         @Override
         public String toString() {
-            return "TreeProperties{ number_built=" + number_built
+            return "TreeProperties{ number_built=" + numberBuilt
                     + ", depth=" + depth + ", leaves=" + leaves + "}";
         }
 
         public static class MinMeanMax implements IsSerializable {
 
-            private double min;
-            private double mean;
-            private double max;
+            private double min = 0;
+            private double mean = 0;
+            private double max = 0;
 
+            /**
+             * No arg constructor needed for GWT-RPC.
+             */
             private MinMeanMax() {
             }
 

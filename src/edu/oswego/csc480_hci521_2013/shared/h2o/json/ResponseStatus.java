@@ -21,88 +21,79 @@ import java.util.HashMap;
 /**
  *
  */
-public class ResponseStatus implements IsSerializable
-{
+public class ResponseStatus implements IsSerializable {
+
     public static final String STATUS_POLL = "poll";
     public static final String STATUS_REDIRECT = "redirect";
     public static final String STATUS_ERROR = "error";
     public static final String STATUS_DONE = "done";
-
-    private String status;
-    private String h2o;
-    private String node;
-    private int time;
-    private String redirect_request;
-    private HashMap<String, String> redirect_request_args;
-    private int progress;
-    private int progress_total;
+    private String status = null;
+    private String h2o = null;
+    private String node = null;
+    private int time = 0;
+    private String redirectRequest = null;
+    private HashMap<String, String> redirectRequestArgs = null;
+    private int progress = 0;
+    private int progressTotal = 0;
 
     private ResponseStatus() {
     }
 
-    public String getStatus()
-    {
+    public String getStatus() {
         return status;
     }
 
-    public String getH2o()
-    {
+    public String getH2o() {
         return h2o;
     }
 
-    public String getNode()
-    {
+    public String getNode() {
         return node;
     }
 
-    public int getTime()
-    {
+    public int getTime() {
         return time;
     }
 
-    public String getRedirectRequest()
-    {
-        return redirect_request;
+    public String getRedirectRequest() {
+        return redirectRequest;
     }
 
-    public HashMap<String, String> getRedirectRequestArgs()
-    {
-        return redirect_request_args;
+    public HashMap<String, String> getRedirectRequestArgs() {
+        return redirectRequestArgs;
     }
 
-    public int getProgress()
-    {
+    public int getProgress() {
         return progress;
     }
 
-    public int getProgressTotal()
-    {
-        return progress_total;
+    public int getProgressTotal() {
+        return progressTotal;
     }
 
-    public boolean isPoll()
-    {
+    public boolean isPoll() {
         return status.equals(STATUS_POLL);
     }
 
-    public boolean isRedirect()
-    {
+    public boolean isRedirect() {
         return status.equals(STATUS_REDIRECT);
     }
 
-    public boolean isError()
-    {
+    public boolean isError() {
         return status.equals(STATUS_ERROR);
     }
 
-    public boolean isDone()
-    {
+    public boolean isDone() {
         return status.equals(STATUS_DONE);
     }
 
     @Override
-    public String toString()
-    {
-        return "ResponseStatus{" + "status=" + status + ", h2o=" + h2o + ", node=" + node + ", time=" + time + ", redirect_request=" + redirect_request + ", redirect_request_args=" + redirect_request_args + ", progress=" + progress + ", progress_total=" + progress_total + '}';
+    public String toString() {
+        return "ResponseStatus{" + "status=" + status + ", h2o=" + h2o
+                + ", node=" + node + ", time=" + time
+                + ", redirect_request=" + redirectRequest
+                + ", redirect_request_args=" + redirectRequestArgs
+                + ", progress=" + progress
+                + ", progress_total=" + progressTotal + '}';
     }
 }
