@@ -27,5 +27,7 @@ Uncomment this for XHTML entities
     <g:HTMLPanel>
         <g:Label>DataKey:</g:Label>
         <g:TextBox ui:field="dataKey"></g:TextBox>
+        <g:Label>Class Variable:</g:Label>
+        <g:ValueListBox ui:field="classVariable" />
     </g:HTMLPanel>
 </ui:UiBinder>
