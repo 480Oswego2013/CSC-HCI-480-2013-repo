@@ -21,7 +21,7 @@
              xmlns:gwt='urn:import:com.google.gwt.user.client.ui'>
 
     <ui:style>
-        span {
+        .tick {
             position: relative;
             top: -1px;
             border-style: solid dashed dashed;
@@ -43,7 +43,7 @@
         <gwt:north size="2.5">
             <gwt:MenuBar vertical="false">
                 <gwt:MenuItem>
-                    <div>Parsed Data Sets<span></span></div>
+                    <div>Parsed Data Sets<span class="{style.tick}"></span></div>
                     <gwt:MenuBar ui:field='dataSets' vertical="true">
                     </gwt:MenuBar>
                 </gwt:MenuItem>
