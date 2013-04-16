@@ -99,7 +99,19 @@ public class ResponseStatus implements IsSerializable
     {
         return status.equals(STATUS_DONE);
     }
-
+    
+    // for testing reasons, setting the request   
+    public void setRedirectRequest(String myRequest)
+    {
+    	this.redirect_request = myRequest;
+    }
+    
+    // this method lets me set the arguments for the hash map
+    public void setRedirectRequestArgs(HashMap<String, String> myMap)
+    {
+    	this.redirect_request_args = myMap;
+    }
+    
     @Override
     public String toString()
     {
