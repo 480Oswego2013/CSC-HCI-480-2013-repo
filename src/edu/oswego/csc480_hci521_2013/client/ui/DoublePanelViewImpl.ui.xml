@@ -18,12 +18,32 @@
 <!-- DoublePanelViewImpl.ui.xml -->
 
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
-    xmlns:gwt='urn:import:com.google.gwt.user.client.ui'>
+             xmlns:gwt='urn:import:com.google.gwt.user.client.ui'>
 
+    <ui:style>
+        span {
+            position: relative;
+            top: -1px;
+            border-style: solid dashed dashed;
+            border-color: transparent;
+            border-top-color: #000000;
+            display: -moz-inline-box;
+            display: inline-block;
+            font-size: 0;
+            height: 0;
+            line-height: 0;
+            width: 0;
+            border-width: 3px 3px 0;
+            padding-top: 1px;
+            left: 4px;
+        }
+    </ui:style>
+    
     <gwt:DockLayoutPanel unit='EM' width="100%" height="100%">
         <gwt:north size="2.5">
             <gwt:MenuBar vertical="false">
-                <gwt:MenuItem>Parsed Data Sets
+                <gwt:MenuItem>
+                    <div>Parsed Data Sets<span></span></div>
                     <gwt:MenuBar ui:field='dataSets' vertical="true">
                     </gwt:MenuBar>
                 </gwt:MenuItem>
@@ -35,8 +55,8 @@
                     <gwt:HTMLPanel>
                         <h3 style="text-align: center;">Data</h3>
                         <gwt:TabLayoutPanel ui:field="tpData"
-                                width="100%" height="100%"
-                                barHeight="2.5" barUnit="EM">
+                                            width="100%" height="100%"
+                                            barHeight="2.5" barUnit="EM">
                             <gwt:tab>
                                 <gwt:header>Dummy Tab</gwt:header>
                                 <gwt:HTMLPanel></gwt:HTMLPanel>
@@ -48,8 +68,8 @@
                     <gwt:HTMLPanel>
                         <h3 style="text-align: center;">Visualization</h3>
                         <gwt:TabLayoutPanel ui:field="tpVis"
-                                width="100%" height="100%"
-                                barHeight="5" barUnit="EM">
+                                            width="100%" height="100%"
+                                            barHeight="5" barUnit="EM">
                             <gwt:tab>
                                 <gwt:header>Dummy Tab</gwt:header>
                                 <gwt:HTMLPanel></gwt:HTMLPanel>
