@@ -37,7 +37,7 @@ public class ResponseStatus implements IsSerializable
     private int progress;
     private int progress_total;
 
-    private ResponseStatus() {
+    public ResponseStatus() {
     }
 
     public String getStatus()
@@ -111,6 +111,12 @@ public class ResponseStatus implements IsSerializable
     {
     	this.redirect_request_args = myMap;
     }
+    
+    //setStatus method for testing 
+    public void setStatus(String myStatus){
+        this.status = myStatus;
+    }
+    
     
     @Override
     public String toString()

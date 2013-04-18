@@ -16,6 +16,7 @@ public class RedirectRequestFactoryTest {
 	public void setUp() throws Exception {
 		//lets me use my jar without initializing in every test
 		myRRF = new RedirectRequestFactory();
+                myStatus = new ResponseStatus();
 	}
 	
 	/*
@@ -23,13 +24,13 @@ public class RedirectRequestFactoryTest {
 	 */
 	@Test
 	public void testisRedirect() throws Exception {
-		
-		//get the redirect status 
-		boolean result = myStatus.isRedirect();
-		
+		String result;
+		myStatus.setStatus("redirect");
+		 
+              result = myStatus.getStatus();
 		//if the status is true
 		//a redirect was requested and message was sent
-		if(result == true){
+		if(result.equals("redirect")) {
 			
 			System.out.println("test isRedirect Passed");
 		}
@@ -46,7 +47,7 @@ public class RedirectRequestFactoryTest {
 	@Test 
 	public void testFirstException(){
 		//set the boolean to false
-		myStatus.isError();
+		myStatus.setStatus("error");
 		try{
 			RedirectRequestFactory.getRequest(myStatus);
 		}
@@ -62,10 +63,12 @@ public class RedirectRequestFactoryTest {
 	@Test 
 	public void testLastException(){
 		//set the redirect to fail
-		myStatus.setRedirectRequest("null");
+		myStatus.setStatus("redirect");
+                myStatus.setRedirectRequest("error");
 		
 		try{
 			RedirectRequestFactory.getRequest(myStatus);
+                        
 		}
 		catch(IllegalArgumentException e){
 			
@@ -78,24 +81,154 @@ public class RedirectRequestFactoryTest {
 	 */
 	@Test
 	public void testResquestImportURL(){
-		String statusString = "ImportUrl";// set the name
-		boolean myResult; // store result of string equals
-		
-		//set up the status
-		myStatus.setRedirectRequest(statusString); 
-		
-		//pass the method into RRF
-		RedirectRequestFactory.getRequest(myStatus);
-		
-		// get the result 
-		myResult = statusString.equals(myStatus.getRedirectRequest());
-		
-		//check to see if the names are matching
-		if(myResult == true){
-			System.out.println("test RequestImportUrl name Passed");
-		}
-		else {
-			System.out.println("test RequestImportUrl name failed");
-		}// end if 
+            
+                // excpected value
+                String myValue = "ImportUrl";
+                    
+                // setting the status object
+		myStatus.setStatus("redirect");
+                myStatus.setRedirectRequest("ImportUrl");
+                
+                //checking the methods of the status object and redirect factory
+                if(myStatus.getRedirectRequest().equals(myValue))
+                {
+                    System.out.println("the ImportUrl name is correct");
+                }
+                else
+                    System.out.println("the ImportUrl name is wrong");
 	}// end method
+        
+        /* 
+	 * this test will test the InspectBuilder name 
+	 */
+	@Test
+	public void testResquestInspectBuilder(){
+            
+                // excpected value
+                String myValue = "Inspect";
+                    
+                // setting the status object
+		myStatus.setStatus("redirect");
+                myStatus.setRedirectRequest(myValue);
+                
+                //checking the methods of the status object and redirect factory
+                if(myStatus.getRedirectRequest().equals(myValue))
+                {
+                    System.out.println("the InspectBuilder name is correct");
+                }
+                else
+                    System.out.println("the InspectBuilder name is wrong");
+	}// end method
+        
+         /* 
+	 * this test will test the ParseBuilder name 
+	 */
+	@Test
+	public void testResquestParseBuilder(){
+            
+                // excpected value
+                String myValue = "Parse";
+                    
+                // setting the status object
+		myStatus.setStatus("redirect");
+                myStatus.setRedirectRequest(myValue);
+                
+                //checking the methods of the status object and redirect factory
+                if(myStatus.getRedirectRequest().equals(myValue))
+                {
+                    System.out.println("the ParseBuilder name is correct");
+                }
+                else
+                    System.out.println("the ParseBuilder name is wrong");
+	}// end method
+        
+        /* 
+	 * this test will test the ProgressBuilder name 
+	 */
+	@Test
+	public void testResquestProgressBuilder(){
+            
+                // excpected value
+                String myValue = "Progress";
+                    
+                // setting the status object
+		myStatus.setStatus("redirect");
+                myStatus.setRedirectRequest(myValue);
+                
+                //checking the methods of the status object and redirect factory
+                if(myStatus.getRedirectRequest().equals(myValue))
+                {
+                    System.out.println("the ProgressBuilder name is correct");
+                }
+                else
+                    System.out.println("the ProgressBuilder name is wrong");
+	}// end method
+        
+        /* 
+	 * this test will test the RFBuilder name 
+	 */
+	@Test
+	public void testResquestRFBuilder(){
+            
+                // excpected value
+                String myValue = "RF";
+                    
+                // setting the status object
+		myStatus.setStatus("redirect");
+                myStatus.setRedirectRequest(myValue);
+                
+                //checking the methods of the status object and redirect factory
+                if(myStatus.getRedirectRequest().equals(myValue))
+                {
+                    System.out.println("the RFBuilder name is correct");
+                }
+                else
+                    System.out.println("the RFBuilder name is wrong");
+	}// end method
+        
+        /* 
+	 * this test will test the InspectBuilder name 
+	 */
+	@Test
+	public void testResquestRFTreeViewBuilder(){
+            
+                // excpected value
+                String myValue = "RFTreeView";
+                    
+                // setting the status object
+		myStatus.setStatus("redirect");
+                myStatus.setRedirectRequest(myValue);
+                
+                //checking the methods of the status object and redirect factory
+                if(myStatus.getRedirectRequest().equals(myValue))
+                {
+                    System.out.println("the RFTreeViewBuilder name is correct");
+                }
+                else
+                    System.out.println("the RFTreeViewBuilder name is wrong");
+	}// end method
+        
+                                         /* 
+	 * this test will test the InspectBuilder name 
+	 */
+	@Test
+	public void testResquestStoreViewBuilder(){
+            
+                // excpected value
+                String myValue = "StoreView";
+                    
+                // setting the status object
+		myStatus.setStatus("redirect");
+                myStatus.setRedirectRequest(myValue);
+                
+                //checking the methods of the status object and redirect factory
+                if(myStatus.getRedirectRequest().equals(myValue))
+                {
+                    System.out.println("the StoreViewBuilder name is correct");
+                }
+                else
+                    System.out.println("the StoreViewBuilder name is wrong");
+	}// end method
+        
 }
+
