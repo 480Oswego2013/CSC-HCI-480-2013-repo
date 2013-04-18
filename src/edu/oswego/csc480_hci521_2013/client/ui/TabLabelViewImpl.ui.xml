@@ -22,14 +22,25 @@
 
     <ui:style>
         .popout {
-        background: url("arrow.png");
-        width: 10px;
-        height: 10px;
+            background: url("arrow.png");
+            width: 10px;
+            height: 10px;
+            margin-right: 5px;
+        }
+        
+        .close {
+            background: url("close.png");
+            width: 10px;
+            height: 10px;
+            margin-right: 5px;
         }
     </ui:style>
     
     <gwt:HorizontalPanel>
-        <gwt:HTMLPanel><span ui:field="label" style="margin-right: 10px"></span></gwt:HTMLPanel>        
+        <gwt:HTMLPanel>
+            <span ui:field="label" style="margin-right: 10px"></span>
+        </gwt:HTMLPanel>        
         <gwt:PushButton ui:field='pop' title="Popout" styleName="{style.popout}" ></gwt:PushButton>
+        <gwt:PushButton ui:field='close' title="Close" styleName="{style.close}" ></gwt:PushButton>
     </gwt:HorizontalPanel>
 </ui:UiBinder>
