@@ -6,7 +6,7 @@ import edu.oswego.csc480_hci521_2013.shared.h2o.json.ResponseStatus;
 
 public class RedirectRequestFactoryTest {
 
-
+// jamie made this test 
 	RedirectRequestFactory myRRF; 
 	ResponseStatus myStatus; 
 	H2ORequest myH2oResult; 

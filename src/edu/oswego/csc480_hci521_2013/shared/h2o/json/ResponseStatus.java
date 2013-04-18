@@ -90,13 +90,7 @@ public class ResponseStatus implements IsSerializable {
     // for testing reasons, setting the request   
     public void setRedirectRequest(String myRequest)
     {
-    	this.redirect_request = myRequest;
-    }
-    
-    // this method lets me set the arguments for the hash map
-    public void setRedirectRequestArgs(HashMap<String, String> myMap)
-    {
-    	this.redirect_request_args = myMap;
+    	this.redirectRequest = myRequest;
     }
     
     //setStatus method for testing 
