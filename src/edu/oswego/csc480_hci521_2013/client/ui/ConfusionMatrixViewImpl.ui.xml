@@ -49,7 +49,7 @@
 
             <h2>Confusion Matrix - <span ui:field='type'/></h2>
             <dl class="{style.inline}">
-                <dt>Response Variable:</dt>
+                <dt>Classification Variable:</dt>
                 <dd ui:field='responseVariable'/>
                 <dt>Number of Trees:</dt>
                 <dd ui:field='ntree'/>
