@@ -28,31 +28,37 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import edu.oswego.csc480_hci521_2013.shared.h2o.RFRequest;
-import edu.oswego.csc480_hci521_2013.shared.h2o.RFRequestImpl;
+import java.util.List;
 
-public class RFRequestView extends Composite implements Editor<RFRequestImpl> {
+public class RFRequestView extends Composite implements Editor<RFRequest> {
 
     private static RFRequestViewUiBinder uiBinder = GWT.create(RFRequestViewUiBinder.class);
 
     interface RFRequestViewUiBinder extends UiBinder<Widget, RFRequestView> {
     }
 
-    private RFRequestImpl request;
+    private RFRequest request;
 
     @UiField
     RFRequestEditor requestEditor;
 
-    interface Driver extends SimpleBeanEditorDriver<RFRequestImpl, RFRequestEditor> {
+    interface Driver extends SimpleBeanEditorDriver<RFRequest, RFRequestEditor> {
     }
 
     Driver driver = GWT.create(Driver.class);
 
     @Inject
-    public RFRequestView() {
-        this.request = new RFRequestImpl();
+    public RFRequestView(RFRequest request) {
+        this.request = request;
+        requestEditor = new RFRequestEditor();
+        
         initWidget(uiBinder.createAndBindUi(this));
         driver.initialize(requestEditor);
         driver.edit(request);
+        
+        List<String> features = this.request.getFeatures();
+        requestEditor.classVariable.setAcceptableValues(features);
+        requestEditor.classVariable.setValue(this.request.getClassVariable());        
     }
 
     @UiField
@@ -61,5 +67,8 @@ public class RFRequestView extends Composite implements Editor<RFRequestImpl> {
     @UiHandler("issueRequest")
     void onRequest(ClickEvent e) {
         driver.flush();
+        if (this.request.IsValid()){
+            /// TODO: add error handler
+        }
     }
 }

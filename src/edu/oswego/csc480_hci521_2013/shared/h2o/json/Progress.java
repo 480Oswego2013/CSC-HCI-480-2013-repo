@@ -16,22 +16,33 @@
 package edu.oswego.csc480_hci521_2013.shared.h2o.json;
 
 /**
- *
+ * Represents the H2O Progress json response.
+ * @see edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders.ProgressBuilder
  */
 public class Progress extends AbstractResponse {
 
-    private String destination_key;
+    /**
+     * The name of the data that progress is being checked.
+     */
+    private String destinationKey = null;
 
+    /**
+     * No arg constructor needed for GWT-RPC.
+     */
     private Progress() {
     }
 
+    /**
+     *
+     * @return the name of the data being checked
+     */
     public String getDestinationKey() {
-        return destination_key;
+        return destinationKey;
     }
 
     @Override
     public String toString() {
-        return "Progress{" + "destination_key=" + destination_key
+        return "Progress{" + "destination_key=" + destinationKey
                 + super.toString() + '}';
     }
 }

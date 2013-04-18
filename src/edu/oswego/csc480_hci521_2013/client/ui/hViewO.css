@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright 2013 State University of New York at Oswego
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); 
@@ -13,22 +13,20 @@
  * See the License for the specific language governing permissions and 
  * limitations under the License.
  */
-package edu.oswego.csc480_hci521_2013.shared.h2o.json;
 
-import com.google.gwt.user.client.rpc.IsSerializable;
-
-/**
- * Interface for h2o responses.
- */
-public interface H2OResponse extends IsSerializable {
-
-    /**
-     * @return The error message, if any
-     */
-    String getError();
-
-    /**
-     * @return The ResponseStatus object containing general response information
-     */
-    ResponseStatus getResponse();
+.tick {
+    position: relative;
+    top: -1px;
+    border-style: solid dashed dashed;
+    border-color: transparent;
+    border-top-color: #000000;
+    display: -moz-inline-box;
+    display: inline-block;
+    font-size: 0;
+    height: 0;
+    line-height: 0;
+    width: 0;
+    border-width: 3px 3px 0;
+    padding-top: 1px;
+    left: 4px;
 }

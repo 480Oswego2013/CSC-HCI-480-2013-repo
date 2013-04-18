@@ -16,6 +16,9 @@
 
 package edu.oswego.csc480_hci521_2013.shared.h2o;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class RFRequestImpl implements RFRequest {
 
     private String dataKey;
@@ -23,9 +26,18 @@ public class RFRequestImpl implements RFRequest {
     private int numberTrees;
     private boolean oob;
     private int numberFeatures;
+    private List<String> features = new ArrayList<String>();
+    private String classVariable;
 
-    public RFRequestImpl() {
-        this.dataKey = "cars.hex";
+    public RFRequestImpl(String key, List<String> features) {
+        this.dataKey = key;
+        this.numberTrees = 1000;
+        this.features = features;
+        
+        if (!this.features.isEmpty())
+        {
+            this.classVariable = this.features.get(0);
+        }
     }
 
     public String getDataKey() {
@@ -64,5 +76,33 @@ public class RFRequestImpl implements RFRequest {
 
     public void setNumberFeatures(int numberFeatures) {
         this.numberFeatures = numberFeatures;
+    }
+    
+    public List<String> getFeatures() {
+        return this.features;
+    }
+    
+    public void setFeatures(List<String> features) {
+        this.features = features;
+    }            
+    
+    public String getClassVariable() {
+        return this.classVariable;
+    }
+    
+    public void setClassVariable(String classVariable) {
+        this.classVariable = classVariable;
+    }
+    
+    public boolean IsValid() {
+        if (this.numberTrees <= 0) {
+            return false;
+        }
+        
+        if ((this.numberFeatures > 0) && (this.numberFeatures <= this.features.size())){
+            return false;
+        }
+            
+        return true;
     }
 }
