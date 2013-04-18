@@ -30,6 +30,7 @@ import edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders.ImportUrlBuilder;
 import edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders.InspectBuilder;
 import edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders.ParseBuilder;
 import edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders.RFBuilder;
+import edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders.RFScoreBuilder;
 import edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders.RFViewBuilder;
 import edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders.RFTreeViewBuilder;
 import edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders.RedirectRequestFactory;
@@ -58,6 +59,7 @@ public class Main
         rfView(rest);
         rfTreeView(rest);
         storeView(rest);
+        rfScore(rest);
     }
 
     private static void importUrl(RestHandler rest) throws Exception
@@ -129,6 +131,17 @@ public class Main
                 break;
             }
         }
+    }
+
+    private static void rfScore(RestHandler rest) throws Exception
+    {
+        String url = new RFScoreBuilder("cars.hex", "cars.model").build(encoder);
+        System.out.println(url);
+
+        String json = rest.fetch(url);
+        System.out.println(json);
+        RFView val = rest.parse(json, RFView.class);
+        System.out.println(val);
     }
 
     private static void rfTreeView(RestHandler rest) throws Exception
