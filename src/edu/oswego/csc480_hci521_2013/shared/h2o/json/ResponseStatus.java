@@ -36,7 +36,7 @@ public class ResponseStatus implements IsSerializable {
     private int progress = 0;
     private int progressTotal = 0;
 
-    private ResponseStatus() {
+    public ResponseStatus() {
     }
 
     public String getStatus() {
@@ -86,7 +86,19 @@ public class ResponseStatus implements IsSerializable {
     public boolean isDone() {
         return status.equals(STATUS_DONE);
     }
-
+    
+    // for testing reasons, setting the request   
+    public void setRedirectRequest(String myRequest)
+    {
+    	this.redirectRequest = myRequest;
+    }
+    
+    //setStatus method for testing 
+    public void setStatus(String myStatus){
+        this.status = myStatus;
+    }
+    
+    
     @Override
     public String toString() {
         return "ResponseStatus{" + "status=" + status + ", h2o=" + h2o
