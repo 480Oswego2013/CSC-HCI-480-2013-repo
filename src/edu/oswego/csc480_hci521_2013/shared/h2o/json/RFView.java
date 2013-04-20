@@ -32,6 +32,7 @@ public class RFView extends AbstractResponse {
     private String confusionKey = null;
     private ConfusionMatrix confusionMatrix = null;
     private TreeProperties trees = null;
+    private boolean noConfusionMatrix = false;
 
     /**
      * No arg constructor needed for GWT-RPC.
@@ -71,6 +72,10 @@ public class RFView extends AbstractResponse {
         return trees;
     }
 
+    public boolean getNoConfusionMatrix() {
+        return noConfusionMatrix;
+    }
+
     @Override
     public String toString() {
         return "RFView{" + "data_key=" + dataKey + ", model_key=" + modelKey
@@ -78,6 +83,7 @@ public class RFView extends AbstractResponse {
                 + ", ntree=" + ntree + ", mtry=" + mtry
                 + ", confusion_key=" + confusionKey
                 + ", confusion_matrix=" + confusionMatrix + ", trees=" + trees
+                + ", no_confusion_matrix=" + noConfusionMatrix
                 + super.toString() + '}';
     }
 
