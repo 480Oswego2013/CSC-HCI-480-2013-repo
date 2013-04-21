@@ -99,7 +99,7 @@ function init(canvas, json, depth, leaves) {
       sigInst.addNode(leafID, {
         label: node.label,
         y: node.indexDispX*nodeScale,
-        x: node.levelDispY*nodeScale,
+        x: node.levelDispY*nodeScale*(depth/2),
         color: nodeColor
       });
       console.log(leafID);
@@ -113,7 +113,7 @@ function init(canvas, json, depth, leaves) {
       sigInst.addNode( nodeID, {
         label: node.field + " " + node.condition + " " + node.value,
         y: node.indexDispX*nodeScale,
-        x: node.levelDispY*nodeScale,
+        x: node.levelDispY*nodeScale*(depth/2),
         color: nodeColor
       });
       console.log(nodeID);
