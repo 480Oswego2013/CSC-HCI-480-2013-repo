@@ -16,7 +16,6 @@
 package edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders;
 
 import static org.junit.Assert.*;
-
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -64,5 +63,29 @@ public class ImportUrlBuilderTest {
 	// return type is of import builder
 	assertEquals("the key value is equal",otherValue,keyValue);	
 	}
+        /*
+         * this test is checking that the value is null
+         */
+        @Test 
+	public void checkKeyValueNull() throws Exception {
+	String myString = "";
+	ImportUrlBuilder keyValue = myJar.setKey(myString);
+	
+	// return type is of import builder
+	assertNull("the key value is Null",keyValue);	
+	}
+  
+                /*
+         * this test is checking that the value is null
+         */
+        @Test 
+	public void checkKeyValueNotNull() throws Exception {
+	String myString = "apples";
+	ImportUrlBuilder keyValue = myJar.setKey(myString);
+	
+	// return type is of import builder
+	assertNotNull("the key value is Null",keyValue);	
+	}
+ 
 
 }

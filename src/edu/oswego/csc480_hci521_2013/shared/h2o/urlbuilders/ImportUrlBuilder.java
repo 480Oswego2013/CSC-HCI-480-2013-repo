@@ -38,7 +38,14 @@ public class ImportUrlBuilder extends AbstractBuilder {
     }
 
     public ImportUrlBuilder setKey(String key) {
+        // updated to protect against null
+        if(key.equals("")){
+            System.out.println("no keyValue");
+            return null;
+        }
+        else{
         addArg("key", key);
         return this;
+        }
     }
 }
