@@ -41,7 +41,7 @@ public class RFViewBuilderTest {
 	public static void setUpClass() {
 	}
 
-	/**Tests the hashmap constructor for RFViewBuilder
+	/**Tests the hashmap constructor for RFViewBuilder.
 	 * 
 	 */
 	@Test

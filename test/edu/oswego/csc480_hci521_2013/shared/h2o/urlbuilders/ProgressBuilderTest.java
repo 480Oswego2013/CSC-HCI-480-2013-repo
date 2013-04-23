@@ -40,7 +40,7 @@ public class ProgressBuilderTest {
     public static void setUpClass() {
     }
 
-    /**Tests the ProgressBuilder constructor that takes a HashMap<String, String> as a parameter
+    /**Tests the ProgressBuilder constructor that takes a HashMap<String, String> as a parameter.
      * 
      */
     @Test
