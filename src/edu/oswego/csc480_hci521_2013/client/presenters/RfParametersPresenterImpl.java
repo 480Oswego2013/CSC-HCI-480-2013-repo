@@ -18,17 +18,20 @@ import com.google.web.bindery.event.shared.EventBus;
 import java.util.List;
 
 import edu.oswego.csc480_hci521_2013.client.events.RFParameterEvent;
+import edu.oswego.csc480_hci521_2013.client.services.H2OServiceAsync;
 import edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders.RFBuilder;
 
 public class RfParametersPresenterImpl implements RfParametersPresenter {
     private View view;
     private String dataKey;
     private EventBus bus;
+    private H2OServiceAsync service;
 
-    public RfParametersPresenterImpl(String dataKey, RfParametersPresenter.View view, EventBus bus){
+    public RfParametersPresenterImpl(String dataKey, RfParametersPresenter.View view, EventBus bus, H2OServiceAsync service){
         this.view = view;
         this.dataKey = dataKey;
         this.bus = bus;
+        this.service = service;
 
         view.setPresenter(this);
         view.buildUi();
@@ -40,6 +43,10 @@ public class RfParametersPresenterImpl implements RfParametersPresenter {
 
     public String getDataKey(){
         return dataKey;
+    }
+
+    public H2OServiceAsync getH2OService(){
+        return service;
     }
 
     //The headers are passed forward to the view.
