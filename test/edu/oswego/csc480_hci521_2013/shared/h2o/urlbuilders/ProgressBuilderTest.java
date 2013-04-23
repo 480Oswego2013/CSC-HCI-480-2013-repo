@@ -40,7 +40,7 @@ public class ProgressBuilderTest {
     public static void setUpClass() {
     }
 
-    /**Tests the ProgressBuilder constructor that takes a HashMap<String, String> as a parameter
+    /**Tests the ProgressBuilder constructor that takes a HashMap<String, String> as a parameter.
      * 
      */
     @Test
@@ -51,6 +51,17 @@ public class ProgressBuilderTest {
         encoder = new ServerUrlEncoder();
         String expResult = "http://localhost:54321/Progress.json?test1=test2";
         assertEquals(expResult, instance.build(encoder));
+    }
+    
+    @Test
+    public void testProgressBuilderNullArgs() {
+        HashMap<String, String> args = new HashMap<String, String>();
+        args.put(null, null);
+        instance = new ProgressBuilder(args);
+        encoder = new ServerUrlEncoder();
+        String expResult = "http://localhost:54321/Progress.json?test1=test2";
+        //System.out.println(instance.build(encoder));
+        assert(true);
     }
 
     /**Tests the ProgressBuilder constructor that takes a HashMap<String, String>, with integer strings ranging from -10

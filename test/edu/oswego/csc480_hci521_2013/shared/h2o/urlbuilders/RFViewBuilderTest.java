@@ -41,20 +41,21 @@ public class RFViewBuilderTest {
 	public static void setUpClass() {
 	}
 
-	/**Tests the hashmap constructor for RFViewBuilder
+	/**Tests the hashmap constructor for RFViewBuilder.
 	 * 
 	 */
 	@Test
 	public void testRFViewHashConstructor() {
 		HashMap<String, String> args = new HashMap<String, String>();
 		for (int x = -10; x <= 10; x++) {
-			String intToString = String.valueOf(x);
+			String intToString = String.valueOf	(x);
 			args.put(intToString, intToString);
 		}
 		instance = new RFViewBuilder(args);
 		encoder = new ServerUrlEncoder();
-		String expResult = "http://localhost:54321/RFView.json?-10=-10&3=3&2=2&10=10&1=1&0=0&7=7&-2=" +
-				"-2&6=6&-1=-1&5=5&-4=-4&-3=-3&4=4&-6=-6&-5=-5&-8=-8&9=9&-7=-7&8=8&-9=-9";
+		String expResult = "http://localhost:54321/RFView.json?-10=-10" +
+				"&3=3&2=2&10=10&1=1&0=0&7=7&-2=-2&6=6&-1=-1&5=5&-4=-4&" +
+				"-3=-3&4=4&-6=-6&-5=-5&-8=-8&9=9&-7=-7&8=8&-9=-9";
 		assertEquals(expResult, instance.build(encoder));
 	}
 
@@ -140,7 +141,7 @@ public class RFViewBuilderTest {
 		instance = new RFViewBuilder();
 		encoder = new ServerUrlEncoder();
 		instance.setNoConfusionMatrix(true);
-		assert (instance.build(encoder).equals(expResult));
+		assertEquals(instance.build(encoder), expResult);
 		instance.setNoConfusionMatrix(false);
 		expResult = "http://localhost:54321null?no_confusion_matrix=0";
 		assertEquals(expResult, instance.build(encoder));
@@ -156,7 +157,6 @@ public class RFViewBuilderTest {
 		encoder = new ServerUrlEncoder();
 		instance.clearConfusionMatrixCache(true);
 		assertEquals(expResult, instance.build(encoder));
-
 		expResult = "http://localhost:54321null?clear_confusion_matrix=0";
 		instance.clearConfusionMatrixCache(false);
 		assertEquals(expResult, instance.build(encoder));
