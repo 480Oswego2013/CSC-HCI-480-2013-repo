@@ -41,10 +41,34 @@
         .cfmatrixHighlight {
             background-color: #e0ffe0;
         }
+
+		/* Pop-in panel */
+		.popin_panel {
+			background: #C0C0C0;
+			width: 100%;
+			height: 20px;
+			text-align: right;
+		}
+		.popin_button {
+			background: url("arrow_in.png") #FFFFFF center no-repeat;
+			width: 10px;
+			height: 10px;
+			padding: 4px;
+			margin: 1px 1px 0 0;
+		}
+		.popin_button:hover {
+			border: 1px solid #404040;
+			padding: 3px;
+		}
     </ui:style>
 
     <gwt:ScrollPanel width="98.2%" height="92%">
         <gwt:HTMLPanel>
+            
+            <gwt:HorizontalPanel ui:field='popinPanel' styleName="{style.popin_panel}" horizontalAlignment="ALIGN_RIGHT">    
+		        <gwt:PushButton ui:field='popin' title="Pop-In" styleName="{style.popin_button}" ></gwt:PushButton>
+		    </gwt:HorizontalPanel>
+            
             <progress ui:field='progress' value="0" max="100"/>
 
             <h2>Confusion Matrix - <span ui:field='type'/></h2>

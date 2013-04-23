@@ -21,6 +21,8 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Grid;
+import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.Widget;
 import java.util.logging.Logger;
 import edu.oswego.csc480_hci521_2013.shared.h2o.json.RFView.ConfusionMatrix;
@@ -36,6 +38,10 @@ public class ConfusionMatrixViewImpl extends AbstractConfusionMatrix {
     @UiField
     ConfusionMatrixView.Style style;
 
+    @UiField
+    PushButton popin;
+    @UiField
+    HorizontalPanel popinPanel;
     @UiField
     Element progress;
     @UiField
@@ -65,7 +71,12 @@ public class ConfusionMatrixViewImpl extends AbstractConfusionMatrix {
     Element depthMin, depthMean, depthMax;
 
     public ConfusionMatrixViewImpl() {
-        initWidget(uiBinder.createAndBindUi(this));
+        this(false);
+    }
+    
+    public ConfusionMatrixViewImpl(boolean showPopinButton) {
+    	initWidget(uiBinder.createAndBindUi(this));
+    	popinPanel.setVisible(showPopinButton);
     }
 
     @Override

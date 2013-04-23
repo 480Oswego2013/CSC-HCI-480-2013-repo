@@ -22,6 +22,8 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.Widget;
 import edu.oswego.csc480_hci521_2013.client.overlay.Sigma;
 import edu.oswego.csc480_hci521_2013.shared.h2o.json.RFTreeView;
@@ -43,11 +45,19 @@ public class TreePanelViewImpl extends Composite implements TreePanelView {
     private String canvasId;
 
     @UiField
+    PushButton popin;
+    @UiField
+    HorizontalPanel popinPanel;
+    @UiField
     Element canvas;
     @UiField
     Element panel;
 
     public TreePanelViewImpl(RFTreeView data, String datakey, String modelkey, int treeIndex) {
+        this(data, datakey, modelkey, treeIndex, false);
+    }
+    
+    public TreePanelViewImpl(RFTreeView data, String datakey, String modelkey, int treeIndex, boolean showPopinButton) {
         this.data = data;
         this.datakey = datakey;
         this.modelkey = modelkey;
@@ -59,6 +69,8 @@ public class TreePanelViewImpl extends Composite implements TreePanelView {
         initWidget(uiBinder.createAndBindUi(this));
 
         canvas.setId(canvasId);
+        
+        popinPanel.setVisible(showPopinButton);
     }
 
     @Override

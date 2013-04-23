@@ -61,7 +61,7 @@ public class DataPanelActivity extends AbstractActivity {
 
                 // TODO: ideally we would want to hide the menu bar and add some sort of title header to the page...
                 DataPanelPresenter presenter = new DataPanelPresenterImpl(
-                        h2oService, new DataPanelViewImpl(),
+                        h2oService, new DataPanelViewImpl(true),
                         eventBus, datakey, result);
                 panel.setWidget(presenter.getView());
             }
