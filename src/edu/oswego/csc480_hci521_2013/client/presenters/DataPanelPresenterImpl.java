@@ -171,7 +171,7 @@ public class DataPanelPresenterImpl implements DataPanelPresenter, TabPanelPrese
             public void execute() {
                 logger.log(Level.INFO, "Generating Forest");
                 popUp = new RfParametersPresenterImpl(datakey,
-                        new RfParametersViewImpl(), eventbus);
+                        new RfParametersViewImpl(), eventbus, h2oService);
 
                 h2oService.getData(new InspectBuilder(datakey).setOffset(-1L),
                         new AsyncCallback<Inspect>() {
@@ -184,13 +184,7 @@ public class DataPanelPresenterImpl implements DataPanelPresenter, TabPanelPrese
                     @Override
                     public void onSuccess(final Inspect result) {
                         logger.log(Level.INFO, "Headers received");
-                        List<String> columnHeaders = new ArrayList<String>();
-                        for (Inspect.Column col : result.getCols()) {
-                            // TODO: we could try and check the type so we
-                            //       dont put in columns that are invalid.
-                            columnHeaders.add(col.getName());
-                        }
-                        popUp.setHeaders(columnHeaders);
+                        popUp.getView().setColumnInfo(result.getCols());
                     }
                 });
 

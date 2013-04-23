@@ -27,13 +27,18 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.DoubleBox;
+import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.IntegerBox;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.PopupPanel;
+import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.Widget;
 import edu.oswego.csc480_hci521_2013.client.presenters.RfParametersPresenter;
+import edu.oswego.csc480_hci521_2013.shared.h2o.json.Inspect.Column;
 import edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders.RFBuilder;
+import java.util.ArrayList;
 
 /**
  * @author Michael Hayes
@@ -43,50 +48,54 @@ import edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders.RFBuilder;
  * TODO: Input sanity checks such as numTrees is an integer.
  */
 public class RfParametersViewImpl extends PopupPanel implements RfParametersPresenter.View {
-
+    
     static final Logger logger = Logger.getLogger(RfParametersPresenter.View.class.getName());
-
+    
     interface Style extends CssResource {
         String error();
     }
-
+    
     interface Binder extends UiBinder<Widget, RfParametersViewImpl> {}
     private static Binder uiBinder = GWT.create(Binder.class);
     private RfParametersPresenter presenter;
     private List<String> columnHeaders; //Headers of the data columns from the data source.
-
+    private Column[] columns; //Column definitions from the data source;
+    
     @UiField ListBox classVars;
     @UiField IntegerBox numTrees;
     @UiField ListBox ignoreCols;
     @UiField Button submit;
     @UiField Button cancel;
     @UiField Label errorLabel;
-
+    FlowPanel classWeights;
+    @UiField ScrollPanel classWeightsScrollPanel;
+    
     public RfParametersViewImpl() {
         setWidget(uiBinder.createAndBindUi(this));
     }
-
+    
     public void buildUi() {
     }
-
+    
     //Called when classVars selection is changed.
     @UiHandler("classVars")
     public void onChange(ChangeEvent event){
         int selectedIndex = classVars.getSelectedIndex();
         String selectedName = classVars.getValue(selectedIndex);
         setIgnoreColumns(selectedName);
+        setClassWeights(selectedName);
     }
-
+    
     @UiHandler("submit")
     public void onSubmitClick(ClickEvent event){
         RFBuilder builder = new RFBuilder(presenter.getDataKey());
-
+        
         //TODO: Should probably alert the user instead of defaulting to 50.
         if(numTrees == null || numTrees.getValue() == null || numTrees.getValue() <= 0)
             builder.setNtree(50);
         else
             builder.setNtree(numTrees.getValue());
-
+        
         int classVarSelected = classVars.getSelectedIndex();
         String classVarVal = classVars.getValue(classVarSelected);
         builder.setResponseVariable(classVarVal);
@@ -99,22 +108,78 @@ public class RfParametersViewImpl extends PopupPanel implements RfParametersPres
         presenter.fireRFParameterEvent(builder);
         //this.hide();
     }
-
+    
     @UiHandler("cancel")
     public void onCancelClick(ClickEvent event){
         this.hide();
     }
-
+    
     public void setHeaders(List<String> headers){
-       this.columnHeaders = headers;
-        for(String column : columnHeaders){
-            classVars.addItem(column);
+        this.columnHeaders = headers;
+        
+        //Only add a selectable header if it is an int or enum column.
+        //If it is an int, must be >=2 and <= 254
+        for(int i = 0 ; i < columns.length ; i++){
+            if((columns[i].getType().equals("int") 
+                    && columns[i].getMin() >= 2 
+                    && columns[i].getMax() <= 254) 
+                    || columns[i].getType().equals("enum")){
+                classVars.addItem(columns[i].getName());
+            }
         }
-        classVars.setItemSelected(0,true);
-        //Ignore the first header since it is selected first.
-        setIgnoreColumns(columnHeaders.get(0));
+        
+        //Select the first valid response column
+        //Setup the ignore columns
+        //Setup the class weights.
+        for(int i = 0; i < columns.length; i++){
+            if((columns[i].getType().equals("int")
+                    && columns[i].getMin() >= 2
+                    && columns[i].getMax() <= 254)
+                    || columns[i].getType().equals("enum")){
+                classVars.setItemSelected(i,true);
+                setClassWeights(columns[i].getName());
+                setIgnoreColumns(columns[i].getName());
+                break;
+            }
+        }
     }
+    
+    //Set the column definition info.
+    //Calls setHeaders(...)
+    public void setColumnInfo(Column[] cols){
+        this.columns = cols;
+        List<String> headers = new ArrayList<String>();
+        for(int i = 0 ; i < columns.length ; i++){
+            headers.add(columns[i].getName());
+        }
+        setHeaders(headers);
+    }
+    
+    //Setup the class weights selections corresponding with the selected
+    //response variable.
+    public void setClassWeights(String selectedVariableName){
+        Column selected = null;
+        for(Column col : columns){
+            if(col.getName().equals(selectedVariableName)){
+                selected = col;
+                break;
+            }
+        }
 
+        if(selected != null){
+            classWeights = new FlowPanel();
+            classWeightsScrollPanel.clear();
+            classWeightsScrollPanel.add(classWeights);
+            for(int i = (int)selected.getMin(); i <= (int)selected.getMax(); i++){
+               DoubleBox inputBox = new DoubleBox(); 
+               inputBox.setValue(new Double(i));
+               classWeights.add(inputBox);
+            }
+        } else {
+            throw new NullPointerException();
+        }
+    }
+    
     //Set the available ignore columns to everything excepted the selected class var
     public void setIgnoreColumns(String selected){
         ignoreCols.clear();
@@ -126,7 +191,7 @@ public class RfParametersViewImpl extends PopupPanel implements RfParametersPres
         }
         ignoreCols.setVisibleItemCount(columnHeaders.size());
     }
-
+    
     public void showPopUp(){
         final PopupPanel me = this;
         this.setPopupPositionAndShow(new PopupPanel.PositionCallback() {
@@ -137,20 +202,20 @@ public class RfParametersViewImpl extends PopupPanel implements RfParametersPres
             }
         });
     }
-
+    
     public void hidePopup(){
-	    this.hide();
+        this.hide();
     }
-
+    
     public void setError(String error){
-	    errorLabel.setText(error);
+        errorLabel.setText(error);
     }
-
+    
     @Override
     public void setPresenter(RfParametersPresenter presenter) {
         this.presenter = presenter;
     }
-
+    
     @Override
     public Widget asWidget() {
         return this;
