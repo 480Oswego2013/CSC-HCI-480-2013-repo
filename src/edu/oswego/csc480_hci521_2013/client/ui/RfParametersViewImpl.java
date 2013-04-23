@@ -28,6 +28,7 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DoubleBox;
+import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.IntegerBox;
 import com.google.gwt.user.client.ui.Label;
@@ -39,6 +40,7 @@ import edu.oswego.csc480_hci521_2013.client.presenters.RfParametersPresenter;
 import edu.oswego.csc480_hci521_2013.shared.h2o.json.Inspect.Column;
 import edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders.RFBuilder;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * @author Michael Hayes
@@ -67,13 +69,14 @@ public class RfParametersViewImpl extends PopupPanel implements RfParametersPres
     @UiField Button submit;
     @UiField Button cancel;
     @UiField Label errorLabel;
-    FlowPanel classWeights;
     @UiField ScrollPanel classWeightsScrollPanel;
+    @UiField FlexTable classWeights;
     
     public RfParametersViewImpl() {
         setWidget(uiBinder.createAndBindUi(this));
     }
     
+    @Override
     public void buildUi() {
     }
     
@@ -105,6 +108,17 @@ public class RfParametersViewImpl extends PopupPanel implements RfParametersPres
                 builder.setIgnore(ignoreThis);
             }
         }
+
+        //Set class weights into builder
+        //Start at row index 1 since first row is label info.
+        HashMap<String, Double> values = new HashMap<String,Double>();
+        for(int row = 1; row < classWeights.getRowCount(); row++){
+            String label = classWeights.getText(row, 0);
+            DoubleBox value = (DoubleBox) classWeights.getWidget(row,1);
+            values.put(label,value.getValue());
+        };
+        builder.setClassWeights(values);
+
         presenter.fireRFParameterEvent(builder);
         //this.hide();
     }
@@ -114,6 +128,7 @@ public class RfParametersViewImpl extends PopupPanel implements RfParametersPres
         this.hide();
     }
     
+    @Override
     public void setHeaders(List<String> headers){
         this.columnHeaders = headers;
         
@@ -146,6 +161,7 @@ public class RfParametersViewImpl extends PopupPanel implements RfParametersPres
     
     //Set the column definition info.
     //Calls setHeaders(...)
+    @Override
     public void setColumnInfo(Column[] cols){
         this.columns = cols;
         List<String> headers = new ArrayList<String>();
@@ -167,16 +183,22 @@ public class RfParametersViewImpl extends PopupPanel implements RfParametersPres
         }
 
         if(selected != null){
-            classWeights = new FlowPanel();
+            classWeights = new FlexTable();
             classWeightsScrollPanel.clear();
             classWeightsScrollPanel.add(classWeights);
+            classWeights.setText(0,0,"Class");
+            classWeights.setText(0,1,"Weight");
+            int row = 0;
             for(int i = (int)selected.getMin(); i <= (int)selected.getMax(); i++){
+               row++;
+               classWeights.setText(row, 0, Integer.toString(i));
                DoubleBox inputBox = new DoubleBox(); 
-               inputBox.setValue(new Double(i));
-               classWeights.add(inputBox);
+               inputBox.setValue(1.0);
+               inputBox.setWidth("50px");
+               classWeights.setWidget(row, 1, inputBox);
             }
         } else {
-            throw new NullPointerException();
+            throw new NullPointerException("Could not find selected classification variable column.");
         }
     }
     
@@ -192,6 +214,7 @@ public class RfParametersViewImpl extends PopupPanel implements RfParametersPres
         ignoreCols.setVisibleItemCount(columnHeaders.size());
     }
     
+    @Override
     public void showPopUp(){
         final PopupPanel me = this;
         this.setPopupPositionAndShow(new PopupPanel.PositionCallback() {
@@ -203,10 +226,12 @@ public class RfParametersViewImpl extends PopupPanel implements RfParametersPres
         });
     }
     
+    @Override
     public void hidePopup(){
         this.hide();
     }
     
+    @Override
     public void setError(String error){
         errorLabel.setText(error);
     }

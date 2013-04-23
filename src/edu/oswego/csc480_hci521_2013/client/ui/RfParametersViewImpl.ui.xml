@@ -72,7 +72,9 @@
                                     <gwt:Label>Class Weights</gwt:Label>
                                 </td>
                                 <td>
-                                    <gwt:ScrollPanel ui:field="classWeightsScrollPanel" width="220px" height="140px" />
+                                    <gwt:ScrollPanel ui:field="classWeightsScrollPanel" width="100%" height="140px">
+                                        <gwt:FlexTable ui:field="classWeights" width="100%"/>
+                                    </gwt:ScrollPanel>
                                 </td>
                             </tr>
                         </table>
