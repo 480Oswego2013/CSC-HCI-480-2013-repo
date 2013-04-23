@@ -296,8 +296,7 @@ public class DoublePanelActivity extends AbstractActivity implements DoublePanel
         if (p instanceof ConfusionMatrixPresenterImpl) {
             ConfusionMatrixPresenterImpl cp = (ConfusionMatrixPresenterImpl) p;
             addConfusionMatrixTab(cp.getRandomForest(), cp.getData());
-        }
-        else {
+        } else {
             TreePanelPresenterImpl tp = (TreePanelPresenterImpl) p;
             addVisTab(tp.getDatakey(), tp.getModelkey(), tp.getTreeIndex());
         }
@@ -324,8 +323,7 @@ public class DoublePanelActivity extends AbstractActivity implements DoublePanel
                 ConfusionMatrixPlace place = new ConfusionMatrixPlace();
                 place.setRandomForest(cp.getRandomForest());
                 popoutConfusionMatrixTab(place, tab.hashCode());
-            }
-            else {
+            } else {
                 TreePanelPresenterImpl tp = (TreePanelPresenterImpl) p;
                 TreeVisPlace place = new TreeVisPlace();
                 place.setDataKey(tp.getDatakey());
@@ -333,6 +331,23 @@ public class DoublePanelActivity extends AbstractActivity implements DoublePanel
                 place.setTree(tp.getTreeIndex());
                 popoutTreeVisTab(place, tab.hashCode());
             }
+        } else {
+            logger.log(Level.SEVERE, "Unknown tab!");
+        }
+    }
+    
+    @Override
+    public void close(TabLabelView tab) {
+        if (dataTabs.hasTab(tab)) {
+            int index = dataTabs.deleteTab(tab);
+            view.removeDataTab(index);
+            TabPanelPresenter p = dataTabs.getPresenter(tab);
+            p.removed();
+        } else if (visTabs.hasTab(tab)) {
+            int index = visTabs.deleteTab(tab);
+            view.removeVisTab(index);
+            TabPanelPresenter p = visTabs.getPresenter(tab);
+            p.removed();
         } else {
             logger.log(Level.SEVERE, "Unknown tab!");
         }
@@ -370,9 +385,11 @@ public class DoublePanelActivity extends AbstractActivity implements DoublePanel
             return t;
         }
 
-        void deleteTab(TabLabelView tab) {
+        int deleteTab(TabLabelView tab) {
+            int index = tabList.indexOf(tab);
             tabList.remove(tab);
             panels.remove(tab);
+            return index;
         }
     }
 }
