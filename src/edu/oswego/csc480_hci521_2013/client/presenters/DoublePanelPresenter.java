@@ -33,4 +33,6 @@ public interface DoublePanelPresenter {
     void addConfusionMatrixTab(RF randomForest);
 
     void popout(TabLabelView tab);
+    
+    void close(TabLabelView tab);
 }

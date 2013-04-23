@@ -17,14 +17,17 @@ package edu.oswego.csc480_hci521_2013.client.ui;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.editor.client.Editor;
+import com.google.gwt.text.shared.testing.PassthroughRenderer;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.TextBox;
+import com.google.gwt.user.client.ui.ValueListBox;
 import com.google.gwt.user.client.ui.Widget;
-import edu.oswego.csc480_hci521_2013.shared.h2o.RFRequestImpl;
+import com.google.gwt.view.client.ProvidesKey;
+import edu.oswego.csc480_hci521_2013.shared.h2o.RFRequest;
 
-public class RFRequestEditor extends Composite implements Editor<RFRequestImpl> {
+public class RFRequestEditor extends Composite implements Editor<RFRequest> {
 
     private static RFRequestEditorUiBinder uiBinder = GWT.create(RFRequestEditorUiBinder.class);
 
@@ -32,6 +35,14 @@ public class RFRequestEditor extends Composite implements Editor<RFRequestImpl> 
     }
     @UiField
     TextBox dataKey;
+    @UiField(provided = true)
+    ValueListBox<String> classVariable = new ValueListBox<String>(PassthroughRenderer.instance(),
+            new ProvidesKey<String>() {
+        @Override
+        public Object getKey(String item) {
+            return item;
+        }
+    });
 
     public RFRequestEditor() {
         initWidget(uiBinder.createAndBindUi(this));

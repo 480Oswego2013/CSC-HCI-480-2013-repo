@@ -15,8 +15,8 @@
  */
 package edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders;
 
+import edu.oswego.csc480_hci521_2013.server.ServerUrlEncoder;
 import java.lang.reflect.Field;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
@@ -28,11 +28,9 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-/**
- *
- * @author slave
- */
 public class InspectBuilderTest {
+    
+    UrlEncoder encoder;
     
     public InspectBuilderTest() {
     }
@@ -47,10 +45,12 @@ public class InspectBuilderTest {
     
     @Before
     public void setUp() {
+        encoder = new ServerUrlEncoder();
     }
     
     @After
     public void tearDown() {
+        encoder = null;
     }
     
     /**
@@ -59,7 +59,7 @@ public class InspectBuilderTest {
     @Test
     public void newInstance()
     {
-        System.out.println("newInstance");        
+        //System.out.println("newInstance");        
         InspectBuilder instance = new InspectBuilder();        
         assertNotNull(instance);
         assertTrue(instance instanceof InspectBuilder);
@@ -72,7 +72,7 @@ public class InspectBuilderTest {
     public void newInstanceParam()
     {        
         try {
-            System.out.println("newInstanceParam");            
+            //System.out.println("newInstanceParam");            
             String key = "key";
             String page = "Inspect.json";
             
@@ -110,7 +110,7 @@ public class InspectBuilderTest {
     @Test
     public void testSetView() {
         try {
-            System.out.println("setView");
+            //System.out.println("setView");
             Integer view = 101;
 
             InspectBuilder instance = new InspectBuilder();
@@ -137,16 +137,57 @@ public class InspectBuilderTest {
             Logger.getLogger(InspectBuilderTest.class.getName()).log(Level.SEVERE, null, ex);
         }  
     }
+    
+    /*
+    @Test
+    public final void testSetView() {
+        int view = 1;
+        StoreViewBuilder instance = new StoreViewBuilder();
+        String expResult = "http://localhost:54321/Inspect.json?view=1";
+        StoreViewBuilder result = instance.setView(view);
+        assertEquals(expResult, result.build(encoder));
+    }
+    */
+     
+    /**
+     * Test of setView method with negative argument.
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public final void testSetViewNegative() {
+        InspectBuilder instance = new InspectBuilder();
+        instance.setView(Integer.MIN_VALUE);
+    }
 
+    /**
+     * Test of setView method with Integer.MAX_VALUE.
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public final void testSetViewMaxInt() {
+        InspectBuilder instance = new InspectBuilder();
+        instance.setView(Integer.MAX_VALUE);
+    }
+
+        
+    /*
+    @Test
+    public final void testSetOffset() {
+        Integer offset = 1;
+        StoreViewBuilder instance = new StoreViewBuilder();
+        String expResult = "http://localhost:54321/Inspect.json?offset=1";
+        StoreViewBuilder result = instance.setOffset(offset);
+        assertEquals(expResult, result.build(encoder));
+    }
+    */
+    
     /**
      * Test of setOffset method, of class InspectBuilder.
      */
     @Test
     public void testSetOffset() {
         try {
-            System.out.println("setOffset");
+            //System.out.println("setOffset");
             Long offset = new Long(101);
-            
+                        
             InspectBuilder instance = new InspectBuilder();
             InspectBuilder expResult = instance.setOffset(offset);
             
@@ -171,4 +212,24 @@ public class InspectBuilderTest {
             Logger.getLogger(InspectBuilderTest.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+
+
+    /**
+     * Test of setOffset method with negative arg.
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public final void testSetOffsetNegative() {
+        InspectBuilder instance = new InspectBuilder();
+        instance.setOffset(Long.MIN_VALUE);
+    }
+
+    /**
+     * Test of setOffset method with max Long arg.
+     */
+    @Test
+    public final void testSetOffsetMaxLong() {
+        InspectBuilder instance = new InspectBuilder();
+        instance.setOffset(Long.MAX_VALUE);
+    }
+
 }

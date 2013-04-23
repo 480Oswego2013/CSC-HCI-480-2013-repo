@@ -18,11 +18,17 @@ package edu.oswego.csc480_hci521_2013.shared.h2o.json;
 import com.google.gwt.user.client.rpc.IsSerializable;
 
 /**
- *
+ * Interface for h2o responses.
  */
 public interface H2OResponse extends IsSerializable {
 
+    /**
+     * @return The error message, if any
+     */
     String getError();
 
+    /**
+     * @return The ResponseStatus object containing general response information
+     */
     ResponseStatus getResponse();
 }

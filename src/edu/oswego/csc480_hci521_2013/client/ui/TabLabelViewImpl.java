@@ -63,4 +63,11 @@ public class TabLabelViewImpl extends Composite implements TabLabelView {
             presenter.popout(this);
         }
     }
+    
+    @UiHandler("close")
+    void handleClickClose(ClickEvent e) {
+        if (presenter != null) {
+            presenter.close(this);
+        }
+    }
 }

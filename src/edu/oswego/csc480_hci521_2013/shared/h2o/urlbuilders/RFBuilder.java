@@ -207,6 +207,7 @@ public class RFBuilder extends AbstractBuilder {
     }
 
     /**
+     * This allows for the use of == conditionals in the trees and not just <=.
      * @param value Integer from 0 to 2147483647
      * @return
      */

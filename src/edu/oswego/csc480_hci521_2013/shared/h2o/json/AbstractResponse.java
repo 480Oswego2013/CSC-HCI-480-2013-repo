@@ -16,17 +16,29 @@
 package edu.oswego.csc480_hci521_2013.shared.h2o.json;
 
 /**
+ * Abstract base class for response objects.
  *
+ * Responses can contain an error message if there was an error. Responses
+ * generally contain a ResponseStatus object containing information about
+ * the response.
  */
 public abstract class AbstractResponse implements H2OResponse {
 
-    String error;
-    ResponseStatus response;
+    /**
+     * The error message.
+     */
+    private String error = null;
+    /**
+     * Information about the response.
+     */
+    private ResponseStatus response = null;
 
+    @Override
     public String getError() {
         return error;
     }
 
+    @Override
     public ResponseStatus getResponse() {
         return response;
     }

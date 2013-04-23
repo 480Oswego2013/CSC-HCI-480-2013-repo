@@ -99,7 +99,7 @@ public class RFViewBuilderTest {
 		instance = new RFViewBuilder();
 		encoder = new ServerUrlEncoder();
 		instance.setResponseVariable(1);
-		assertEquals(instance.build(encoder), expResult);
+		assertEquals(expResult, instance.build(encoder));
 	}
 
 	/**Tests the setNtree method
@@ -112,7 +112,7 @@ public class RFViewBuilderTest {
 		instance = new RFViewBuilder();
 		encoder = new ServerUrlEncoder();
 		instance.setNtree(1);
-		assertEquals(instance.build(encoder), expResult);
+		assertEquals(expResult, instance.build(encoder));
 	}
 
 	/**Tests the set class weights method
@@ -129,7 +129,7 @@ public class RFViewBuilderTest {
 		instance = new RFViewBuilder();
 		encoder = new ServerUrlEncoder();
 		instance.setClassWeights(weights);
-		assertEquals(instance.build(encoder), expResult);
+		assertEquals(expResult, instance.build(encoder));
 	}
 
 	/**Tests the setNoConfustionMatrix method
@@ -144,7 +144,7 @@ public class RFViewBuilderTest {
 		assertEquals(instance.build(encoder), expResult);
 		instance.setNoConfusionMatrix(false);
 		expResult = "http://localhost:54321null?no_confusion_matrix=0";
-		assertEquals(instance.build(encoder), expResult);
+		assertEquals(expResult, instance.build(encoder));
 	}
 
 	/**Tests the clearConfusionMatrixCache method
@@ -156,11 +156,10 @@ public class RFViewBuilderTest {
 		instance = new RFViewBuilder();
 		encoder = new ServerUrlEncoder();
 		instance.clearConfusionMatrixCache(true);
-		assertEquals(instance.build(encoder), expResult);
-
+		assertEquals(expResult, instance.build(encoder));
 		expResult = "http://localhost:54321null?clear_confusion_matrix=0";
 		instance.clearConfusionMatrixCache(false);
-		assertEquals(instance.build(encoder), expResult);
+		assertEquals(expResult, instance.build(encoder));
 	}
 
 	@AfterClass

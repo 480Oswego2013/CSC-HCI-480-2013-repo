@@ -16,6 +16,8 @@
 
 package edu.oswego.csc480_hci521_2013.shared.h2o;
 
+import java.util.List;
+
 public interface RFRequest {
     String getDataKey();
     void setDataKey(String dataKey);
@@ -31,4 +33,12 @@ public interface RFRequest {
 
     int getNumberFeatures();
     void setNumberFeatures(int numberFeatures);
+    
+    List<String> getFeatures();
+    void setFeatures(List<String> features);
+    
+    String getClassVariable();
+    void setClassVariable(String classVariable);
+    
+    boolean IsValid();
 }

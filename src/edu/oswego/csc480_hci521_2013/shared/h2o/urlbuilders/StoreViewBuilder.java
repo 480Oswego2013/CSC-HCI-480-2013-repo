@@ -18,17 +18,25 @@ package edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders;
 import java.util.HashMap;
 
 /**
- *
+ * URL Builder for H2O StoreView Requests.
  */
 public class StoreViewBuilder extends AbstractBuilder {
 
     static final String NAME = "StoreView";
 
+    /**
+     * Constructor used by RedirectRequestFactory.
+     * @param args
+     * @see RedirectRequestFactory
+     */
     StoreViewBuilder(HashMap<String, String> args) {
         super(NAME);
         setArgs(args);
     }
 
+    /**
+     * default constructor.
+     */
     public StoreViewBuilder() {
         super(NAME);
     }
@@ -36,13 +44,14 @@ public class StoreViewBuilder extends AbstractBuilder {
     /**
      *
      * @param view the number of items to view, used for pagination of data
-     * @return
+     * @return this
      */
-    public StoreViewBuilder setView(Integer view) {
+    public StoreViewBuilder setView(final int view) {
         if (view < 0 || view > 1024) {
-            throw new IllegalArgumentException("value must be between 1 and 1024 (inclusive)");
+            throw new IllegalArgumentException(
+                    "value must be between 0 and 1024 (inclusive)");
         }
-        addArg("view", view.toString());
+        addArg("view", Integer.toString(view));
         return this;
     }
 
@@ -50,22 +59,26 @@ public class StoreViewBuilder extends AbstractBuilder {
      *
      * @param offset the offset into the data to return, used for pagination of
      * data
-     * @return
+     * @return this
      */
-    public StoreViewBuilder setOffset(Integer offset) {
+    public StoreViewBuilder setOffset(final int offset) {
         if (offset < 0 || offset > 1024) {
-            throw new IllegalArgumentException("value must be between 1 and 1024 (inclusive)");
+            throw new IllegalArgumentException(
+                    "value must be between 0 and 1024 (inclusive)");
         }
-        addArg("offset", offset.toString());
+        addArg("offset", Integer.toString(offset));
         return this;
     }
 
     /**
      *
      * @param value a filter for what is returned, a simple string match is done
-     * @return
+     * @return this
      */
-    public StoreViewBuilder setFilter(String value) {
+    public StoreViewBuilder setFilter(final String value) {
+        if (value == null) {
+            throw new IllegalArgumentException("value can not be null");
+        }
         addArg("filter", value);
         return this;
     }
