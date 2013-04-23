@@ -22,17 +22,27 @@
 
     <ui:style>
         .popout {
-            background: url("arrow.png");
+            background: url("arrow.png") center no-repeat;
             width: 10px;
             height: 10px;
-            margin-right: 5px;
+			padding: 4px;
+        }
+
+		.popout:hover {
+            border: 1px solid #404040;
+			padding: 3px;
         }
         
         .close {
-            background: url("close.png");
+            background: url("close.png") center no-repeat;
             width: 10px;
             height: 10px;
-            margin-right: 5px;
+			padding: 4px;
+        }
+
+		.close:hover {
+            border: 1px solid #404040;
+			padding: 3px;
         }
     </ui:style>
     
