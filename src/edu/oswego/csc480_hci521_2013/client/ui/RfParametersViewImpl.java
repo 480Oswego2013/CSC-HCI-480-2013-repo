@@ -26,10 +26,10 @@ import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DoubleBox;
 import com.google.gwt.user.client.ui.FlexTable;
-import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.IntegerBox;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
@@ -37,15 +37,15 @@ import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.Widget;
 import edu.oswego.csc480_hci521_2013.client.presenters.RfParametersPresenter;
+import edu.oswego.csc480_hci521_2013.shared.h2o.json.ColumnEnumValues;
 import edu.oswego.csc480_hci521_2013.shared.h2o.json.Inspect.Column;
+import edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders.ColumnEnumValuesBuilder;
 import edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders.RFBuilder;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
  * @author Michael Hayes
- * TODO: Confirm that H2O has a way of auto-detecting which column should be used as a
- *      classification variable by default and implement that here.
  * TODO: Need better way to handle other default value such as number of trees.
  * TODO: Input sanity checks such as numTrees is an integer.
  */
@@ -139,7 +139,8 @@ public class RfParametersViewImpl extends PopupPanel implements RfParametersPres
                     && columns[i].getMin() >= 2
                     && columns[i].getMax() <= 254) ||
                     ( columns[i].getType().equals("enum")
-                    && columns[i].getEnumDomainSize() >= 2)) {
+                    && columns[i].getEnumDomainSize() >= 2
+                    && columns[i].getEnumDomainSize() <= 254)) {
                 classVars.addItem(columns[i].getName());
             }
         }
@@ -148,17 +149,17 @@ public class RfParametersViewImpl extends PopupPanel implements RfParametersPres
         //Setup the ignore columns
         //Setup the class weights.
         for(int i = 0; i < columns.length; i++){
-            if((columns[i].getType().equals("int") 
+            if((columns[i].getType().equals("int")
                     && columns[i].getMin() >= 2
                     && columns[i].getMax() <= 254) ||
                     ( columns[i].getType().equals("enum")
-                    && columns[i].getEnumDomainSize() >= 2)) {
+                    && columns[i].getEnumDomainSize() >= 2
+                    && columns[i].getEnumDomainSize() <= 254)) {
                 setClassWeights(columns[i].getName());
                 setIgnoreColumns(columns[i].getName());
                 break;
             }
         }
-        logger.log(Level.INFO, Integer.toString(classVars.getItemCount()));
         classVars.setItemSelected(0,true);
     }
     
@@ -178,11 +179,13 @@ public class RfParametersViewImpl extends PopupPanel implements RfParametersPres
     //response variable.
     public void setClassWeights(String selectedVariableName){
         Column selected = null;
+        int columnNumber = 0;
         for(Column col : columns){
             if(col.getName().equals(selectedVariableName)){
                 selected = col;
                 break;
             }
+            columnNumber++;
         }
 
         if(selected != null){
@@ -191,15 +194,31 @@ public class RfParametersViewImpl extends PopupPanel implements RfParametersPres
             classWeightsScrollPanel.add(classWeights);
             classWeights.setText(0,0,"Class");
             classWeights.setText(0,1,"Weight");
-            int row = 0;
-            for(int i = (int)selected.getMin(); i <= (int)selected.getMax(); i++){
-               row++;
-               classWeights.setText(row, 0, Integer.toString(i));
-               DoubleBox inputBox = new DoubleBox(); 
-               inputBox.setValue(1.0);
-               inputBox.setWidth("50px");
-               classWeights.setWidget(row, 1, inputBox);
-            }
+            ColumnEnumValuesBuilder builder;
+            builder = new ColumnEnumValuesBuilder(presenter.getDataKey(), columnNumber);
+            //Call the GWT RPC service to get the column values.
+            presenter.getH2OService().getColumnEnumValues(builder, 
+                new AsyncCallback<ColumnEnumValues>() {
+                    @Override                    
+                    public void onFailure(Throwable thrwbl) {
+                        logger.log(Level.SEVERE, thrwbl.toString());
+                        setError(thrwbl.getMessage());
+                    }
+
+                    @Override
+                    public void onSuccess(final ColumnEnumValues vals) {
+                        String[] values = vals.getValues();
+                        for(int i = 0; i < values.length; i++){
+                            classWeights.setText(i, 0, values[i]);
+                            DoubleBox inputBox = new DoubleBox();
+                            inputBox.setValue(1.0);
+                            inputBox.setWidth("50px");
+                            classWeights.setWidget(i, 1, inputBox);
+                        }
+                    }
+                }
+            );
+            
         } else {
             throw new NullPointerException("Could not find selected classification variable column.");
         }

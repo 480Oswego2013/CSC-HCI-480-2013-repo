@@ -17,6 +17,7 @@ package edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders;
 
 /**
  * @Author Mike Hayes
+ * Builds the ColumnEnumValues custom H2O API call.
  */
 public class ColumnEnumValuesBuilder extends AbstractBuilder {
 
@@ -25,7 +26,7 @@ public class ColumnEnumValuesBuilder extends AbstractBuilder {
     ColumnEnumValuesBuilder() {
     }
 
-    ColumnEnumValuesBuilder(String dataKey, int column) {
+    public ColumnEnumValuesBuilder(String dataKey, int column) {
         super(NAME);
         addArg("data_key", dataKey);
         addArg("response_variable", Integer.toString(column));
