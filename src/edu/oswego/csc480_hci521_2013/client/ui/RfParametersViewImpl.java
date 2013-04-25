@@ -136,9 +136,10 @@ public class RfParametersViewImpl extends PopupPanel implements RfParametersPres
         //If it is an int, must be >=2 and <= 254
         for(int i = 0 ; i < columns.length ; i++){
             if((columns[i].getType().equals("int") 
-                    && columns[i].getMin() >= 2 
-                    && columns[i].getMax() <= 254) 
-                    || columns[i].getType().equals("enum")){
+                    && columns[i].getMin() >= 2
+                    && columns[i].getMax() <= 254) ||
+                    ( columns[i].getType().equals("enum")
+                    && columns[i].getEnumDomainSize() >= 2)) {
                 classVars.addItem(columns[i].getName());
             }
         }
@@ -147,16 +148,18 @@ public class RfParametersViewImpl extends PopupPanel implements RfParametersPres
         //Setup the ignore columns
         //Setup the class weights.
         for(int i = 0; i < columns.length; i++){
-            if((columns[i].getType().equals("int")
+            if((columns[i].getType().equals("int") 
                     && columns[i].getMin() >= 2
-                    && columns[i].getMax() <= 254)
-                    || columns[i].getType().equals("enum")){
-                classVars.setItemSelected(i,true);
+                    && columns[i].getMax() <= 254) ||
+                    ( columns[i].getType().equals("enum")
+                    && columns[i].getEnumDomainSize() >= 2)) {
                 setClassWeights(columns[i].getName());
                 setIgnoreColumns(columns[i].getName());
                 break;
             }
         }
+        logger.log(Level.INFO, Integer.toString(classVars.getItemCount()));
+        classVars.setItemSelected(0,true);
     }
     
     //Set the column definition info.
