@@ -43,6 +43,8 @@ public class ConfusionMatrixViewImpl extends AbstractConfusionMatrix {
     @UiField
     HorizontalPanel popinPanel;
     @UiField
+    Element matrixIdentifier;
+    @UiField
     Element progress;
     @UiField
     FlexTable matrixTable;
@@ -83,7 +85,12 @@ public class ConfusionMatrixViewImpl extends AbstractConfusionMatrix {
     public Style getStyle() {
         return style;
     }
-
+    
+    @Override
+    public Element getIdentifier() {
+        return this.matrixIdentifier;
+    }
+    
     @Override
     public Element getProgress() {
         return this.progress;

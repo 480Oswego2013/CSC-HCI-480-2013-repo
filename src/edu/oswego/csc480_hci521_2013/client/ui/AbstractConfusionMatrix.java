@@ -25,6 +25,11 @@ import java.util.List;
 public abstract class AbstractConfusionMatrix extends Composite implements ConfusionMatrixView {
 
     @Override
+    public void setIdentifier(String identifier) {
+        this.getIdentifier().setInnerText(identifier);
+    }
+        
+    @Override
     public void hideProgress() {
         getProgress().getStyle().setVisibility(com.google.gwt.dom.client.Style.Visibility.HIDDEN);
     }
