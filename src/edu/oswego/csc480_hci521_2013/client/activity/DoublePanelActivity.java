@@ -191,7 +191,8 @@ public class DoublePanelActivity extends AbstractActivity implements DoublePanel
                         treeview, datakey, modelkey, tree);
                 logger.log(Level.INFO, treeview.toString());
                 TabLabelView label = new TabLabelViewImpl();
-                label.setLabel(datakey + "<br>" + modelkey + "<br>tree " + (tree + 1));
+                //label.setLabel(datakey + "<br>" + modelkey + "<br>tree " + (tree + 1));
+                label.setLabel("Tree " + (tree + 1) +"<br>"+datakey);
                 label.setPresenter(DoublePanelActivity.this);
                 view.addVisTab(presenter.getView(), label);
                 visTabs.addTab(label, presenter);
@@ -204,7 +205,8 @@ public class DoublePanelActivity extends AbstractActivity implements DoublePanel
         ConfusionMatrixPresenterImpl presenter
                 = new ConfusionMatrixPresenterImpl(
                 new ConfusionMatrixViewImpl(), eventBus, rf);
-        String title = "Confusion Matrix<br>" + rf.getDataKey() + "<br>" + rf.getModelKey();
+        //String title = "Confusion Matrix<br>" + rf.getDataKey() + "<br>" + rf.getModelKey();
+        String title = "Confusion Matrix<br>" + rf.getDataKey();
         TabLabelView label = new TabLabelViewImpl();
         label.setLabel(title);
         label.setPresenter(this);
@@ -217,8 +219,9 @@ public class DoublePanelActivity extends AbstractActivity implements DoublePanel
                 = new ConfusionMatrixPresenterImpl(
                 new ConfusionMatrixViewImpl(), eventBus, rf);
         presenter.setData(rfview);
-        String title = "Confusion Matrix<br>" + rf.getDataKey() + "<br>" + rf.getModelKey();
-        TabLabelView label = new TabLabelViewImpl();
+        //String title = "Confusion Matrix<br>" + rf.getDataKey() + "<br>" + rf.getModelKey();
+        String title = "Confusion Matrix<br>" + rf.getDataKey();
+        TabLabelView label = new TabLabelViewImpl();        
         label.setLabel(title);
         label.setPresenter(this);
         view.addVisTab(presenter.getView(), label);

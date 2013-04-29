@@ -23,6 +23,8 @@ import java.util.List;
 
 public interface ConfusionMatrixView extends IsWidget {
 
+    void setIdentifier(String identifier);
+    
     void hideProgress();
 
     void setProgress(String progressUpdate);
@@ -63,6 +65,8 @@ public interface ConfusionMatrixView extends IsWidget {
 
     void setDepthMax(String depthMax);
 
+    Element getIdentifier();
+    
     Element getProgress();
 
     Element getClassificationError();

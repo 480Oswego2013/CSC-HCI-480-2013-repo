@@ -77,23 +77,23 @@ public class RFBuilderTest {
     }
 
     @Test
-    public void testSetGiniTrue() {
-        System.out.println("GiniTrue");
+    public void testSetStatTypeGini() {
+        System.out.println("StatTypeGini");
         boolean value = true;
         RFBuilder instance = new RFBuilder("test.hex");
-        String expResult = "http://localhost:54321/RF.json?gini=1&data_key=test.hex";
-        String result = instance.setGini(value).build(encoder);
+        String expResult = "http://localhost:54321/RF.json?stat_type=GINI&data_key=test.hex";
+        String result = instance.setStatType(RFBuilder.StatType.GINI).build(encoder);
         assertEquals(expResult, result);
 
     }
 
     @Test
-    public void testSetGiniFalse() {
-        System.out.println("GiniFalse");
+    public void testSetStatTypeEntropy() {
+        System.out.println("StatTypeEntropy");
         boolean value = false;
         RFBuilder instance = new RFBuilder("test.hex");
-        String expResult = "http://localhost:54321/RF.json?gini=0&data_key=test.hex";
-        String result = instance.setGini(value).build(encoder);
+        String expResult = "http://localhost:54321/RF.json?stat_type=ENTROPY&data_key=test.hex";
+        String result = instance.setStatType(RFBuilder.StatType.ENTROPY).build(encoder);
         assertEquals(expResult, result);
 
     }
@@ -114,39 +114,39 @@ public class RFBuilderTest {
     }
 
     @Test
-    public void testSetStratifyFalse() {
-        System.out.println("SetStratifyFalse");
+    public void testSetSamplingStrategyRandom() {
+        System.out.println("SamplingStrategyRandom");
         boolean value = false;
         RFBuilder instance = new RFBuilder("test.hex");
-        String expResult = "http://localhost:54321/RF.json?stratify=0&data_key=test.hex";
-        String result = instance.setStratify(value).build(encoder);
+        String expResult = "http://localhost:54321/RF.json?sampling_strategy=RANDOM&data_key=test.hex";
+        String result = instance.setSamplingStrategy(RFBuilder.SamplingStrategy.RANDOM).build(encoder);
         assertEquals(expResult, result);
 
     }
 
     @Test
-    public void testSetStratifyTrue() {
-        System.out.println("SetStratifyTrue");
+    public void testSetSamplingStrategyStratifiedLocal() {
+        System.out.println("SamplingStrategyStratifiedLocal");
         boolean value = true;
         RFBuilder instance = new RFBuilder("test.hex");
-        String expResult = "http://localhost:54321/RF.json?stratify=1&data_key=test.hex";
-        String result = instance.setStratify(value).build(encoder);
+        String expResult = "http://localhost:54321/RF.json?sampling_strategy=STRATIFIED_LOCAL&data_key=test.hex";
+        String result = instance.setSamplingStrategy(RFBuilder.SamplingStrategy.STRATIFIED_LOCAL).build(encoder);
         assertEquals(expResult, result);
 
     }
 
     @Test
-    public void testSetStrata() {
+    public void testSetStrataSamples() {
         System.out.println("testSetStrata");
         HashMap<String, Integer> values = new HashMap();
         for (int x = 0; x <= 10; x++) {
             values.put(String.valueOf(x), x);
         }
         RFBuilder instance = new RFBuilder("test.hex");
-        String expResult = "http://localhost:54321/RF.json?strata=3%3D3%2C2%3D2"
+        String expResult = "http://localhost:54321/RF.json?strata_samples=3%3D3%2C2%3D2"
                 + "%2C10%3D10%2C1%3D1%2C0%3D0%2C7%3D7%2C6%3D6%2C5%3D5%2C4%"
                 + "3D4%2C9%3D9%2C8%3D8&data_key=test.hex";
-        String result = instance.setStrata(values).build(encoder);
+        String result = instance.setStrataSamples(values).build(encoder);
         assertEquals(expResult, result);
 
     }

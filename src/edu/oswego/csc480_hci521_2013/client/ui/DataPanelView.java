@@ -40,4 +40,6 @@ public interface DataPanelView extends IsWidget {
     void setForestStatus(int done, int total);
 
     void forestFinish(int count);
+    
+    void showPopinButton(boolean show);
 }
