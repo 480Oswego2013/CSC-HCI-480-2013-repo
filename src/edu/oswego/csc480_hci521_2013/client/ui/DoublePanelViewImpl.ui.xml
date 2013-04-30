@@ -36,7 +36,6 @@
             <gwt:DockLayoutPanel unit='PCT' width="100%" height="100%">
                 <gwt:center>
                     <gwt:HTMLPanel>
-                        <h3 style="text-align: center;">Data</h3>
                         <gwt:TabLayoutPanel ui:field="tpData"
                                             width="100%" height="100%"
                                             barHeight="2.5" barUnit="EM">
@@ -49,7 +48,6 @@
                 </gwt:center>
                 <gwt:east size="50">
                     <gwt:HTMLPanel>
-                        <h3 style="text-align: center;">Visualization</h3>
                         <gwt:TabLayoutPanel ui:field="tpVis"
                                             width="100%" height="100%"
                                             barHeight="5" barUnit="EM">
