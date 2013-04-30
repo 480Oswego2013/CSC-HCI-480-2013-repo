@@ -38,6 +38,10 @@
 
         <br/>
 
-        <cv:DataGrid ui:field='dataTable' width="100%" height="90%" />
+        <cv:DataGrid ui:field='dataTable' width="100%" height="80%" />
+        <table width="100%">
+            <tr><td align="center"><cv:SimplePager ui:field='pager' location='CENTER' /></td></tr>
+		</table>
+        
     </gwt:HTMLPanel>
 </ui:UiBinder>
