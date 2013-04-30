@@ -191,7 +191,8 @@ public class DoublePanelActivity extends AbstractActivity implements DoublePanel
                         treeview, datakey, modelkey, tree);
                 logger.log(Level.INFO, treeview.toString());
                 TabLabelView label = new TabLabelViewImpl();
-                label.setLabel(datakey + "<br>" + modelkey + "<br>tree " + (tree + 1));
+                //label.setLabel(datakey + "<br>" + modelkey + "<br>tree " + (tree + 1));
+                label.setLabel("Tree " + (tree + 1) +"<br>"+datakey);
                 label.setPresenter(DoublePanelActivity.this);
                 view.addVisTab(presenter.getView(), label);
                 visTabs.addTab(label, presenter);
@@ -204,7 +205,8 @@ public class DoublePanelActivity extends AbstractActivity implements DoublePanel
         ConfusionMatrixPresenterImpl presenter
                 = new ConfusionMatrixPresenterImpl(
                 new ConfusionMatrixViewImpl(), eventBus, rf);
-        String title = "Confusion Matrix<br>" + rf.getDataKey() + "<br>" + rf.getModelKey();
+        //String title = "Confusion Matrix<br>" + rf.getDataKey() + "<br>" + rf.getModelKey();
+        String title = "Confusion Matrix<br>" + rf.getDataKey();
         TabLabelView label = new TabLabelViewImpl();
         label.setLabel(title);
         label.setPresenter(this);
@@ -217,8 +219,9 @@ public class DoublePanelActivity extends AbstractActivity implements DoublePanel
                 = new ConfusionMatrixPresenterImpl(
                 new ConfusionMatrixViewImpl(), eventBus, rf);
         presenter.setData(rfview);
-        String title = "Confusion Matrix<br>" + rf.getDataKey() + "<br>" + rf.getModelKey();
-        TabLabelView label = new TabLabelViewImpl();
+        //String title = "Confusion Matrix<br>" + rf.getDataKey() + "<br>" + rf.getModelKey();
+        String title = "Confusion Matrix<br>" + rf.getDataKey();
+        TabLabelView label = new TabLabelViewImpl();        
         label.setLabel(title);
         label.setPresenter(this);
         view.addVisTab(presenter.getView(), label);
@@ -296,8 +299,7 @@ public class DoublePanelActivity extends AbstractActivity implements DoublePanel
         if (p instanceof ConfusionMatrixPresenterImpl) {
             ConfusionMatrixPresenterImpl cp = (ConfusionMatrixPresenterImpl) p;
             addConfusionMatrixTab(cp.getRandomForest(), cp.getData());
-        }
-        else {
+        } else {
             TreePanelPresenterImpl tp = (TreePanelPresenterImpl) p;
             addVisTab(tp.getDatakey(), tp.getModelkey(), tp.getTreeIndex());
         }
@@ -324,8 +326,7 @@ public class DoublePanelActivity extends AbstractActivity implements DoublePanel
                 ConfusionMatrixPlace place = new ConfusionMatrixPlace();
                 place.setRandomForest(cp.getRandomForest());
                 popoutConfusionMatrixTab(place, tab.hashCode());
-            }
-            else {
+            } else {
                 TreePanelPresenterImpl tp = (TreePanelPresenterImpl) p;
                 TreeVisPlace place = new TreeVisPlace();
                 place.setDataKey(tp.getDatakey());
@@ -333,6 +334,23 @@ public class DoublePanelActivity extends AbstractActivity implements DoublePanel
                 place.setTree(tp.getTreeIndex());
                 popoutTreeVisTab(place, tab.hashCode());
             }
+        } else {
+            logger.log(Level.SEVERE, "Unknown tab!");
+        }
+    }
+    
+    @Override
+    public void close(TabLabelView tab) {
+        if (dataTabs.hasTab(tab)) {
+            int index = dataTabs.deleteTab(tab);
+            view.removeDataTab(index);
+            TabPanelPresenter p = dataTabs.getPresenter(tab);
+            p.removed();
+        } else if (visTabs.hasTab(tab)) {
+            int index = visTabs.deleteTab(tab);
+            view.removeVisTab(index);
+            TabPanelPresenter p = visTabs.getPresenter(tab);
+            p.removed();
         } else {
             logger.log(Level.SEVERE, "Unknown tab!");
         }
@@ -370,9 +388,11 @@ public class DoublePanelActivity extends AbstractActivity implements DoublePanel
             return t;
         }
 
-        void deleteTab(TabLabelView tab) {
+        int deleteTab(TabLabelView tab) {
+            int index = tabList.indexOf(tab);
             tabList.remove(tab);
             panels.remove(tab);
+            return index;
         }
     }
 }

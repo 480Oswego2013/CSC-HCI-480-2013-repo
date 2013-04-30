@@ -23,6 +23,16 @@ import java.util.Map.Entry;
  */
 public class RFBuilder extends AbstractBuilder {
 
+    public static enum StatType {
+        GINI,
+        ENTROPY
+    }
+
+    public static enum SamplingStrategy {
+        RANDOM,
+        STRATIFIED_LOCAL
+    }
+
     static final String NAME = "RF";
 
     RFBuilder() {
@@ -61,11 +71,11 @@ public class RFBuilder extends AbstractBuilder {
     }
 
     /**
-     * @param value use gini statistic (otherwise entropy is used)
-     * @return
+     * @param type the stat type to use.
+     * @return this
      */
-    public RFBuilder setGini(boolean value) {
-        addArg("gini", value ? "1" : "0");
+    public RFBuilder setStatType(final StatType type) {
+        addArg("stat_type", type.name());
         return this;
     }
 
@@ -88,11 +98,11 @@ public class RFBuilder extends AbstractBuilder {
     }
 
     /**
-     * @param value Use Stratified sampling
-     * @return
+     * @param value the type of sampling to use
+     * @return this
      */
-    public RFBuilder setStratify(boolean value) {
-        addArg("stratify", value ? "1" : "0");
+    public RFBuilder setSamplingStrategy(SamplingStrategy value) {
+        addArg("sampling_strategy", value.name());
         return this;
     }
 
@@ -100,14 +110,14 @@ public class RFBuilder extends AbstractBuilder {
      * @param values Category strata (integer)
      * @return
      */
-    public RFBuilder setStrata(HashMap<String, Integer> values)
+    public RFBuilder setStrataSamples(HashMap<String, Integer> values)
     {
         StringBuilder value = new StringBuilder();
         for (Entry<String, Integer> pair : values.entrySet()) {
             value.append(pair.getKey()).append('=')
                     .append(pair.getValue()).append(',');
         }
-        addArg("strata", value.deleteCharAt(value.length() - 1).toString());
+        addArg("strata_samples", value.deleteCharAt(value.length() - 1).toString());
         return this;
     }
 

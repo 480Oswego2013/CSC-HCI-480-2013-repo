@@ -39,7 +39,7 @@
         </tr>
         <tr>
 	        <td>
-	        	Classification Variable:
+	        	Classification/Response Variable:
        		</td>
        		<td>
         		<gwt:ListBox ui:field="classVars" width="100%" visibleItemCount="1" multipleSelect="false" />
@@ -61,7 +61,28 @@
 				<gwt:ListBox ui:field="ignoreCols" width="100%" visibleItemCount="10" multipleSelect="true"/>
 			</td>
        	</tr>
-       	<tr>
+        <tr>
+            <td colspan="2">
+                <gwt:DisclosurePanel>
+                    <gwt:header>Advanced Options</gwt:header>
+                    <gwt:HTMLPanel>
+                        <table>
+                            <tr>
+                                <td valign="top">
+                                    <gwt:Label>Class Weights</gwt:Label>
+                                </td>
+                                <td>
+                                    <gwt:ScrollPanel ui:field="classWeightsScrollPanel" width="100%" height="140px">
+                                        <gwt:FlexTable ui:field="classWeights" width="100%"/>
+                                    </gwt:ScrollPanel>
+                                </td>
+                            </tr>
+                        </table>
+                    </gwt:HTMLPanel>
+                </gwt:DisclosurePanel>
+            </td>
+        </tr>
+        <tr>
        		<td colspan="2" align="center">
        			<gwt:Button ui:field="submit" text="Generate Model"/>&nbsp;&nbsp;&nbsp;<gwt:Button ui:field="cancel" text="Cancel"/>
        		</td>

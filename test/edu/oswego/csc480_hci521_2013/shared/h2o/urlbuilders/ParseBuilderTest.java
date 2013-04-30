@@ -41,13 +41,20 @@ public class ParseBuilderTest {
     public static void tearDownClass() {
     }
     
+    /**
+     * set up test resources.
+     */
     @Before
     public void setUp() {
         encoder = new ServerUrlEncoder(); //is executed before each test.
     }
     
+    /**
+     * tear down test resources.
+     */
     @After
     public void tearDown() {
+        encoder = null;
     }
 
     /**
@@ -99,5 +106,25 @@ public class ParseBuilderTest {
         String expResult = "http://localhost:54321/Parse.json?source_key=test.hex&header=1";
         String result = instance.setHeader(header).build(encoder);
         assertEquals(expResult, result);      
+    }
+    
+    /**
+     * Tests the construction of a ParseBuilder object with a null String as a
+     * parameter.
+     * ParseBuilder should throw IllegalArgumentException
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public void testConstructorNull() {
+        ParseBuilder instance = new ParseBuilder("");
+    }
+    
+     /**
+     * Tests the setDestinationKey method passing null as a parameter.
+     * setDestinationKey should throw IllegalArgumentException
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public void testSetDestinationNull() {
+        ParseBuilder instance = new ParseBuilder("test.csv");
+        instance.setDestinationKey(null);
     }
 }

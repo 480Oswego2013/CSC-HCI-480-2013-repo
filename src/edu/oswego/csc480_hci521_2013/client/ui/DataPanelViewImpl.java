@@ -17,16 +17,22 @@ package edu.oswego.csc480_hci521_2013.client.ui;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
+import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiFactory;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.cellview.client.HasKeyboardSelectionPolicy;
 import com.google.gwt.user.cellview.client.TextColumn;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.MenuBar;
 import com.google.gwt.user.client.ui.MenuItem;
+import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.Widget;
+
+import edu.oswego.csc480_hci521_2013.client.activity.DoublePanelActivity;
 import edu.oswego.csc480_hci521_2013.client.presenters.DataPanelPresenter;
 import java.util.List;
 import java.util.Map;
@@ -46,6 +52,11 @@ public class DataPanelViewImpl extends Composite implements DataPanelView {
     }
     private static Binder uiBinder = GWT.create(Binder.class);
     private DataPanelPresenter presenter;
+    
+    @UiField
+    PushButton popin;
+    @UiField
+    HorizontalPanel popinPanel;
     @UiField
     MenuBar visbar;
     @UiField
@@ -64,8 +75,13 @@ public class DataPanelViewImpl extends Composite implements DataPanelView {
     }
 
     public DataPanelViewImpl() {
-        initWidget(uiBinder.createAndBindUi(this));
+        this(false);
+    }
+    
+    public DataPanelViewImpl(boolean showPopinButton) {
+    	initWidget(uiBinder.createAndBindUi(this));
         dataTable.setKeyboardSelectionPolicy(HasKeyboardSelectionPolicy.KeyboardSelectionPolicy.DISABLED);
+        popinPanel.setVisible(showPopinButton);
     }
 
     @Override
@@ -114,4 +130,18 @@ public class DataPanelViewImpl extends Composite implements DataPanelView {
     public void setData(List<Map<String, String>> data) {
         dataTable.setRowData(data);
     }
+    
+    @Override
+    public void showPopinButton(boolean show) {
+    	popin.setVisible(show);
+    }
+    
+    @UiHandler("popin")
+    void handleClick(ClickEvent e) {
+    	closeWindow();
+    }
+    
+    public static native void closeWindow()/*-{
+    	$wnd.close();
+	}-*/;
 }

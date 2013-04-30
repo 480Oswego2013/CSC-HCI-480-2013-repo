@@ -86,6 +86,7 @@ public class ConfusionMatrixPresenterImpl implements ConfusionMatrixPresenter, T
 
     public static void updateView(ConfusionMatrixView matrixView, RFView data) {
         ConfusionMatrixAdapter adapter = new ConfusionMatrixAdapter(data);
+        matrixView.setIdentifier(data.getDataKey() + " " + data.getModelKey());  
         if (data.getResponse().isPoll()) {
             matrixView.setProgress(adapter.getProgress());
         }

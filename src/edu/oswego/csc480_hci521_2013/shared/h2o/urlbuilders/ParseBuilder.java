@@ -34,10 +34,16 @@ public class ParseBuilder extends AbstractBuilder {
 
     public ParseBuilder(String sourceKey) {
         super(NAME);
+        if (sourceKey == null || sourceKey.equals("")) {
+            throw new IllegalArgumentException("value can not be null");
+        }
         addArg("source_key", sourceKey);
     }
 
     public ParseBuilder setDestinationKey(String destinationKey) {
+        if (destinationKey == null || destinationKey.equals("")) {
+            throw new IllegalArgumentException("value can not be null");
+        }
         addArg("destination_key", destinationKey);
         return this;
     }

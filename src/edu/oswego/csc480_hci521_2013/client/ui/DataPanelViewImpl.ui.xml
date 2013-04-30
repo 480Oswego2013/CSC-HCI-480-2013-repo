@@ -23,6 +23,11 @@
     <ui:style src="hViewO.css" />
     
     <gwt:HTMLPanel>
+        
+        <gwt:HorizontalPanel ui:field='popinPanel' styleName="{style.popin_panel}" horizontalAlignment="ALIGN_RIGHT">    
+	        <gwt:PushButton ui:field='popin' title="Pop-In" styleName="{style.popin_button}" ></gwt:PushButton>
+	    </gwt:HorizontalPanel>
+        
         <gwt:MenuBar ui:field='visbar' vertical="false">
             <gwt:MenuItem ui:field='generate'>Generate Forest</gwt:MenuItem>
             <gwt:MenuItem ui:field='trees' enabled="false">Trees<span class="{style.tick}"></span>
