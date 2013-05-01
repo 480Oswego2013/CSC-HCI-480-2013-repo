@@ -1,3 +1,3 @@
-CSC-HCI-480-2013-repo
-=====================
+hViewO
+======
 Prototype currently under development...
