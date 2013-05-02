@@ -13,18 +13,21 @@
  * See the License for the specific language governing permissions and 
  * limitations under the License.
  */
-
 package edu.oswego.csc480_hci521_2013.shared.h2o;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
+// TODO: Merge with shared.h2o.urlbuilders.RFBuilder    
 public class RFRequestImpl implements RFRequest {
 
     private String dataKey;
     private String responseVariable;
     private int numberTrees;
+    private boolean gini;
     private boolean oob;
+    private boolean stratify;
     private int numberFeatures;
     private List<String> features = new ArrayList<String>();
     private String classVariable;
@@ -33,9 +36,8 @@ public class RFRequestImpl implements RFRequest {
         this.dataKey = key;
         this.numberTrees = 1000;
         this.features = features;
-        
-        if (!this.features.isEmpty())
-        {
+
+        if (!this.features.isEmpty()) {
             this.classVariable = this.features.get(0);
         }
     }
@@ -51,6 +53,7 @@ public class RFRequestImpl implements RFRequest {
     public String getResponseVariable() {
         return this.responseVariable;
     }
+
     public void setResponseVariable(String responseVariable) {
         this.responseVariable = responseVariable;
     }
@@ -58,8 +61,17 @@ public class RFRequestImpl implements RFRequest {
     public int getNumberTrees() {
         return this.numberTrees;
     }
+
     public void setNumberTrees(int nTrees) {
         this.numberTrees = nTrees;
+    }
+
+    public boolean getGini() {
+        return this.gini;
+    }
+
+    public void setGini(boolean gini) {
+        this.gini = gini;
     }
 
     public boolean getOutOfBagErrors() {
@@ -69,7 +81,15 @@ public class RFRequestImpl implements RFRequest {
     public void setOutOfBagerrors(boolean oob) {
         this.oob = oob;
     }
+    
+    public boolean getStratify() {
+        return this.stratify;
+    }
 
+    public void setStratify(boolean stratify) {
+        this.stratify = stratify;
+    }
+    
     public int getNumberFeatures() {
         return this.numberFeatures;
     }
@@ -77,32 +97,46 @@ public class RFRequestImpl implements RFRequest {
     public void setNumberFeatures(int numberFeatures) {
         this.numberFeatures = numberFeatures;
     }
-    
+
     public List<String> getFeatures() {
         return this.features;
     }
-    
+
     public void setFeatures(List<String> features) {
         this.features = features;
-    }            
-    
+    }
+
     public String getClassVariable() {
         return this.classVariable;
     }
-    
+
     public void setClassVariable(String classVariable) {
         this.classVariable = classVariable;
     }
-    
+
     public boolean IsValid() {
         if (this.numberTrees <= 0) {
             return false;
         }
-        
-        if ((this.numberFeatures > 0) && (this.numberFeatures <= this.features.size())){
+
+        if ((this.numberFeatures > 0) && (this.numberFeatures <= this.features.size())) {
             return false;
         }
-            
+
+        if (!this.features.contains(this.classVariable)) {
+            return false;
+        }
+
         return true;
+    }
+
+    @Override
+    public HashMap<String, Double> getClassWeights() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void setClassWeights(HashMap<String, Double> values) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

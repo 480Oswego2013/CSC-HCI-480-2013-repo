@@ -16,6 +16,7 @@
 
 package edu.oswego.csc480_hci521_2013.shared.h2o;
 
+import java.util.HashMap;
 import java.util.List;
 
 public interface RFRequest {
@@ -27,15 +28,24 @@ public interface RFRequest {
 
     int getNumberTrees();
     void setNumberTrees(int nTrees);
+    
+    boolean getGini();
+    void setGini(boolean gini);
 
     boolean getOutOfBagErrors();
     void setOutOfBagerrors(boolean oob);
 
+    boolean getStratify();
+    void setStratify(boolean stratify);
+    
     int getNumberFeatures();
     void setNumberFeatures(int numberFeatures);
     
     List<String> getFeatures();
     void setFeatures(List<String> features);
+
+    HashMap<String, Double> getClassWeights();
+    void setClassWeights(HashMap<String, Double> values);
     
     String getClassVariable();
     void setClassVariable(String classVariable);

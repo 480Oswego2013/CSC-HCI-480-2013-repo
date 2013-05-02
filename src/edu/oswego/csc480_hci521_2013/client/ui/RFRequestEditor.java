@@ -21,20 +21,26 @@ import com.google.gwt.text.shared.testing.PassthroughRenderer;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.IntegerBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.ValueListBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.ProvidesKey;
 import edu.oswego.csc480_hci521_2013.shared.h2o.RFRequest;
 
+// TODO: Merge with RfParametersViewImpl; update RfParametersViewImpl to use Editor templates
 public class RFRequestEditor extends Composite implements Editor<RFRequest> {
 
     private static RFRequestEditorUiBinder uiBinder = GWT.create(RFRequestEditorUiBinder.class);
 
     interface RFRequestEditorUiBinder extends UiBinder<Widget, RFRequestEditor> {
     }
+    
     @UiField
     TextBox dataKey;
+    
+    @UiField IntegerBox numTrees;
+    
     @UiField(provided = true)
     ValueListBox<String> classVariable = new ValueListBox<String>(PassthroughRenderer.instance(),
             new ProvidesKey<String>() {
