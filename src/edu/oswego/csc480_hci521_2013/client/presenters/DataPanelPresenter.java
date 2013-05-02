@@ -23,8 +23,6 @@ import edu.oswego.csc480_hci521_2013.client.ui.DataPanelView;
  */
 public interface DataPanelPresenter {
 
-    Scheduler.ScheduledCommand getTreeVisCommand(int index);
-
     DataPanelView getView();
 
     String getDataKey();

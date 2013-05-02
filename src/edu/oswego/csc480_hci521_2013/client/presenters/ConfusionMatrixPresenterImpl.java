@@ -17,17 +17,23 @@ package edu.oswego.csc480_hci521_2013.client.presenters;
 
 import com.google.web.bindery.event.shared.EventBus;
 import com.google.web.bindery.event.shared.HandlerRegistration;
+import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import edu.oswego.csc480_hci521_2013.client.presenters.adapters.ConfusionMatrixAdapter;
 import edu.oswego.csc480_hci521_2013.client.ui.ConfusionMatrixView;
 import edu.oswego.csc480_hci521_2013.client.events.RFProgressEvent;
 import edu.oswego.csc480_hci521_2013.client.events.RFProgressEventHandler;
+import edu.oswego.csc480_hci521_2013.client.events.TreeVisEvent;
 import edu.oswego.csc480_hci521_2013.shared.h2o.json.RF;
 import edu.oswego.csc480_hci521_2013.shared.h2o.json.RFView;
+import edu.oswego.csc480_hci521_2013.shared.h2o.json.ResponseStatus;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class ConfusionMatrixPresenterImpl implements ConfusionMatrixPresenter, TabPanelPresenter {
 
+    static final Logger logger = Logger.getLogger(ConfusionMatrixPresenterImpl.class.getName());
     RF randomForest;
     EventBus eventbus;
     ConfusionMatrixView view;
@@ -39,6 +45,8 @@ public class ConfusionMatrixPresenterImpl implements ConfusionMatrixPresenter, T
         this.view = view;
         this.eventbus = eventBus;
         this.randomForest = randomForest;
+        
+        view.setPresenter(this);
 
         bind();
     }
@@ -48,6 +56,18 @@ public class ConfusionMatrixPresenterImpl implements ConfusionMatrixPresenter, T
             @Override
             public void onDataUpdate(RFProgressEvent e) {
                 if (e.getSource().equals(randomForest)) {
+                    RFView rfview = e.getData();
+                    logger.log(Level.INFO, rfview.toString());
+                    ResponseStatus status = rfview.getResponse();
+                    if (status.isPoll()) {
+                        int done = status.getProgress();
+                        int total = status.getProgressTotal();
+                        logger.log(Level.INFO, "Trees: Generated " + done + " of " + total);
+                        view.setForestStatus(done, total);
+                    } else {
+                        logger.log(Level.ALL, "Forest finished");
+                        view.forestFinish(rfview.getNtree());
+                    }
                     setData(e.getData());
                 }
             }
@@ -113,6 +133,17 @@ public class ConfusionMatrixPresenterImpl implements ConfusionMatrixPresenter, T
         matrixView.setDepthMin(adapter.getDepthMin());
         matrixView.setDepthMean(adapter.getDepthMean());
         matrixView.setDepthMax(adapter.getDepthMax());
+    }
+
+
+    @Override
+    public ScheduledCommand getTreeVisCommand(final int index) {
+        return new ScheduledCommand() {
+            @Override
+            public void execute() {
+                eventbus.fireEvent(new TreeVisEvent(randomForest, index));
+            }
+        };
     }
 
     @Override

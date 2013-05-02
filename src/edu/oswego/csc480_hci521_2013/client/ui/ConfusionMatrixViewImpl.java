@@ -24,10 +24,13 @@ import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.MenuBar;
+import com.google.gwt.user.client.ui.MenuItem;
 import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.Widget;
 import java.util.logging.Logger;
 import edu.oswego.csc480_hci521_2013.shared.h2o.json.RFView.ConfusionMatrix;
+import edu.oswego.csc480_hci521_2013.client.presenters.ConfusionMatrixPresenter;
 
 public class ConfusionMatrixViewImpl extends AbstractConfusionMatrix {
 
@@ -36,6 +39,7 @@ public class ConfusionMatrixViewImpl extends AbstractConfusionMatrix {
 
     interface Binder extends UiBinder<Widget, ConfusionMatrixViewImpl> {
     }
+    private ConfusionMatrixPresenter presenter;
 
     @UiField
     ConfusionMatrixView.Style style;
@@ -73,6 +77,13 @@ public class ConfusionMatrixViewImpl extends AbstractConfusionMatrix {
     Element leavesMin, leavesMean, leavesMax;
     @UiField
     Element depthMin, depthMean, depthMax;
+
+    @UiField
+    MenuBar visbar;
+    @UiField
+    MenuBar treebar;
+    @UiField
+    MenuItem trees;
 
     public ConfusionMatrixViewImpl() {
         this(false);
@@ -171,6 +182,25 @@ public class ConfusionMatrixViewImpl extends AbstractConfusionMatrix {
     @Override
     public Element getDepthMax() {
         return this.depthMax;
+    }
+    
+    @Override
+    public void setPresenter(ConfusionMatrixPresenter presenter) {
+        this.presenter = presenter;
+    }
+    
+    @Override
+    public void setForestStatus(int done, int total) {
+        //trees.setHTML("Trees: Generated " + done + " of " + total);
+    }
+    
+    @Override
+    public void forestFinish(int count) {
+        for (int i = 0; i < count; i++) {
+            final int index = i;
+            treebar.addItem(String.valueOf(i + 1), presenter.getTreeVisCommand(index));
+        }
+        trees.setEnabled(true);
     }
     
     @UiHandler("popin")
