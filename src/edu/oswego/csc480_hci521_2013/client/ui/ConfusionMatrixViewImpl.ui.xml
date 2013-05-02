@@ -83,6 +83,7 @@
                 <dt>Confusion Matrix Identifier:</dt>
                 <dd ui:field='matrixIdentifier'/>
             </dl>
+            <div style="clear: left;"/>
             <dl class="{style.inline}">
                 <dt>Classification Variable:</dt>
                 <dd ui:field='responseVariable'/>

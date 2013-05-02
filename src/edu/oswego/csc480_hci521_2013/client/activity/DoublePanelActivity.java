@@ -62,6 +62,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import com.google.gwt.regexp.shared.*;
 
 public class DoublePanelActivity extends AbstractActivity implements DoublePanelPresenter {
 
@@ -192,7 +193,7 @@ public class DoublePanelActivity extends AbstractActivity implements DoublePanel
                 logger.log(Level.INFO, treeview.toString());
                 TabLabelView label = new TabLabelViewImpl();
                 //label.setLabel(datakey + "<br>" + modelkey + "<br>tree " + (tree + 1));
-                label.setLabel("Tree " + (tree + 1) +"<br>"+datakey);
+                label.setLabel("Tree " + (tree + 1) +"<br>"+parseDatakey(datakey));
                 label.setPresenter(DoublePanelActivity.this);
                 view.addVisTab(presenter.getView(), label);
                 visTabs.addTab(label, presenter);
@@ -200,13 +201,23 @@ public class DoublePanelActivity extends AbstractActivity implements DoublePanel
         });
     }
 
+    private String parseDatakey(String dataKey) {
+        String result = dataKey;
+        RegExp regex = RegExp.compile("([^\\\\/:*?\"<>|\r\n]+$)");
+        MatchResult matcher = regex.exec(dataKey);        
+        if (regex.test(dataKey)) {
+            result = matcher.getGroup(1);
+        }
+        return result;
+    }
+    
     @Override
     public void addConfusionMatrixTab(RF rf) {
         ConfusionMatrixPresenterImpl presenter
                 = new ConfusionMatrixPresenterImpl(
                 new ConfusionMatrixViewImpl(), eventBus, rf);
         //String title = "Confusion Matrix<br>" + rf.getDataKey() + "<br>" + rf.getModelKey();
-        String title = "Confusion Matrix<br>" + rf.getDataKey();
+        String title = "Confusion Matrix<br>" + parseDatakey(rf.getDataKey());
         TabLabelView label = new TabLabelViewImpl();
         label.setLabel(title);
         label.setPresenter(this);
@@ -220,7 +231,7 @@ public class DoublePanelActivity extends AbstractActivity implements DoublePanel
                 new ConfusionMatrixViewImpl(), eventBus, rf);
         presenter.setData(rfview);
         //String title = "Confusion Matrix<br>" + rf.getDataKey() + "<br>" + rf.getModelKey();
-        String title = "Confusion Matrix<br>" + rf.getDataKey();
+        String title = "Confusion Matrix<br>" + parseDatakey(rf.getDataKey());
         TabLabelView label = new TabLabelViewImpl();        
         label.setLabel(title);
         label.setPresenter(this);
