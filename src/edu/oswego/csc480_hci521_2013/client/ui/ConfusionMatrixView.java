@@ -20,6 +20,7 @@ import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.IsWidget;
 import java.util.List;
+import edu.oswego.csc480_hci521_2013.client.presenters.ConfusionMatrixPresenter;
 
 public interface ConfusionMatrixView extends IsWidget {
 
@@ -64,6 +65,12 @@ public interface ConfusionMatrixView extends IsWidget {
     void setDepthMean(String depthMean);
 
     void setDepthMax(String depthMax);
+    
+    void setPresenter(ConfusionMatrixPresenter presenter);
+    
+    void setForestStatus(int done, int total);
+    
+    void forestFinish(int count);
 
     Element getIdentifier();
     

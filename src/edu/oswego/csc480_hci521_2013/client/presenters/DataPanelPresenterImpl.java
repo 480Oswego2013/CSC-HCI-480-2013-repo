@@ -68,7 +68,6 @@ public class DataPanelPresenterImpl implements DataPanelPresenter, TabPanelPrese
         this.datakey = datakey;
         this.data = data;
 
-        view.setPresenter(this);
         view.setGenerateCommand(getGenerateCommand());
 
         Set<String> colNames = new HashSet<String>();
@@ -111,27 +110,6 @@ public class DataPanelPresenterImpl implements DataPanelPresenter, TabPanelPrese
     }
 
     private void bind() {
-        handlers.add(eventbus.addHandler(RFProgressEvent.TYPE, new RFProgressEventHandler() {
-            @Override
-            public void onDataUpdate(RFProgressEvent e) {
-                if (e.getSource().equals(randomForest)) {
-                    RFView rfview = e.getData();
-                    logger.log(Level.INFO, rfview.toString());
-                    ResponseStatus status = rfview.getResponse();
-                    if (status.isPoll()) {
-                        int done = status.getProgress();
-                        int total = status.getProgressTotal();
-                        logger.log(Level.INFO, "Trees: Generated " + done + " of " + total);
-                        view.setForestStatus(done, total);
-                    }
-                    else {
-                        logger.log(Level.INFO, "Forest finished");
-                        view.forestFinish(rfview.getNtree());
-                    }
-                }
-            }
-        }));
-
         handlers.add(eventbus.addHandler(RFParameterEvent.TYPE, new RFParameterEventHandler() {
             @Override
             public void onParams(RFParameterEvent event) {
@@ -192,17 +170,7 @@ public class DataPanelPresenterImpl implements DataPanelPresenter, TabPanelPrese
             }
         };
     }
-
-    @Override
-    public ScheduledCommand getTreeVisCommand(final int index) {
-        return new ScheduledCommand() {
-            @Override
-            public void execute()
-            {
-                eventbus.fireEvent(new TreeVisEvent(randomForest, index));
-            }
-        };
-    }
+    
 
     @Override
     public DataPanelView getView() {

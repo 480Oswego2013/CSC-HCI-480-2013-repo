@@ -54,7 +54,6 @@ public class DataPanelViewImpl extends Composite implements DataPanelView {
     interface Binder extends UiBinder<Widget, DataPanelViewImpl> {
     }
     private static Binder uiBinder = GWT.create(Binder.class);
-    private DataPanelPresenter presenter;
     private ListDataProvider<Map<String, String>> dataProvider = new ListDataProvider<Map<String, String>>();
     
     @UiField
@@ -65,10 +64,6 @@ public class DataPanelViewImpl extends Composite implements DataPanelView {
     MenuBar visbar;
     @UiField
     MenuItem generate;
-    @UiField
-    MenuBar treebar;
-    @UiField
-    MenuItem trees;
     @UiField
     DataGrid<Map<String, String>> dataTable;
     @UiField
@@ -102,29 +97,10 @@ public class DataPanelViewImpl extends Composite implements DataPanelView {
         generate.setScheduledCommand(command);
     }
 
-    @Override
-    public void setPresenter(DataPanelPresenter presenter) {
-        this.presenter = presenter;
-    }
 
     @Override
     public void forestStarted() {
-        treebar.clearItems();
         generate.setEnabled(false);
-    }
-
-    @Override
-    public void setForestStatus(int done, int total) {
-        //trees.setHTML("Trees: Generated " + done + " of " + total);
-    }
-
-    @Override
-    public void forestFinish(int count) {
-        for (int i = 0; i < count; i++) {
-            final int index = i;
-            treebar.addItem(String.valueOf(i + 1), presenter.getTreeVisCommand(index));
-        }
-        trees.setEnabled(true);
     }
 
     @Override

@@ -18,8 +18,10 @@ package edu.oswego.csc480_hci521_2013.client.ui;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
+import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HorizontalPanel;
@@ -87,4 +89,13 @@ public class TreePanelViewImpl extends Composite implements TreePanelView {
             }
         }.schedule(1);
     }
+    
+    @UiHandler("popin")
+    void handleClick(ClickEvent e) {
+    	closeWindow();
+    }
+    
+    public static native void closeWindow()/*-{
+    	$wnd.close();
+	}-*/;
 }

@@ -62,7 +62,7 @@ public class TreeVisActivity extends AbstractActivity {
             public void onSuccess(RFTreeView treeview) {
                 logger.log(Level.INFO, treeview.toString());
                 panel.setWidget(
-                    new TreePanelViewImpl(treeview, datakey, modelkey, tree)
+                    new TreePanelViewImpl(treeview, datakey, modelkey, tree, true)
                 );
             }
         });

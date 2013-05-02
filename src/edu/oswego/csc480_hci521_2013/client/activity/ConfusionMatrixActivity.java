@@ -46,7 +46,7 @@ public class ConfusionMatrixActivity extends AbstractActivity {
     @Override
     public void start(final AcceptsOneWidget panel, final EventBus eventBus) {
         ConfusionMatrixPresenter presenter = new ConfusionMatrixPresenterImpl(
-                new ConfusionMatrixViewImpl(), eventBus, randomForest);
+                new ConfusionMatrixViewImpl(true), eventBus, randomForest);
         panel.setWidget(presenter.getView());
         new RFViewPoller(eventBus, h2oService, randomForest).start();
     }

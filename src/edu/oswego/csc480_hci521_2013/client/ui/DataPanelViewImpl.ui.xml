@@ -30,10 +30,6 @@
         
         <gwt:MenuBar ui:field='visbar' vertical="false">
             <gwt:MenuItem ui:field='generate'>Generate Forest</gwt:MenuItem>
-            <gwt:MenuItem ui:field='trees' enabled="false">Trees<span class="{style.tick}"></span>
-                <gwt:MenuBar ui:field='treebar' vertical="true">
-                </gwt:MenuBar>
-            </gwt:MenuItem>
         </gwt:MenuBar>
 
         <br/>

@@ -33,13 +33,7 @@ public interface DataPanelView extends IsWidget {
 
     void setColumns(Set<String> columns);
 
-    void setPresenter(DataPanelPresenter presenter);
-
     void forestStarted();
-
-    void setForestStatus(int done, int total);
-
-    void forestFinish(int count);
     
     void showPopinButton(boolean show);
 }

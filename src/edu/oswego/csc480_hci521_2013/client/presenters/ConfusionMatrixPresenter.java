@@ -17,6 +17,7 @@ package edu.oswego.csc480_hci521_2013.client.presenters;
 
 import edu.oswego.csc480_hci521_2013.client.ui.ConfusionMatrixView;
 import edu.oswego.csc480_hci521_2013.shared.h2o.json.RFView;
+import com.google.gwt.core.client.Scheduler;
 
 public interface ConfusionMatrixPresenter {
 
@@ -25,5 +26,7 @@ public interface ConfusionMatrixPresenter {
     void setData(RFView data);
 
     ConfusionMatrixView getView();
+
+    Scheduler.ScheduledCommand getTreeVisCommand(int index);
 
 }

@@ -20,7 +20,7 @@
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
     xmlns:gwt='urn:import:com.google.gwt.user.client.ui'>
 
-    <ui:style type='edu.oswego.csc480_hci521_2013.client.ui.ConfusionMatrixView.Style'>
+    <ui:style src="hViewO.css" type='edu.oswego.csc480_hci521_2013.client.ui.ConfusionMatrixView.Style'>
         .tableHeader {
             background-color: #e0e0e0;
             font-weight: bold;
@@ -68,6 +68,13 @@
             <gwt:HorizontalPanel ui:field='popinPanel' styleName="{style.popin_panel}" horizontalAlignment="ALIGN_RIGHT">    
 		        <gwt:PushButton ui:field='popin' title="Pop-In" styleName="{style.popin_button}" ></gwt:PushButton>
 		    </gwt:HorizontalPanel>
+
+            <gwt:MenuBar ui:field='visbar' vertical="false">
+                <gwt:MenuItem ui:field='trees' enabled="false">Trees<span class="{style.tick}"></span>
+                    <gwt:MenuBar ui:field='treebar' vertical="true">
+                    </gwt:MenuBar>
+                </gwt:MenuItem>
+            </gwt:MenuBar>
             
             <progress ui:field='progress' value="0" max="100"/>
 
