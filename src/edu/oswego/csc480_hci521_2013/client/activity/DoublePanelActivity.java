@@ -106,7 +106,7 @@ public class DoublePanelActivity extends AbstractActivity implements DoublePanel
             @Override
             public void onStart(RFGenerateEvent e) {
                 logger.log(Level.INFO, "Adding confusion matrix...");
-                addConfusionMatrixTab(e.getData());
+                addConfusionMatrixTab(e.getData(), e.getResponseVariable());
             }
         });
     }
@@ -212,10 +212,10 @@ public class DoublePanelActivity extends AbstractActivity implements DoublePanel
     }
     
     @Override
-    public void addConfusionMatrixTab(RF rf) {
-        ConfusionMatrixPresenterImpl presenter
-                = new ConfusionMatrixPresenterImpl(
-                new ConfusionMatrixViewImpl(), eventBus, rf);
+    public void addConfusionMatrixTab(RF rf, String responseVariable) {
+        ConfusionMatrixViewImpl matrixView = new ConfusionMatrixViewImpl();
+        matrixView.setResponseVariable(responseVariable);
+        ConfusionMatrixPresenterImpl presenter = new ConfusionMatrixPresenterImpl(matrixView, eventBus, rf);
         //String title = "Confusion Matrix<br>" + rf.getDataKey() + "<br>" + rf.getModelKey();
         String title = "Confusion Matrix<br>" + parseDatakey(rf.getDataKey());
         TabLabelView label = new TabLabelViewImpl();

@@ -30,7 +30,7 @@ public interface DoublePanelPresenter {
 
     void addVisTab(String datakey, String modelkey, int tree);
 
-    void addConfusionMatrixTab(RF randomForest);
+    void addConfusionMatrixTab(RF randomForest, String responesVariable);
 
     void popout(TabLabelView tab);
     

@@ -102,7 +102,7 @@ public class DoublePanelPresenterTest {
     	try {
         RF randomForest = null;
         DoublePanelPresenter instance = new DoublePanelPresenterImpl();
-        instance.addConfusionMatrixTab(randomForest);
+        instance.addConfusionMatrixTab(randomForest, "");
     	} catch (Exception e) {
     		assert(false);
     	}
@@ -147,7 +147,7 @@ public class DoublePanelPresenterTest {
         public void addVisTab(String datakey, String modelkey, int tree) {
         }
 
-        public void addConfusionMatrixTab(RF randomForest) {
+        public void addConfusionMatrixTab(RF randomForest, String responseVariable) {
         }
 
         public void popout(TabLabelView tab) {

@@ -26,15 +26,21 @@ public class RFGenerateEvent extends GwtEvent<RFGenerateEventHandler> {
     public static final Type<RFGenerateEventHandler> TYPE = new Type<RFGenerateEventHandler>();
 
     private RF data;
-
-    public RFGenerateEvent(RF data) {
+    private String responseVariable;
+    
+    public RFGenerateEvent(RF data, String responseVariable) {
         this.data = data;
+        this.responseVariable = responseVariable;
     }
 
     public RF getData() {
         return data;
     }
 
+    public String getResponseVariable() {
+        return this.responseVariable;
+    }
+    
     @Override
     public Type<RFGenerateEventHandler> getAssociatedType() {
         return TYPE;

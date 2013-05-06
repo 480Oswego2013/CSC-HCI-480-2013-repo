@@ -55,7 +55,7 @@ public class DataPanelPresenterImpl implements DataPanelPresenter, TabPanelPrese
     RF randomForest;
     Inspect data;
     RfParametersPresenter popUp;
-
+    RFBuilder builder;
 
     private List<HandlerRegistration> handlers = new ArrayList<HandlerRegistration>();
 
@@ -116,7 +116,8 @@ public class DataPanelPresenterImpl implements DataPanelPresenter, TabPanelPrese
                 if (!event.getSource().equals(popUp)) {
                     return;
                 }
-                RFBuilder builder = event.getBuilder();
+                builder = event.getBuilder();
+                
                 h2oService.generateRandomForest(builder, new AsyncCallback<RF>() {
                     @Override
                     public void onFailure(Throwable thrwbl) {
@@ -130,8 +131,8 @@ public class DataPanelPresenterImpl implements DataPanelPresenter, TabPanelPrese
                         //       or we just get all events from all dialogs...
                         logger.log(Level.INFO, "Forest Started");
                         randomForest = rf;
-
-                        eventbus.fireEvent(new RFGenerateEvent(rf));
+                        
+                        eventbus.fireEvent(new RFGenerateEvent(rf, builder.getResponseVariable()));
 
                         view.forestStarted();
                         new RFViewPoller(eventbus, h2oService, randomForest)

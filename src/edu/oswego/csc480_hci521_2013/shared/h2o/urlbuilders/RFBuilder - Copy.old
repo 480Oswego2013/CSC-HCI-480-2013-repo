@@ -23,19 +23,9 @@ import java.util.Map.Entry;
  */
 public class RFBuilder extends AbstractBuilder {
 
-    public static enum StatType {
-        GINI,
-        ENTROPY
-    }
-
-    public static enum SamplingStrategy {
-        RANDOM,
-        STRATIFIED_LOCAL
-    }
-
     static final String NAME = "RF";
-    
-    private String responseValue;
+    private int numberTrees;
+    private String responseVariable;
 
     RFBuilder() {
     }
@@ -50,17 +40,12 @@ public class RFBuilder extends AbstractBuilder {
         addArg("data_key", dataKey);
     }
 
-    public String getResponseVariable()
-    {
-        return this.responseValue;
-    }
     /**
      * @param value Column name	The output classification (also known as
      * 'response variable') that is being learned.
      * @return
      */
     public RFBuilder setResponseVariable(String value) {
-        this.responseValue = value;
         addArg("response_variable", value);
         return this;
     }
@@ -78,11 +63,11 @@ public class RFBuilder extends AbstractBuilder {
     }
 
     /**
-     * @param type the stat type to use.
-     * @return this
+     * @param value use gini statistic (otherwise entropy is used)
+     * @return
      */
-    public RFBuilder setStatType(final StatType type) {
-        addArg("stat_type", type.name());
+    public RFBuilder setGini(boolean value) {
+        addArg("gini", value ? "1" : "0");
         return this;
     }
 
@@ -105,11 +90,11 @@ public class RFBuilder extends AbstractBuilder {
     }
 
     /**
-     * @param value the type of sampling to use
-     * @return this
+     * @param value Use Stratified sampling
+     * @return
      */
-    public RFBuilder setSamplingStrategy(SamplingStrategy value) {
-        addArg("sampling_strategy", value.name());
+    public RFBuilder setStratify(boolean value) {
+        addArg("stratify", value ? "1" : "0");
         return this;
     }
 
@@ -117,14 +102,14 @@ public class RFBuilder extends AbstractBuilder {
      * @param values Category strata (integer)
      * @return
      */
-    public RFBuilder setStrataSamples(HashMap<String, Integer> values)
+    public RFBuilder setStrata(HashMap<String, Integer> values)
     {
         StringBuilder value = new StringBuilder();
         for (Entry<String, Integer> pair : values.entrySet()) {
             value.append(pair.getKey()).append('=')
                     .append(pair.getValue()).append(',');
         }
-        addArg("strata_samples", value.deleteCharAt(value.length() - 1).toString());
+        addArg("strata", value.deleteCharAt(value.length() - 1).toString());
         return this;
     }
 
@@ -224,7 +209,6 @@ public class RFBuilder extends AbstractBuilder {
     }
 
     /**
-     * This allows for the use of == conditionals in the trees and not just <=.
      * @param value Integer from 0 to 2147483647
      * @return
      */
