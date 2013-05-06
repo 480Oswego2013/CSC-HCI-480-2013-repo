@@ -31,6 +31,12 @@
     left: 4px;
 }
 
+.scrolling_menu {
+   overflow-y: scroll !important;
+   height: 768px !important;
+   background: white !important;
+}
+
 .branding {
     color: navy;
     font-weight: bold;
