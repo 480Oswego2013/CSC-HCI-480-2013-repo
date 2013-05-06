@@ -78,6 +78,7 @@ public class RfParametersViewImpl extends PopupPanel implements RfParametersPres
     
     @Override
     public void buildUi() {
+        numTrees.setText("50");
     }
     
     //Called when classVars selection is changed.
