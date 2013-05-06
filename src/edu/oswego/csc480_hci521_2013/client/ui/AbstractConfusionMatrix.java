@@ -110,6 +110,11 @@ public abstract class AbstractConfusionMatrix extends Composite implements Confu
     }
 
     @Override
+    public void setParamField(String field){
+        this.getParamField().setInnerText(field);
+    }
+
+    @Override
     public void setMatrixHeaders(List<String> headers) {
         // TODO: we really only need to set the labels once...
         //       repeatedly setting them might cause some flickering

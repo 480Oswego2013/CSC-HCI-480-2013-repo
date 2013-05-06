@@ -69,6 +69,8 @@ public interface ConfusionMatrixView extends IsWidget {
     void setPresenter(ConfusionMatrixPresenter presenter);
     
     void setForestStatus(int done, int total);
+
+    void setParamField(String params);
     
     void forestFinish(int count);
 
@@ -105,6 +107,8 @@ public interface ConfusionMatrixView extends IsWidget {
     Element getDepthMean();
 
     Element getDepthMax();
+
+    Element getParamField();
 
     Style getStyle();
 

@@ -32,6 +32,7 @@ import java.util.logging.Logger;
 import edu.oswego.csc480_hci521_2013.shared.h2o.json.RFView.ConfusionMatrix;
 import edu.oswego.csc480_hci521_2013.client.presenters.ConfusionMatrixPresenter;
 
+
 public class ConfusionMatrixViewImpl extends AbstractConfusionMatrix {
 
     private static Binder uiBinder = GWT.create(Binder.class);
@@ -84,6 +85,9 @@ public class ConfusionMatrixViewImpl extends AbstractConfusionMatrix {
     MenuBar treebar;
     @UiField
     MenuItem trees;
+
+    @UiField
+    Element paramField;
 
     public ConfusionMatrixViewImpl() {
         this(false);
@@ -184,6 +188,11 @@ public class ConfusionMatrixViewImpl extends AbstractConfusionMatrix {
         return this.depthMax;
     }
     
+    @Override
+    public Element getParamField() {
+        return this.paramField;
+    }
+
     @Override
     public void setPresenter(ConfusionMatrixPresenter presenter) {
         this.presenter = presenter;

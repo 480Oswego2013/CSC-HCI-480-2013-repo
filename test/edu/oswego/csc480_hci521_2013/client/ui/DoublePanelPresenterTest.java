@@ -28,6 +28,7 @@ import com.google.gwt.place.shared.Place;
 import edu.oswego.csc480_hci521_2013.client.place.DoublePanelPlace;
 import edu.oswego.csc480_hci521_2013.client.presenters.DoublePanelPresenter;
 import edu.oswego.csc480_hci521_2013.shared.h2o.json.RF;
+import edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders.RFBuilder;
 
 public class DoublePanelPresenterTest {
     
@@ -102,7 +103,7 @@ public class DoublePanelPresenterTest {
     	try {
         RF randomForest = null;
         DoublePanelPresenter instance = new DoublePanelPresenterImpl();
-        instance.addConfusionMatrixTab(randomForest);
+        //instance.addConfusionMatrixTab(randomForest);
     	} catch (Exception e) {
     		assert(false);
     	}
@@ -147,7 +148,7 @@ public class DoublePanelPresenterTest {
         public void addVisTab(String datakey, String modelkey, int tree) {
         }
 
-        public void addConfusionMatrixTab(RF randomForest) {
+        public void addConfusionMatrixTab(RF randomForest, RFBuilder builder) {
         }
 
         public void popout(TabLabelView tab) {

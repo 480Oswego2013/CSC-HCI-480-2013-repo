@@ -36,6 +36,7 @@ import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 import edu.oswego.csc480_hci521_2013.client.presenters.RfParametersPresenter;
 import edu.oswego.csc480_hci521_2013.shared.h2o.json.ColumnEnumValues;
 import edu.oswego.csc480_hci521_2013.shared.h2o.json.Inspect.Column;
@@ -71,6 +72,7 @@ public class RfParametersViewImpl extends PopupPanel implements RfParametersPres
     @UiField Label errorLabel;
     @UiField ScrollPanel classWeightsScrollPanel;
     @UiField FlexTable classWeights;
+
     
     public RfParametersViewImpl() {
         setWidget(uiBinder.createAndBindUi(this));
