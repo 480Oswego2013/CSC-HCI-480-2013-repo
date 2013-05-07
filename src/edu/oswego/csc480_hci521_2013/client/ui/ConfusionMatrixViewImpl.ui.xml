@@ -127,9 +127,16 @@
                     <gwt:cell><dd ui:field='depthMax'/></gwt:cell>
                 </gwt:row>
             </gwt:Grid>
-            <dl class="{style.inLine}">
-                <dt>Parameters Used:</dt>
-                <dd ui:field='paramField'/>
+            <h2>Parameters Used</h2>
+            <dl class="{style.inline}">
+                <dt>Number of Trees:</dt>
+                <dd ui:field='numTreesUsed'/>
+                <dt>Classification Variable:</dt>
+                <dd ui:field='responseVariableUsed'/>
+                <dt>Ignored:</dt>
+                <dd ui:field='ignoredUsed'/>
+                <dt>Class Weights:</dt>
+                <dd ui:field='classWeightsUsed'/>
             </dl>
         </gwt:HTMLPanel>
     </gwt:ScrollPanel>

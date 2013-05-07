@@ -87,7 +87,13 @@ public class ConfusionMatrixViewImpl extends AbstractConfusionMatrix {
     MenuItem trees;
 
     @UiField
-    Element paramField;
+    Element numTreesUsed;
+    @UiField
+    Element responseVariableUsed;
+    @UiField
+    Element ignoredUsed;
+    @UiField
+    Element classWeightsUsed;
 
     public ConfusionMatrixViewImpl() {
         this(false);
@@ -189,8 +195,23 @@ public class ConfusionMatrixViewImpl extends AbstractConfusionMatrix {
     }
     
     @Override
-    public Element getParamField() {
-        return this.paramField;
+    public Element getNumTreesUsed() {
+        return this.numTreesUsed;
+    }
+
+    @Override
+    public Element getResponseVariableUsed() {
+        return this.responseVariableUsed;
+    }
+
+    @Override
+    public Element getIgnoredUsed() {
+        return this.ignoredUsed;
+    }
+
+    @Override
+    public Element getClassWeightsUsed() {
+        return this.classWeightsUsed;
     }
 
     @Override

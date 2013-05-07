@@ -102,8 +102,9 @@ public class DoublePanelPresenterTest {
     public void testAddConfusionMatrixTabNullForest() {
     	try {
         RF randomForest = null;
+        RFBuilder build = null;
         DoublePanelPresenter instance = new DoublePanelPresenterImpl();
-        //instance.addConfusionMatrixTab(randomForest);
+        instance.addConfusionMatrixTab(randomForest,build);
     	} catch (Exception e) {
     		assert(false);
     	}

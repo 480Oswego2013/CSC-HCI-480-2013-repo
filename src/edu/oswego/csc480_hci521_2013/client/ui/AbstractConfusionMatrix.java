@@ -110,8 +110,23 @@ public abstract class AbstractConfusionMatrix extends Composite implements Confu
     }
 
     @Override
-    public void setParamField(String field){
-        this.getParamField().setInnerText(field);
+    public void setNumTreesUsed(String num) {
+        this.getNumTreesUsed().setInnerText(num);
+    }
+
+    @Override
+    public void setResponseVariableUsed(String rv) {
+        this.getResponseVariableUsed().setInnerText(rv);
+    }
+
+    @Override
+    public void setIgnoredUsed(String ign) {
+        this.getIgnoredUsed().setInnerText(ign);
+    }
+
+    @Override
+    public void setClassWeightsUsed(String cwu) {
+        this.getClassWeightsUsed().setInnerText(cwu);
     }
 
     @Override

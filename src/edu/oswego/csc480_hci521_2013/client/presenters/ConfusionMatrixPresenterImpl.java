@@ -122,11 +122,11 @@ public class ConfusionMatrixPresenterImpl implements ConfusionMatrixPresenter, T
     @Override
     public void setData(RFView data) {
         this.data = data;
-        updateView(this.view, data, constructArgString());
+        updateView(this.view, data, builder);
 
     }
 
-    public static void updateView(ConfusionMatrixView matrixView, RFView data, String args) {
+    public static void updateView(ConfusionMatrixView matrixView, RFView data, RFBuilder build) {
         ConfusionMatrixAdapter adapter = new ConfusionMatrixAdapter(data);
         matrixView.setIdentifier(data.getDataKey() + " " + data.getModelKey());  
         if (data.getResponse().isPoll()) {
@@ -157,27 +157,39 @@ public class ConfusionMatrixPresenterImpl implements ConfusionMatrixPresenter, T
         matrixView.setDepthMean(adapter.getDepthMean());
         matrixView.setDepthMax(adapter.getDepthMax());
 
-        matrixView.setParamField(args);
+        setArgsUsed(matrixView,build);
         
     }
-    public String constructArgString(){
+    public  static void setArgsUsed(ConfusionMatrixView mv, RFBuilder build){
 
 
-     HashMap<String,ArrayList<String>> args = builder.getArgs();
+        HashMap<String,ArrayList<String>> args = build.getArgs();
+
         String argString = "";
-        for(Map.Entry<String, ArrayList<String>> arg: args.entrySet()){
-            if(arg.getValue().size() == 1){
-                argString += arg.getKey() + ": " + arg.getValue() + "</br>";
-            }
-            else{
-                argString += arg.getKey() + ": ";
-                for(String s: arg.getValue())
-                    argString += s + ", ";
-                argString += "</br>";
-            }
-        }
+        String key = "";
+        String value = "";
+        String text = "";
 
-        return argString;
+        for(Map.Entry<String, ArrayList<String>> arg: args.entrySet()){
+
+            key = arg.getKey();
+
+            if(key.compareTo("ntree")==0) {
+                value = arg.getValue().get(0).replace('[','\0');
+                mv.setNumTreesUsed(value);
+            } 
+            else if(key.compareTo("response_variable")==0) {
+                value = arg.getValue().get(0).replace('[','\0');
+                mv.setResponseVariableUsed(value);
+            }
+            else if(key.compareTo("ignore")==0) {
+                mv.setIgnoredUsed(arg.getValue().toString());
+            }
+            else if(key.compareTo("class_weights")==0) {
+                mv.setClassWeightsUsed(arg.getValue().toString());
+            }
+
+        }
 
 
     }
