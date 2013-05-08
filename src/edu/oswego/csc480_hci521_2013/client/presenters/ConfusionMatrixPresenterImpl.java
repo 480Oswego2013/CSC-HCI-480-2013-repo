@@ -183,7 +183,7 @@ public class ConfusionMatrixPresenterImpl implements ConfusionMatrixPresenter, T
                 mv.setResponseVariableUsed(value);
             }
             else if(key.compareTo("ignore")==0) {
-                mv.setIgnoredUsed(arg.getValue().toString());
+                mv.setIgnoredUsed(build.getIgnores());
             }
             else if(key.compareTo("class_weights")==0) {
                 mv.setClassWeightsUsed(arg.getValue().toString());

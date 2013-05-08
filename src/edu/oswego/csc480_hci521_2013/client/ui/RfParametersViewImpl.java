@@ -108,6 +108,7 @@ public class RfParametersViewImpl extends PopupPanel implements RfParametersPres
             if(ignoreCols.isItemSelected(i)){
                 Integer ignoreThis = Integer.valueOf(ignoreCols.getValue(i));
                 builder.setIgnore(ignoreThis);
+                builder.storeIgnore(ignoreCols.getItemText(i));
             }
         }
 
