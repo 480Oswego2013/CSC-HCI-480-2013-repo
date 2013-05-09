@@ -34,8 +34,10 @@ public class RFBuilder extends AbstractBuilder {
     }
 
     static final String NAME = "RF";
-    
+    static String ignoring = "None";  
     private String responseValue;
+    private int nTree = 50;
+    private String weights;
 
     RFBuilder() {
     }
@@ -65,6 +67,10 @@ public class RFBuilder extends AbstractBuilder {
         return this;
     }
 
+    public int getNtree() {
+        return this.nTree;
+    }
+    
     /**
      * @param value Integer from 0 to 2147483647
      * @return
@@ -73,6 +79,7 @@ public class RFBuilder extends AbstractBuilder {
         if (value < 0) {
             throw new IllegalArgumentException("value must be positive");
         }
+        this.nTree = value;
         addArg("ntree", value.toString());
         return this;
     }
@@ -86,11 +93,17 @@ public class RFBuilder extends AbstractBuilder {
         return this;
     }
 
+    public String getClassWeights() {
+        return this.weights;
+    }
+    
     /**
      * @param values Category weight (positive)
      * @return
      */
     public RFBuilder setClassWeights(HashMap<String, Double> values) {
+        this.weights = values.toString();
+        
         StringBuilder value = new StringBuilder();
         for (Entry<String, Double> pair : values.entrySet()) {
             if (pair.getValue() < 0) {
@@ -167,6 +180,17 @@ public class RFBuilder extends AbstractBuilder {
     public RFBuilder setIgnore(Integer value) {
         addMultiArg("ignore", value.toString());
         return this;
+    }
+
+    public void storeIgnore(String name){
+       if(ignoring.compareTo("")==0)
+            ignoring = name;
+        else
+            ignoring += ", " + name;
+    }
+
+    public String getIgnores(){
+        return ignoring;
     }
 
     /**

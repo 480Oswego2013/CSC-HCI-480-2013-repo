@@ -110,6 +110,16 @@ public abstract class AbstractConfusionMatrix extends Composite implements Confu
     }
 
     @Override
+    public void setIgnoredUsed(String ign) {
+        this.getIgnoredUsed().setInnerText(ign);
+    }
+
+    @Override
+    public void setClassWeightsUsed(String cwu) {
+        this.getClassWeightsUsed().setInnerText(cwu);
+    }
+
+    @Override
     public void setMatrixHeaders(List<String> headers) {
         // TODO: we really only need to set the labels once...
         //       repeatedly setting them might cause some flickering

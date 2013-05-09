@@ -21,6 +21,7 @@ import edu.oswego.csc480_hci521_2013.shared.h2o.json.RFView;
 import edu.oswego.csc480_hci521_2013.shared.h2o.json.RFView.ConfusionMatrix;
 import edu.oswego.csc480_hci521_2013.shared.h2o.json.RFView.TreeProperties.MinMeanMax;
 import edu.oswego.csc480_hci521_2013.shared.h2o.json.ResponseStatus;
+import edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders.RFBuilder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -42,6 +43,8 @@ public class ConfusionMatrixPresenterTest {
 
     @Mock
     private RFView randomForest;
+    @Mock
+    private RFBuilder modelParameters;
     @Mock
     private ConfusionMatrixView matrixView;
     @Mock
@@ -72,6 +75,10 @@ public class ConfusionMatrixPresenterTest {
         when(randomForest.getResponse()).thenReturn(status);
         when(randomForest.getTrees()).thenReturn(tree);
         when(randomForest.getConfusionMatrix()).thenReturn(matrix);
+        
+        when(modelParameters.getResponseVariable()).thenReturn("cylinders");
+        when(modelParameters.getNtree()).thenReturn(1000);
+                
         when(tree.getLeaves()).thenReturn(treeFeaturesLeaves);
         when(tree.getDepth()).thenReturn(treeFeaturesDepth);
     }
@@ -86,7 +93,7 @@ public class ConfusionMatrixPresenterTest {
         when(randomForest.getNtree()).thenReturn(treeCount);
         when(status.isPoll()).thenReturn(true);
 
-        ConfusionMatrixPresenterImpl.updateView(matrixView, randomForest);
+        ConfusionMatrixPresenterImpl.updateView(matrixView, randomForest, modelParameters);
         verify(matrixView).setNtree("1000");
     }
 
@@ -97,7 +104,7 @@ public class ConfusionMatrixPresenterTest {
         when(randomForest.getNtree()).thenReturn(treeCount);
         when(status.isPoll()).thenReturn(true);
 
-        ConfusionMatrixPresenterImpl.updateView(matrixView, randomForest);
+        ConfusionMatrixPresenterImpl.updateView(matrixView, randomForest, modelParameters);
         verify(matrixView).setProgress("0");
     }
 
@@ -110,7 +117,7 @@ public class ConfusionMatrixPresenterTest {
         when(status.isPoll()).thenReturn(true);
         when(tree.getNumberBuilt()).thenReturn(treesBuilt);
 
-        ConfusionMatrixPresenterImpl.updateView(matrixView, randomForest);
+        ConfusionMatrixPresenterImpl.updateView(matrixView, randomForest, modelParameters);
         verify(matrixView).setProgress("50.0");
     }
 
@@ -123,7 +130,7 @@ public class ConfusionMatrixPresenterTest {
         when(status.isPoll()).thenReturn(true);
         when(tree.getNumberBuilt()).thenReturn(treesBuilt);
 
-        ConfusionMatrixPresenterImpl.updateView(matrixView, randomForest);
+        ConfusionMatrixPresenterImpl.updateView(matrixView, randomForest, modelParameters);
         verify(matrixView).setProgress("100.0");
     }
 
@@ -136,7 +143,7 @@ public class ConfusionMatrixPresenterTest {
         when(status.isPoll()).thenReturn(true);
         when(tree.getNumberBuilt()).thenReturn(treesBuilt);
 
-        ConfusionMatrixPresenterImpl.updateView(matrixView, randomForest);
+        ConfusionMatrixPresenterImpl.updateView(matrixView, randomForest, modelParameters);
         verify(matrixView).setNtree("100");
     }
 
@@ -146,7 +153,7 @@ public class ConfusionMatrixPresenterTest {
 
         when(randomForest.getMtry()).thenReturn(mtry);
 
-        ConfusionMatrixPresenterImpl.updateView(matrixView, randomForest);
+        ConfusionMatrixPresenterImpl.updateView(matrixView, randomForest, modelParameters);
         verify(matrixView).setMtry("7");
     }
 
@@ -157,7 +164,7 @@ public class ConfusionMatrixPresenterTest {
         when(randomForest.getConfusionMatrix()).thenReturn(matrix);
         when(matrix.getType()).thenReturn(matrixType);
 
-        ConfusionMatrixPresenterImpl.updateView(matrixView, randomForest);
+        ConfusionMatrixPresenterImpl.updateView(matrixView, randomForest, modelParameters);
         verify(matrixView).setMatrixType(matrixType);
     }
 
@@ -168,7 +175,7 @@ public class ConfusionMatrixPresenterTest {
         when(matrix.getScores()).thenReturn(scores);
         when(randomForest.getConfusionMatrix()).thenReturn(matrix);
 
-        ConfusionMatrixPresenterImpl.updateView(matrixView, randomForest);
+        ConfusionMatrixPresenterImpl.updateView(matrixView, randomForest, modelParameters);
         //verify(matrixView).setMatrixType(matrixType);
     }
 

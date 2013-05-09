@@ -16,6 +16,7 @@
 package edu.oswego.csc480_hci521_2013.client.presenters.adapters;
 
 import edu.oswego.csc480_hci521_2013.shared.h2o.json.RFView;
+import edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders.RFBuilder;
 import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -26,9 +27,11 @@ public class ConfusionMatrixAdapter {
     private final String ProgressComplete = "";
     private final String ProgressStopped = "0";
     private RFView rfView;
+    private RFBuilder modelParameters;
 
-    public ConfusionMatrixAdapter(RFView data) {
+    public ConfusionMatrixAdapter(RFView data, RFBuilder modelParameters) {
         this.rfView = data;
+        this.modelParameters = modelParameters;
     }
 
     public String getProgress() {
@@ -132,7 +135,7 @@ public class ConfusionMatrixAdapter {
     }
 
     public String getResponseVariable() {
-        return Integer.toString(this.rfView.getResponseVariable());
+        return this.modelParameters.getResponseVariable();
     }
 
     public String getNtree() {

@@ -17,6 +17,7 @@ package edu.oswego.csc480_hci521_2013.client.events;
 
 import com.google.gwt.event.shared.GwtEvent;
 import edu.oswego.csc480_hci521_2013.shared.h2o.json.RF;
+import edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders.RFBuilder;
 
 /**
  *
@@ -26,19 +27,23 @@ public class RFGenerateEvent extends GwtEvent<RFGenerateEventHandler> {
     public static final Type<RFGenerateEventHandler> TYPE = new Type<RFGenerateEventHandler>();
 
     private RF data;
-    private String responseVariable;
+    private RFBuilder builder;
     
-    public RFGenerateEvent(RF data, String responseVariable) {
+    public RFGenerateEvent(RF data) {
         this.data = data;
-        this.responseVariable = responseVariable;
+    }
+
+    public RFGenerateEvent(RF data, RFBuilder builder){
+        this.data = data;
+        this.builder = builder;
     }
 
     public RF getData() {
         return data;
     }
 
-    public String getResponseVariable() {
-        return this.responseVariable;
+    public RFBuilder getBuilder(){
+        return builder;
     }
     
     @Override

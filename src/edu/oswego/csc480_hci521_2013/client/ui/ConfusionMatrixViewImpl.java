@@ -85,6 +85,10 @@ public class ConfusionMatrixViewImpl extends AbstractConfusionMatrix {
     @UiField
     MenuItem trees;
 
+	@UiField
+    Element ignoredUsed;
+    @UiField
+    Element classWeightsUsed;
     public ConfusionMatrixViewImpl() {
         this(false);
     }
@@ -184,6 +188,16 @@ public class ConfusionMatrixViewImpl extends AbstractConfusionMatrix {
         return this.depthMax;
     }
     
+    @Override
+    public Element getIgnoredUsed() {
+        return this.ignoredUsed;
+    }
+
+    @Override
+    public Element getClassWeightsUsed() {
+        return this.classWeightsUsed;
+    }
+
     @Override
     public void setPresenter(ConfusionMatrixPresenter presenter) {
         this.presenter = presenter;

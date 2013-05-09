@@ -127,6 +127,13 @@
                     <gwt:cell><dd ui:field='depthMax'/></gwt:cell>
                 </gwt:row>
             </gwt:Grid>
+            <h2>Parameters Used</h2>
+            <dl class="{style.inline}">
+                <dt>Ignored:</dt>
+                <dd ui:field='ignoredUsed'/>
+                <dt>Class Weights:</dt>
+                <dd ui:field='classWeightsUsed'/>
+            </dl>
         </gwt:HTMLPanel>
     </gwt:ScrollPanel>
 </ui:UiBinder>
