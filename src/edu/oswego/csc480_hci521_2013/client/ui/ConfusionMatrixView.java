@@ -69,7 +69,7 @@ public interface ConfusionMatrixView extends IsWidget {
     void setPresenter(ConfusionMatrixPresenter presenter);
     
     void setForestStatus(int done, int total);
-    
+
     void setIgnoredUsed(String ignored);
 
     void setClassWeightsUsed(String cwu);

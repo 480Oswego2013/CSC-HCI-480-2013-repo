@@ -38,7 +38,7 @@ import java.util.Map;
 import java.util.HashMap;
 
 public class ConfusionMatrixPresenterImpl implements ConfusionMatrixPresenter, TabPanelPresenter {
-    
+
     static final Logger logger = Logger.getLogger(ConfusionMatrixPresenterImpl.class.getName());
     RF randomForest;
     EventBus eventbus;
@@ -97,7 +97,7 @@ public class ConfusionMatrixPresenterImpl implements ConfusionMatrixPresenter, T
     public void added() {
         bind();
     }
-    
+
     @Override
     public void removed()
     {
@@ -106,7 +106,7 @@ public class ConfusionMatrixPresenterImpl implements ConfusionMatrixPresenter, T
         }
         handlers.clear();
     }
-    
+
     public RF getRandomForest() {
         return randomForest;
     }
@@ -147,12 +147,12 @@ public class ConfusionMatrixPresenterImpl implements ConfusionMatrixPresenter, T
         matrixView.setRowsSkipped(adapter.getRowsSkipped());
         matrixView.setRows(adapter.getRows());
         matrixView.setMatrixType(adapter.getMatrixType());
-        
+
         matrixView.setMatrixHeaders(adapter.getHeaders());
         matrixView.setMatrixScores(adapter.getScores());
         matrixView.setErrors(adapter.getErrors());
         matrixView.setTotals(adapter.getTotals());
-        
+
         matrixView.setTreesGenerated(adapter.getTreesBuilt());
         matrixView.setLeavesMin(adapter.getLeavesMin());
         matrixView.setLeavesMean(adapter.getLeavesMean());
@@ -161,7 +161,7 @@ public class ConfusionMatrixPresenterImpl implements ConfusionMatrixPresenter, T
         matrixView.setDepthMean(adapter.getDepthMean());
         matrixView.setDepthMax(adapter.getDepthMax());        
     }
-    
+
     @Override
     public ScheduledCommand getTreeVisCommand(final int index) {
         return new ScheduledCommand() {
@@ -171,7 +171,7 @@ public class ConfusionMatrixPresenterImpl implements ConfusionMatrixPresenter, T
             }
         };
     }
-    
+
     @Override
     public ConfusionMatrixView getView() {
         return view;

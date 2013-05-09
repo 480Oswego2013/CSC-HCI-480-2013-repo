@@ -28,7 +28,7 @@ public class RFGenerateEvent extends GwtEvent<RFGenerateEventHandler> {
 
     private RF data;
     private RFBuilder builder;
-    
+
     public RFGenerateEvent(RF data) {
         this.data = data;
     }
@@ -45,7 +45,7 @@ public class RFGenerateEvent extends GwtEvent<RFGenerateEventHandler> {
     public RFBuilder getBuilder(){
         return builder;
     }
-    
+
     @Override
     public Type<RFGenerateEventHandler> getAssociatedType() {
         return TYPE;

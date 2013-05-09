@@ -32,6 +32,7 @@ import java.util.logging.Logger;
 import edu.oswego.csc480_hci521_2013.shared.h2o.json.RFView.ConfusionMatrix;
 import edu.oswego.csc480_hci521_2013.client.presenters.ConfusionMatrixPresenter;
 
+
 public class ConfusionMatrixViewImpl extends AbstractConfusionMatrix {
 
     private static Binder uiBinder = GWT.create(Binder.class);
