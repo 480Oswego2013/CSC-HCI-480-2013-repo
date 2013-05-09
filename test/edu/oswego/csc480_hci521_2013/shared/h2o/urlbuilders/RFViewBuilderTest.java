@@ -15,6 +15,7 @@
  */
 package edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders;
 
+import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
 
 import java.util.HashMap;
@@ -57,6 +58,23 @@ public class RFViewBuilderTest {
 				"&3=3&2=2&10=10&1=1&0=0&7=7&-2=-2&6=6&-1=-1&5=5&-4=-4&" +
 				"-3=-3&4=4&-6=-6&-5=-5&-8=-8&9=9&-7=-7&8=8&-9=-9";
 		assertEquals(expResult, instance.build(encoder));
+	}
+	
+	/**Tests putting two null arguments into the hashmap that is put into the constructor of RFViewBuilder.
+	 * If an exception is thrown when they are given to the constructor, the test fails
+	 */
+	@Test
+	public void testHashNullArgs() {
+		try {
+		HashMap<String, String> args = new HashMap<String, String>();
+        args.put(null, null);
+        args = null;
+        instance = new RFViewBuilder(args);
+        encoder = new ServerUrlEncoder();
+        instance.build(encoder);
+		} catch (NullPointerException e) {
+			fail();
+		}
 	}
 
 	/**Tests the model and data key constructor for RFViewBuilder

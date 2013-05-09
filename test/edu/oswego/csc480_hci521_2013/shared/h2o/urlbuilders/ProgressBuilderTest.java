@@ -16,6 +16,7 @@
 package edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 import java.util.HashMap;
 
@@ -53,15 +54,53 @@ public class ProgressBuilderTest {
         assertEquals(expResult, instance.build(encoder));
     }
     
+    /**Tests putting a null value 
+     * 
+     */
     @Test
-    public void testProgressBuilderNullArgs() {
-        HashMap<String, String> args = new HashMap<String, String>();
-        args.put(null, null);
+    public void testProgressBuilderNullArgsInHash() {
+        try {
+    	HashMap<String, String> args = new HashMap<String, String>();
+        args.put("1", null);
         instance = new ProgressBuilder(args);
         encoder = new ServerUrlEncoder();
-        String expResult = "http://localhost:54321/Progress.json?test1=test2";
-        //System.out.println(instance.build(encoder));
-        assert(true);
+        instance.build(encoder);
+        } catch (NullPointerException e) {
+        	fail();	
+        }
+    }
+    
+    /**Tests putting a null hashmap into the constructor of the ProgressBuilder class
+     * 
+     */
+    @Test
+    public void testProgressBuilderNullArgsHash() {
+        try {
+    	HashMap<String, String> args = new HashMap<String, String>();
+        args = null;
+        instance = new ProgressBuilder(args);
+        encoder = new ServerUrlEncoder();
+        instance.build(encoder);
+        } catch (NullPointerException e) {
+        	e.printStackTrace();
+        	fail();	
+        }
+    }
+    
+    /**Tests the add args method of the ProgressBuilder class by passing in
+     * a null job and destination key
+     */
+    @Test
+    public void testProgressBuilderAddArgs() {
+    	try {
+    	String job = null;
+        String destinationKey = null;
+        instance = new ProgressBuilder(job, destinationKey);
+        encoder = new ServerUrlEncoder();
+        instance.build(encoder);
+    	} catch (NullPointerException e) {
+    		fail();
+    	}
     }
 
     /**Tests the ProgressBuilder constructor that takes a HashMap<String, String>, with integer strings ranging from -10
