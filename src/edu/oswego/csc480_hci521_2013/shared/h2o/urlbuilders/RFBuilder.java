@@ -34,7 +34,7 @@ public class RFBuilder extends AbstractBuilder {
     }
 
     static final String NAME = "RF";
-    
+    static String ignoring;  
     private String responseValue;
 
     RFBuilder() {
@@ -48,6 +48,7 @@ public class RFBuilder extends AbstractBuilder {
     public RFBuilder(String dataKey) {
         super(NAME);
         addArg("data_key", dataKey);
+        ignoring = "";
     }
 
     public String getResponseVariable()
@@ -167,6 +168,17 @@ public class RFBuilder extends AbstractBuilder {
     public RFBuilder setIgnore(Integer value) {
         addMultiArg("ignore", value.toString());
         return this;
+    }
+
+    public void storeIgnore(String name){
+       if(ignoring.compareTo("")==0)
+            ignoring = name;
+        else
+            ignoring += ", " + name;
+    }
+
+    public String getIgnores(){
+        return ignoring;
     }
 
     /**

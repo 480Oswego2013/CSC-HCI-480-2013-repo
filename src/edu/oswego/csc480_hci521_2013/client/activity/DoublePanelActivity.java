@@ -56,6 +56,7 @@ import edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders.RFTreeViewBuilder;
 import edu.oswego.csc480_hci521_2013.shared.h2o.json.RFView;
 import edu.oswego.csc480_hci521_2013.shared.h2o.json.StoreView;
 import edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders.StoreViewBuilder;
+import edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders.RFBuilder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -106,7 +107,7 @@ public class DoublePanelActivity extends AbstractActivity implements DoublePanel
             @Override
             public void onStart(RFGenerateEvent e) {
                 logger.log(Level.INFO, "Adding confusion matrix...");
-                addConfusionMatrixTab(e.getData(), e.getResponseVariable());
+                addConfusionMatrixTab(e.getData(),e.getBuilder());
             }
         });
     }
@@ -212,10 +213,10 @@ public class DoublePanelActivity extends AbstractActivity implements DoublePanel
     }
     
     @Override
-    public void addConfusionMatrixTab(RF rf, String responseVariable) {
+    public void addConfusionMatrixTab(RF rf, RFBuilder b) {
         ConfusionMatrixViewImpl matrixView = new ConfusionMatrixViewImpl();
-        matrixView.setResponseVariable(responseVariable);
-        ConfusionMatrixPresenterImpl presenter = new ConfusionMatrixPresenterImpl(matrixView, eventBus, rf);
+        matrixView.setResponseVariable(b.getResponseVariable());
+        ConfusionMatrixPresenterImpl presenter = new ConfusionMatrixPresenterImpl(matrixView, eventBus, rf,b);
         //String title = "Confusion Matrix<br>" + rf.getDataKey() + "<br>" + rf.getModelKey();
         String title = "Confusion Matrix<br>" + parseDatakey(rf.getDataKey());
         TabLabelView label = new TabLabelViewImpl();
@@ -225,10 +226,10 @@ public class DoublePanelActivity extends AbstractActivity implements DoublePanel
         visTabs.addTab(label, presenter);
     }
 
-    public void addConfusionMatrixTab(RF rf, RFView rfview) {
+    public void addConfusionMatrixTab(RF rf, RFView rfview, RFBuilder b) {
         ConfusionMatrixPresenterImpl presenter
                 = new ConfusionMatrixPresenterImpl(
-                new ConfusionMatrixViewImpl(), eventBus, rf);
+                new ConfusionMatrixViewImpl(), eventBus, rf, b);
         presenter.setData(rfview);
         //String title = "Confusion Matrix<br>" + rf.getDataKey() + "<br>" + rf.getModelKey();
         String title = "Confusion Matrix<br>" + parseDatakey(rf.getDataKey());
@@ -309,7 +310,7 @@ public class DoublePanelActivity extends AbstractActivity implements DoublePanel
         visTabs.deleteTab(tab);
         if (p instanceof ConfusionMatrixPresenterImpl) {
             ConfusionMatrixPresenterImpl cp = (ConfusionMatrixPresenterImpl) p;
-            addConfusionMatrixTab(cp.getRandomForest(), cp.getData());
+            addConfusionMatrixTab(cp.getRandomForest(), cp.getData(), cp.getBuilder());
         } else {
             TreePanelPresenterImpl tp = (TreePanelPresenterImpl) p;
             addVisTab(tp.getDatakey(), tp.getModelkey(), tp.getTreeIndex());

@@ -76,6 +76,10 @@ abstract class AbstractBuilder implements H2ORequest {
         return this;
     }
 
+    public HashMap<String, ArrayList<String>> getArgs(){
+        return args;
+    }
+
     @Override
     public String build(UrlEncoder encoder) {
         StringBuilder query = new StringBuilder();

@@ -69,6 +69,14 @@ public interface ConfusionMatrixView extends IsWidget {
     void setPresenter(ConfusionMatrixPresenter presenter);
     
     void setForestStatus(int done, int total);
+
+    void setNumTreesUsed(String num);
+
+    void setResponseVariableUsed(String rv);
+
+    void setIgnoredUsed(String ignored);
+
+    void setClassWeightsUsed(String cwu);
     
     void forestFinish(int count);
 
@@ -105,6 +113,14 @@ public interface ConfusionMatrixView extends IsWidget {
     Element getDepthMean();
 
     Element getDepthMax();
+
+    Element getNumTreesUsed();
+
+    Element getResponseVariableUsed();
+
+    Element getIgnoredUsed();
+
+    Element getClassWeightsUsed();
 
     Style getStyle();
 
