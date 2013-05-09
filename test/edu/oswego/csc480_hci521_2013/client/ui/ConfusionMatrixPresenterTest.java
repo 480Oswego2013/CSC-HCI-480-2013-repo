@@ -21,6 +21,7 @@ import edu.oswego.csc480_hci521_2013.shared.h2o.json.RFView;
 import edu.oswego.csc480_hci521_2013.shared.h2o.json.RFView.ConfusionMatrix;
 import edu.oswego.csc480_hci521_2013.shared.h2o.json.RFView.TreeProperties.MinMeanMax;
 import edu.oswego.csc480_hci521_2013.shared.h2o.json.ResponseStatus;
+import edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders.RFBuilder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -42,6 +43,8 @@ public class ConfusionMatrixPresenterTest {
 
     @Mock
     private RFView randomForest;
+    @Mock
+    private RFBuilder modelParameters;
     @Mock
     private ConfusionMatrixView matrixView;
     @Mock
@@ -72,104 +75,108 @@ public class ConfusionMatrixPresenterTest {
         when(randomForest.getResponse()).thenReturn(status);
         when(randomForest.getTrees()).thenReturn(tree);
         when(randomForest.getConfusionMatrix()).thenReturn(matrix);
+        
+        when(modelParameters.getResponseVariable()).thenReturn("cylinders");
+        when(modelParameters.getNtree()).thenReturn(1000);
+                
         when(tree.getLeaves()).thenReturn(treeFeaturesLeaves);
         when(tree.getDepth()).thenReturn(treeFeaturesDepth);
     }
 
-    // @After
-    // public void tearDown() {
-    // }
-    // @Test
-    // public void test_total_trees() {
-    //     final int treeCount = 1000;
+     @After
+     public void tearDown() {
+     }
+     @Test
+     public void test_total_trees() {
+         final int treeCount = 1000;
 
-    //     when(randomForest.getNtree()).thenReturn(treeCount);
-    //     when(status.isPoll()).thenReturn(true);
+         when(randomForest.getNtree()).thenReturn(treeCount);
+         when(status.isPoll()).thenReturn(true);
 
-    //     ConfusionMatrixPresenterImpl.updateView(matrixView, randomForest);
-    //     verify(matrixView).setNtree("1000");
-    // }
+        ConfusionMatrixPresenterImpl.updateView(matrixView, randomForest, modelParameters);
+        verify(matrixView).setNtree("1000");
+    }
 
-    // @Test
-    // public void test_no_progress() {
-    //     final int treeCount = 0;
+     @Test
+     public void test_no_progress() {
+         final int treeCount = 0;
 
-    //     when(randomForest.getNtree()).thenReturn(treeCount);
-    //     when(status.isPoll()).thenReturn(true);
+         when(randomForest.getNtree()).thenReturn(treeCount);
+         when(status.isPoll()).thenReturn(true);
 
-    //     ConfusionMatrixPresenterImpl.updateView(matrixView, randomForest);
-    //     verify(matrixView).setProgress("0");
-    // }
+        ConfusionMatrixPresenterImpl.updateView(matrixView, randomForest, modelParameters);
+        verify(matrixView).setProgress("0");
+    }
 
-    // @Test
-    // public void test_some_progress() {
-    //     final int treesBuilt = 50;
-    //     final int treeCount = 100;
+     @Test
+     public void test_some_progress() {
+         final int treesBuilt = 50;
+         final int treeCount = 100;
 
-    //     when(randomForest.getNtree()).thenReturn(treeCount);
-    //     when(status.isPoll()).thenReturn(true);
-    //     when(tree.getNumberBuilt()).thenReturn(treesBuilt);
+         when(randomForest.getNtree()).thenReturn(treeCount);
+         when(status.isPoll()).thenReturn(true);
+         when(tree.getNumberBuilt()).thenReturn(treesBuilt);
 
-    //     ConfusionMatrixPresenterImpl.updateView(matrixView, randomForest);
-    //     verify(matrixView).setProgress("50.0");
-    // }
+        ConfusionMatrixPresenterImpl.updateView(matrixView, randomForest, modelParameters);
+        verify(matrixView).setProgress("50.0");
+    }
 
-    // @Test
-    // public void test_total_progress() {
-    //     final int treesBuilt = 100;
-    //     final int treeCount = 100;
+     @Test
+     public void test_total_progress() {
+         final int treesBuilt = 100;
+         final int treeCount = 100;
 
-    //     when(randomForest.getNtree()).thenReturn(treeCount);
-    //     when(status.isPoll()).thenReturn(true);
-    //     when(tree.getNumberBuilt()).thenReturn(treesBuilt);
+         when(randomForest.getNtree()).thenReturn(treeCount);
+         when(status.isPoll()).thenReturn(true);
+         when(tree.getNumberBuilt()).thenReturn(treesBuilt);
 
-    //     ConfusionMatrixPresenterImpl.updateView(matrixView, randomForest);
-    //     verify(matrixView).setProgress("100.0");
-    // }
+        ConfusionMatrixPresenterImpl.updateView(matrixView, randomForest, modelParameters);
+        verify(matrixView).setProgress("100.0");
+    }
 
-    // @Test
-    // public void test_trees() {
-    //     final int treesBuilt = 100;
-    //     final int treeCount = 100;
+     @Test
+     public void test_trees() {
+         final int treesBuilt = 100;
+         final int treeCount = 100;
 
-    //     when(randomForest.getNtree()).thenReturn(treeCount);
-    //     when(status.isPoll()).thenReturn(true);
-    //     when(tree.getNumberBuilt()).thenReturn(treesBuilt);
+         when(randomForest.getNtree()).thenReturn(treeCount);
+         when(status.isPoll()).thenReturn(true);
+         when(tree.getNumberBuilt()).thenReturn(treesBuilt);
 
-    //     ConfusionMatrixPresenterImpl.updateView(matrixView, randomForest);
-    //     verify(matrixView).setNtree("100");
-    // }
+        ConfusionMatrixPresenterImpl.updateView(matrixView, randomForest, modelParameters);
+        verify(matrixView).setNtree("100");
+    }
 
-    // @Test
-    // public void test_mtry() {
-    //     final int mtry = 7;
+     @Test
+     public void test_mtry() {
+         final int mtry = 7;
 
-    //     when(randomForest.getMtry()).thenReturn(mtry);
+         when(randomForest.getMtry()).thenReturn(mtry);
 
-    //     ConfusionMatrixPresenterImpl.updateView(matrixView, randomForest);
-    //     verify(matrixView).setMtry("7");
-    // }
+        ConfusionMatrixPresenterImpl.updateView(matrixView, randomForest, modelParameters);
+        verify(matrixView).setMtry("7");
+    }
 
-    // @Test
-    // public void test_matrix_type() {
-    //     final String matrixType = "unknown";
+     @Test
+     public void test_matrix_type() {
+         final String matrixType = "unknown";
 
-    //     when(randomForest.getConfusionMatrix()).thenReturn(matrix);
-    //     when(matrix.getType()).thenReturn(matrixType);
+         when(randomForest.getConfusionMatrix()).thenReturn(matrix);
+         when(matrix.getType()).thenReturn(matrixType);
 
-    //     ConfusionMatrixPresenterImpl.updateView(matrixView, randomForest);
-    //     verify(matrixView).setMatrixType(matrixType);
-    // }
+        ConfusionMatrixPresenterImpl.updateView(matrixView, randomForest, modelParameters);
+        verify(matrixView).setMatrixType(matrixType);
+    }
 
-    // @Test
-    // public void test_matrix() {
-    //     Integer[][] scores = new Integer[][] {{1,0,0},{0,1,0},{0,0,1}};
+     @Test
+     public void test_matrix() {
+         Integer[][] scores = new Integer[][] {{1,0,0},{0,1,0},{0,0,1}};
 
-    //     when(matrix.getScores()).thenReturn(scores);
-    //     when(randomForest.getConfusionMatrix()).thenReturn(matrix);
+         when(matrix.getScores()).thenReturn(scores);
+         when(randomForest.getConfusionMatrix()).thenReturn(matrix);
 
-    //     ConfusionMatrixPresenterImpl.updateView(matrixView, randomForest);
-    //     //verify(matrixView).setMatrixType(matrixType);
-    // }
+        ConfusionMatrixPresenterImpl.updateView(matrixView, randomForest, modelParameters);
+        //verify(matrixView).setMatrixType(matrixType);
+    }
 
 }

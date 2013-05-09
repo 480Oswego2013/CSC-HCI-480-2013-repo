@@ -48,7 +48,7 @@ public class ConfusionMatrixPresenterImpl implements ConfusionMatrixPresenter, T
     RFBuilder builder;
 
     private List<HandlerRegistration> handlers = new ArrayList<HandlerRegistration>();
-
+    
     public ConfusionMatrixPresenterImpl(ConfusionMatrixView view, EventBus eventBus, RF randomForest, RFBuilder builder) {
         this.view = view;
         this.eventbus = eventBus;
@@ -59,7 +59,7 @@ public class ConfusionMatrixPresenterImpl implements ConfusionMatrixPresenter, T
         bind();
     }
 
-
+        
     public ConfusionMatrixPresenterImpl(ConfusionMatrixView view, EventBus eventBus, RF randomForest) {
         this.view = view;
         this.eventbus = eventBus;
@@ -101,7 +101,7 @@ public class ConfusionMatrixPresenterImpl implements ConfusionMatrixPresenter, T
     @Override
     public void removed()
     {
-        for (HandlerRegistration h: handlers) {
+        for (HandlerRegistration h : handlers) {
             h.removeHandler();
         }
         handlers.clear();
@@ -127,9 +127,9 @@ public class ConfusionMatrixPresenterImpl implements ConfusionMatrixPresenter, T
         updateView(this.view, data, builder);
 
     }
-
+    
     public static void updateView(ConfusionMatrixView matrixView, RFView data, RFBuilder build) {
-        ConfusionMatrixAdapter adapter = new ConfusionMatrixAdapter(data);
+        ConfusionMatrixAdapter adapter = new ConfusionMatrixAdapter(data, build);
         matrixView.setIdentifier(data.getDataKey() + " " + data.getModelKey());        
         if (data.getResponse().isPoll()) {
             matrixView.setProgress(adapter.getProgress());
@@ -137,10 +137,12 @@ public class ConfusionMatrixPresenterImpl implements ConfusionMatrixPresenter, T
         else {
             matrixView.hideProgress();
         }
-
+        
         matrixView.setClassificationError(adapter.getClassificationError());
         matrixView.setResponseVariable(adapter.getResponseVariable());
         matrixView.setNtree(adapter.getNtree());
+        matrixView.setIgnoredUsed(build.getIgnores());
+        matrixView.setClassWeightsUsed(build.getClassWeights());
         matrixView.setMtry(adapter.getMtry());
         matrixView.setRowsSkipped(adapter.getRowsSkipped());
         matrixView.setRows(adapter.getRows());
@@ -157,45 +159,8 @@ public class ConfusionMatrixPresenterImpl implements ConfusionMatrixPresenter, T
         matrixView.setLeavesMax(adapter.getLeavesMax());
         matrixView.setDepthMin(adapter.getDepthMin());
         matrixView.setDepthMean(adapter.getDepthMean());
-        matrixView.setDepthMax(adapter.getDepthMax());
-
-        setArgsUsed(matrixView,build);
-        
+        matrixView.setDepthMax(adapter.getDepthMax());        
     }
-    public  static void setArgsUsed(ConfusionMatrixView mv, RFBuilder build){
-
-
-        HashMap<String,ArrayList<String>> args = build.getArgs();
-
-        String argString = "";
-        String key = "";
-        String value = "";
-        String text = "";
-
-        for(Map.Entry<String, ArrayList<String>> arg: args.entrySet()){
-
-            key = arg.getKey();
-
-            if(key.compareTo("ntree")==0) {
-                value = arg.getValue().get(0).replace('[','\0');
-                mv.setNumTreesUsed(value);
-            } 
-            else if(key.compareTo("response_variable")==0) {
-                value = arg.getValue().get(0).replace('[','\0');
-                mv.setResponseVariableUsed(value);
-            }
-            else if(key.compareTo("ignore")==0) {
-                mv.setIgnoredUsed(build.getIgnores());
-            }
-            else if(key.compareTo("class_weights")==0) {
-                mv.setClassWeightsUsed(arg.getValue().toString());
-            }
-
-        }
-
-
-    }
-
 
     @Override
     public ScheduledCommand getTreeVisCommand(final int index) {

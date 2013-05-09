@@ -86,15 +86,10 @@ public class ConfusionMatrixViewImpl extends AbstractConfusionMatrix {
     @UiField
     MenuItem trees;
 
-    @UiField
-    Element numTreesUsed;
-    @UiField
-    Element responseVariableUsed;
-    @UiField
+	@UiField
     Element ignoredUsed;
     @UiField
     Element classWeightsUsed;
-
     public ConfusionMatrixViewImpl() {
         this(false);
     }
@@ -194,16 +189,6 @@ public class ConfusionMatrixViewImpl extends AbstractConfusionMatrix {
         return this.depthMax;
     }
     
-    @Override
-    public Element getNumTreesUsed() {
-        return this.numTreesUsed;
-    }
-
-    @Override
-    public Element getResponseVariableUsed() {
-        return this.responseVariableUsed;
-    }
-
     @Override
     public Element getIgnoredUsed() {
         return this.ignoredUsed;

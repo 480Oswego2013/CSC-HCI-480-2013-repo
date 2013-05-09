@@ -74,6 +74,7 @@ public class RfParametersViewImpl extends PopupPanel implements RfParametersPres
     @UiField FlexTable classWeights;
 
     
+    
     public RfParametersViewImpl() {
         setWidget(uiBinder.createAndBindUi(this));
     }

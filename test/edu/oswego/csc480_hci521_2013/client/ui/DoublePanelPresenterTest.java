@@ -29,8 +29,14 @@ import edu.oswego.csc480_hci521_2013.client.place.DoublePanelPlace;
 import edu.oswego.csc480_hci521_2013.client.presenters.DoublePanelPresenter;
 import edu.oswego.csc480_hci521_2013.shared.h2o.json.RF;
 import edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders.RFBuilder;
+import org.mockito.Mock;
+import static org.mockito.Mockito.when;
+import org.mockito.MockitoAnnotations;
 
 public class DoublePanelPresenterTest {
+    
+    @Mock
+    private RFBuilder modelParameters;
     
     public DoublePanelPresenterTest() {
     }
@@ -45,6 +51,9 @@ public class DoublePanelPresenterTest {
     
     @Before
     public void setUp() {
+        MockitoAnnotations.initMocks(this);
+        when(modelParameters.getResponseVariable()).thenReturn("cylinders");
+        when(modelParameters.getNtree()).thenReturn(1000);
     }
     
     @After
@@ -104,6 +113,7 @@ public class DoublePanelPresenterTest {
         RF randomForest = null;
         RFBuilder build = null;
         DoublePanelPresenter instance = new DoublePanelPresenterImpl();
+        instance.addConfusionMatrixTab(randomForest, modelParameters);
         instance.addConfusionMatrixTab(randomForest,build);
     	} catch (Exception e) {
     		assert(false);

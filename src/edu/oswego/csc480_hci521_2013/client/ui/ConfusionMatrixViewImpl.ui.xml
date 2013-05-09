@@ -129,10 +129,6 @@
             </gwt:Grid>
             <h2>Parameters Used</h2>
             <dl class="{style.inline}">
-                <dt>Number of Trees:</dt>
-                <dd ui:field='numTreesUsed'/>
-                <dt>Classification Variable:</dt>
-                <dd ui:field='responseVariableUsed'/>
                 <dt>Ignored:</dt>
                 <dd ui:field='ignoredUsed'/>
                 <dt>Class Weights:</dt>

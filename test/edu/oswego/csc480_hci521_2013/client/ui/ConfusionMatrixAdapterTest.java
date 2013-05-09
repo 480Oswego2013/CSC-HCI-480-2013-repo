@@ -22,6 +22,7 @@ import static org.mockito.Mockito.when;
 import edu.oswego.csc480_hci521_2013.shared.h2o.json.RFView;
 import edu.oswego.csc480_hci521_2013.shared.h2o.json.RFView.ConfusionMatrix;
 import edu.oswego.csc480_hci521_2013.shared.h2o.json.ResponseStatus;
+import edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders.RFBuilder;
 import java.util.List;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -36,6 +37,8 @@ public class ConfusionMatrixAdapterTest {
 
     @Mock
     private RFView randomForest;
+    @Mock
+    private RFBuilder modelParameters;
     @Mock
     private ConfusionMatrixView matrixView;
     @Mock
@@ -62,6 +65,9 @@ public class ConfusionMatrixAdapterTest {
         when(randomForest.getResponse()).thenReturn(status);
         when(randomForest.getTrees()).thenReturn(tree);
         when(randomForest.getConfusionMatrix()).thenReturn(matrix);
+        
+        when(modelParameters.getResponseVariable()).thenReturn("cylinders");
+        when(modelParameters.getNtree()).thenReturn(1000);
     }
 
     @After
@@ -71,16 +77,16 @@ public class ConfusionMatrixAdapterTest {
     @Test
     public void getResponseVariableTest()
     {
-        when(randomForest.getResponseVariable()).thenReturn(7);
-        ConfusionMatrixAdapter adapter = new ConfusionMatrixAdapter(randomForest);
-        assertEquals(adapter.getResponseVariable(), "7");
+        when(modelParameters.getResponseVariable()).thenReturn("cylinders");
+        ConfusionMatrixAdapter adapter = new ConfusionMatrixAdapter(randomForest, modelParameters);
+        assertEquals(adapter.getResponseVariable(), "cylinders");
     }
 
     @Test
     public void getNtreeTest()
     {
         when(randomForest.getNtree()).thenReturn(1000);
-        ConfusionMatrixAdapter adapter = new ConfusionMatrixAdapter(randomForest);
+        ConfusionMatrixAdapter adapter = new ConfusionMatrixAdapter(randomForest, modelParameters);
         assertEquals(adapter.getNtree(), "1000");
     }
 
@@ -88,7 +94,7 @@ public class ConfusionMatrixAdapterTest {
     public void getMtryTest()
     {
         when(randomForest.getMtry()).thenReturn(9);
-        ConfusionMatrixAdapter adapter = new ConfusionMatrixAdapter(randomForest);
+        ConfusionMatrixAdapter adapter = new ConfusionMatrixAdapter(randomForest, modelParameters);
         assertEquals(adapter.getMtry(), "9");
     }
 
@@ -96,7 +102,7 @@ public class ConfusionMatrixAdapterTest {
     public void getMtryAllTest()
     {
         when(randomForest.getMtry()).thenReturn(-1);
-        ConfusionMatrixAdapter adapter = new ConfusionMatrixAdapter(randomForest);
+        ConfusionMatrixAdapter adapter = new ConfusionMatrixAdapter(randomForest, modelParameters);
         assertEquals(adapter.getMtry(), "All");
     }
 
@@ -107,7 +113,7 @@ public class ConfusionMatrixAdapterTest {
 
         when(matrix.getScores()).thenReturn(scores);
         when(randomForest.getConfusionMatrix()).thenReturn(matrix);
-        ConfusionMatrixAdapter adapter = new ConfusionMatrixAdapter(randomForest);
+        ConfusionMatrixAdapter adapter = new ConfusionMatrixAdapter(randomForest, modelParameters);
 
         List<List<Integer>> scoresList = adapter.getScores();
         assertEquals(3, scoresList.size());
