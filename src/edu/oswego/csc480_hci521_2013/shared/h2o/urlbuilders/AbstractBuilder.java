@@ -41,23 +41,35 @@ abstract class AbstractBuilder implements H2ORequest {
     }
 
     protected AbstractBuilder setArgs(HashMap<String, String> args) {
+    	if (args != null) {
         for (Entry<String, String> item : args.entrySet()) {
             addMultiArg(item.getKey(), item.getValue());
         }
+    	} else {
+    		//TODO: A null hashmap was passed to this method
+    	}
         return this;
     }
 
     protected AbstractBuilder addArg(String key, String value) {
+    	if (key != null & value != null) {
         args.put(key, new ArrayList<String>());
         args.get(key).add(value);
+    	} else {
+    		//TODO: A null key or value was passed to this method
+    	}
         return this;
     }
 
     protected AbstractBuilder addMultiArg(String key, String value) {
+    	if (key != null && value != null) {
         if (!args.containsKey(key)) {
             args.put(key, new ArrayList<String>());
         }
         args.get(key).add(value);
+    	} else {
+    		//TODO: A null key or null value was passed to this method
+    	}
         return this;
     }
 
