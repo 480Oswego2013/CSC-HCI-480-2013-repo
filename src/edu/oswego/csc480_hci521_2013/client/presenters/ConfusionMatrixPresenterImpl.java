@@ -18,6 +18,8 @@ package edu.oswego.csc480_hci521_2013.client.presenters;
 import com.google.web.bindery.event.shared.EventBus;
 import com.google.web.bindery.event.shared.HandlerRegistration;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
+import edu.oswego.csc480_hci521_2013.client.events.RFParameterEvent;
+import edu.oswego.csc480_hci521_2013.client.events.RFParameterEventHandler;
 import edu.oswego.csc480_hci521_2013.client.presenters.adapters.ConfusionMatrixAdapter;
 import edu.oswego.csc480_hci521_2013.client.ui.ConfusionMatrixView;
 import edu.oswego.csc480_hci521_2013.client.events.RFProgressEvent;
@@ -42,6 +44,7 @@ public class ConfusionMatrixPresenterImpl implements ConfusionMatrixPresenter, T
     EventBus eventbus;
     ConfusionMatrixView view;
     RFView data;
+    private String responseVariable;
     RFBuilder builder;
 
     private List<HandlerRegistration> handlers = new ArrayList<HandlerRegistration>();
@@ -63,11 +66,10 @@ public class ConfusionMatrixPresenterImpl implements ConfusionMatrixPresenter, T
         this.randomForest = randomForest;
         this.builder = null;
         view.setPresenter(this);
-
+        
         bind();
     }
-
-
+    
     private void bind() {
         handlers.add(eventbus.addHandler(RFProgressEvent.TYPE, new RFProgressEventHandler() {
             @Override
@@ -90,10 +92,9 @@ public class ConfusionMatrixPresenterImpl implements ConfusionMatrixPresenter, T
             }
         }));
     }
-
+    
     @Override
-    public void added()
-    {
+    public void added() {
         bind();
     }
 
@@ -109,6 +110,7 @@ public class ConfusionMatrixPresenterImpl implements ConfusionMatrixPresenter, T
     public RF getRandomForest() {
         return randomForest;
     }
+    
 
     public RFBuilder getBuilder(){
         return builder;
@@ -118,7 +120,7 @@ public class ConfusionMatrixPresenterImpl implements ConfusionMatrixPresenter, T
     public RFView getData() {
         return data;
     }
-
+    
     @Override
     public void setData(RFView data) {
         this.data = data;
@@ -128,7 +130,7 @@ public class ConfusionMatrixPresenterImpl implements ConfusionMatrixPresenter, T
 
     public static void updateView(ConfusionMatrixView matrixView, RFView data, RFBuilder build) {
         ConfusionMatrixAdapter adapter = new ConfusionMatrixAdapter(data);
-        matrixView.setIdentifier(data.getDataKey() + " " + data.getModelKey());  
+        matrixView.setIdentifier(data.getDataKey() + " " + data.getModelKey());        
         if (data.getResponse().isPoll()) {
             matrixView.setProgress(adapter.getProgress());
         }

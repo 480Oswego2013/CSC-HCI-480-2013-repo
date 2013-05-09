@@ -214,9 +214,9 @@ public class DoublePanelActivity extends AbstractActivity implements DoublePanel
     
     @Override
     public void addConfusionMatrixTab(RF rf, RFBuilder b) {
-        ConfusionMatrixPresenterImpl presenter
-                = new ConfusionMatrixPresenterImpl(
-                new ConfusionMatrixViewImpl(), eventBus, rf, b);
+        ConfusionMatrixViewImpl matrixView = new ConfusionMatrixViewImpl();
+        matrixView.setResponseVariable(b.getResponseVariable());
+        ConfusionMatrixPresenterImpl presenter = new ConfusionMatrixPresenterImpl(matrixView, eventBus, rf,b);
         //String title = "Confusion Matrix<br>" + rf.getDataKey() + "<br>" + rf.getModelKey();
         String title = "Confusion Matrix<br>" + parseDatakey(rf.getDataKey());
         TabLabelView label = new TabLabelViewImpl();

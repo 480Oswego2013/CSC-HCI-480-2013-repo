@@ -34,7 +34,8 @@ public class RFBuilder extends AbstractBuilder {
     }
 
     static final String NAME = "RF";
-    static String ignoring;
+    static String ignoring;  
+    private String responseValue;
 
     RFBuilder() {
     }
@@ -50,12 +51,17 @@ public class RFBuilder extends AbstractBuilder {
         ignoring = "";
     }
 
+    public String getResponseVariable()
+    {
+        return this.responseValue;
+    }
     /**
      * @param value Column name	The output classification (also known as
      * 'response variable') that is being learned.
      * @return
      */
     public RFBuilder setResponseVariable(String value) {
+        this.responseValue = value;
         addArg("response_variable", value);
         return this;
     }
