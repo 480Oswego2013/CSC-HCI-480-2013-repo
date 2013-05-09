@@ -55,7 +55,7 @@ public class DataPanelViewImpl extends Composite implements DataPanelView {
     }
     private static Binder uiBinder = GWT.create(Binder.class);
     private ListDataProvider<Map<String, String>> dataProvider = new ListDataProvider<Map<String, String>>();
-    
+
     @UiField
     PushButton popin;
     @UiField
@@ -78,17 +78,17 @@ public class DataPanelViewImpl extends Composite implements DataPanelView {
     public DataPanelViewImpl() {
         this(false);
     }
-    
+
     public DataPanelViewImpl(boolean showPopinButton) {
     	SimplePager.Resources pagerResources = GWT.create(SimplePager.Resources.class);
         pager = new SimplePager(TextLocation.CENTER, pagerResources, false, 0, true);
-    	
+
     	initWidget(uiBinder.createAndBindUi(this));
         dataTable.setKeyboardSelectionPolicy(HasKeyboardSelectionPolicy.KeyboardSelectionPolicy.DISABLED);
         dataProvider.addDataDisplay(dataTable);
         pager.setDisplay(dataTable);
 //        pager.setRangeLimited(false);
-        
+
         popinPanel.setVisible(showPopinButton);
     }
 
@@ -100,7 +100,6 @@ public class DataPanelViewImpl extends Composite implements DataPanelView {
 
     @Override
     public void forestStarted() {
-        generate.setEnabled(false);
     }
 
     @Override
@@ -120,17 +119,17 @@ public class DataPanelViewImpl extends Composite implements DataPanelView {
 //        dataTable.setRowData(data);
     	dataProvider.setList(data);
     }
-    
+
     @Override
     public void showPopinButton(boolean show) {
     	popin.setVisible(show);
     }
-    
+
     @UiHandler("popin")
     void handleClick(ClickEvent e) {
     	closeWindow();
     }
-    
+
     public static native void closeWindow()/*-{
     	$wnd.close();
 	}-*/;
