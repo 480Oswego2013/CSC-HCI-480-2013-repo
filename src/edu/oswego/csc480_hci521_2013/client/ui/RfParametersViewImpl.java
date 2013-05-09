@@ -114,9 +114,8 @@ public class RfParametersViewImpl extends PopupPanel implements RfParametersPres
         }
 
         //Set class weights into builder
-        //Start at row index 1 since first row is label info.
         HashMap<String, Double> values = new HashMap<String,Double>();
-        for(int row = 1; row < classWeights.getRowCount(); row++){
+        for(int row = 0; row < classWeights.getRowCount(); row++){
             String label = classWeights.getText(row, 0);
             DoubleBox value = (DoubleBox) classWeights.getWidget(row,1);
             values.put(label,value.getValue());
