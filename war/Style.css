@@ -26,6 +26,10 @@ th {
     white-space: normal;
 }
 
+td.gwt-MenuItem-selected {
+    background-color: #E3E8F3;
+}
+
 .sendButton {
     display: block;
     font-size: 16pt;
