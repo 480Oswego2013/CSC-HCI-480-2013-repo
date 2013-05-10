@@ -13,6 +13,11 @@
  * See the License for the specific language governing permissions and 
  * limitations under the License.
  */
+
+/**
+ *
+ * @author Ethan Neil
+ */
 package edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders;
 
 import edu.oswego.csc480_hci521_2013.server.ServerUrlEncoder;
