@@ -23,7 +23,7 @@
     <packaging>war</packaging>
     <version>1.0-SNAPSHOT</version>
     <name>hViewO</name>
-    <url>https://sites.google.com/a/oswego.edu/csc-480-hci-521-suny-oswego-spring-2013/home</url>
+    <url>http://cs.oswego.edu/~jwhite8/csc480/</url>
     <licenses>
         <license>
             <name>The Apache Software License, Version 2.0</name>
@@ -46,6 +46,16 @@
       <tag>HEAD</tag>
       <url>https://github.com/480Oswego2013/CSC-HCI-480-2013-repo</url>
     </scm>
+    <description>
+        hViewO is a visualization tool and alternate interface for H2O. It can be used to show data, random forest information, and tree visualizations.
+
+        Please view our design doc here, https://github.com/480Oswego2013/CSC-HCI-480-2013-repo/wiki/hViewO-Design
+
+    </description>
+    <organization>
+        <name>SUNY Oswego</name>
+        <url>http://www.oswego.edu/</url>
+    </organization>
     <prerequisites>
         <maven>3</maven>
     </prerequisites>
