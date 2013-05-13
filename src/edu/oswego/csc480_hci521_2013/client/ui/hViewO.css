@@ -32,9 +32,13 @@
 }
 
 .scrolling_menu {
-   overflow-y: scroll !important;
-   height: 768px !important;
-   background: white !important;
+  cursor: default;
+  height: 300px !important;
+  overflow-y: scroll !important;
+}
+
+.scrolling_menu table {
+  background-color: white;
 }
 
 .branding {
