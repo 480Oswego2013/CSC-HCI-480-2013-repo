@@ -205,13 +205,13 @@ public class DoublePanelActivity extends AbstractActivity implements DoublePanel
     private String parseDatakey(String dataKey) {
         String result = dataKey;
         RegExp regex = RegExp.compile("([^\\\\/:*?\"<>|\r\n]+$)");
-        MatchResult matcher = regex.exec(dataKey);        
+        MatchResult matcher = regex.exec(dataKey);
         if (regex.test(dataKey)) {
             result = matcher.getGroup(1);
         }
         return result;
     }
-    
+
     @Override
     public void addConfusionMatrixTab(RF rf, RFBuilder b) {
         ConfusionMatrixViewImpl matrixView = new ConfusionMatrixViewImpl();
@@ -231,9 +231,10 @@ public class DoublePanelActivity extends AbstractActivity implements DoublePanel
                 = new ConfusionMatrixPresenterImpl(
                 new ConfusionMatrixViewImpl(), eventBus, rf, b);
         presenter.setData(rfview);
+        presenter.getView().forestFinish(rfview.getNtree());
         //String title = "Confusion Matrix<br>" + rf.getDataKey() + "<br>" + rf.getModelKey();
         String title = "Confusion Matrix<br>" + parseDatakey(rf.getDataKey());
-        TabLabelView label = new TabLabelViewImpl();        
+        TabLabelView label = new TabLabelViewImpl();
         label.setLabel(title);
         label.setPresenter(this);
         view.addVisTab(presenter.getView(), label);
@@ -350,7 +351,7 @@ public class DoublePanelActivity extends AbstractActivity implements DoublePanel
             logger.log(Level.SEVERE, "Unknown tab!");
         }
     }
-    
+
     @Override
     public void close(TabLabelView tab) {
         if (dataTabs.hasTab(tab)) {
