@@ -65,6 +65,9 @@ public class RFBuilderTest {
         assertEquals(expResult, result);
     }
 
+    /**
+     * Test of testSetNtree method, of class RFBuilder.
+     */
     @Test
     public void testSetNtree() {
         System.out.println("setNtree");
@@ -76,6 +79,9 @@ public class RFBuilderTest {
 
     }
 
+    /**
+     * Test of testSetStatTypeGini method, of class RFBuilder.
+     */
     @Test
     public void testSetStatTypeGini() {
         System.out.println("StatTypeGini");
@@ -87,6 +93,9 @@ public class RFBuilderTest {
 
     }
 
+    /**
+     * Test of testSetStatTypeEntropy method, of class RFBuilder.
+     */
     @Test
     public void testSetStatTypeEntropy() {
         System.out.println("StatTypeEntropy");
@@ -98,6 +107,9 @@ public class RFBuilderTest {
 
     }
 
+    /**
+     * Test of testSetClassWeights method, of class RFBuilder.
+     */
     @Test
     public void testSetClassWeights() {
         System.out.println("class_weights");
@@ -113,6 +125,9 @@ public class RFBuilderTest {
 
     }
 
+    /**
+     * Test of testSetSamplingStrategyRandom method, of class RFBuilder.
+     */
     @Test
     public void testSetSamplingStrategyRandom() {
         System.out.println("SamplingStrategyRandom");
@@ -124,6 +139,10 @@ public class RFBuilderTest {
 
     }
 
+    /**
+     * Test of testSetSamplingStrategyStratifiedLocal method, of class
+     * RFBuilder.
+     */
     @Test
     public void testSetSamplingStrategyStratifiedLocal() {
         System.out.println("SamplingStrategyStratifiedLocal");
@@ -135,6 +154,9 @@ public class RFBuilderTest {
 
     }
 
+    /**
+     * Test of testSetStrataSamples method, of class RFBuilder.
+     */
     @Test
     public void testSetStrataSamples() {
         System.out.println("testSetStrata");
@@ -151,6 +173,9 @@ public class RFBuilderTest {
 
     }
 
+    /**
+     * Test of testSetModelKey method, of class RFBuilder.
+     */
     @Test
     public void testSetModelKey() {
         System.out.println("testSetModelKey");
@@ -162,6 +187,10 @@ public class RFBuilderTest {
 
     }
 
+    /**
+     * Test of testSetOutOfBagErrorEstimate method, of class RFBuilder.
+     * Test for false return
+     */
     @Test
     public void testSetOutOfBagErrorEstimateFalse() {
         System.out.println("testSetOutOfBagErrorEstimateFalse");
@@ -173,6 +202,10 @@ public class RFBuilderTest {
 
     }
 
+    /**
+     * Test of testSetOutOfBagErrorEstimate method, of class RFBuilder. Test
+     * for true return
+     */
     @Test
     public void testSetOutOfBagErrorEstimateTrue() {
         System.out.println("testSetOutOfBagErrorEstimateTrue");
@@ -184,6 +217,11 @@ public class RFBuilderTest {
 
     }
 
+    /**
+     * Test of testSetFeatures method, of class RFBuilder. Test
+     * for positive return
+     */
+    
     @Test
     public void testSetFeaturesPositive() {
         System.out.println("testSetFeaturesPositive");
@@ -195,6 +233,10 @@ public class RFBuilderTest {
 
     }
 
+    /**
+     * Test of testSetFeatures method, of class RFBuilder. Test
+     * will fail if exception isnt caught
+     */
     public void testSetFeaturesNegativ() {
         System.out.println("testSetFeaturesNegativ");
         Integer value = -1;
@@ -213,6 +255,12 @@ public class RFBuilderTest {
 
     }
 
+    
+    /**
+     * Test of testSetIgnore method, of class RFBuilder. Test
+     * 
+     */
+    
     @Test
     public void testSetIgnore() {
         System.out.println("testSetIgnore");
@@ -223,6 +271,12 @@ public class RFBuilderTest {
         assertEquals(expResult, result);
 
     }
+    
+     
+    /**
+     * Test of testSetSample method, of class RFBuilder. Test
+     * value is positive and less than 200
+     */
 
     @Test
     public void testSetSamplePass() {
@@ -234,6 +288,12 @@ public class RFBuilderTest {
         assertEquals(expResult, result);
 
     }
+
+    
+    /**
+     * Test of testSetSample method, of class RFBuilder. Test
+     * throw exception if wrong value is passed to method
+     */
     @Test
     public void testSetSampleFail() {
         System.out.println("testSetSampleFail");
@@ -251,6 +311,11 @@ public class RFBuilderTest {
         }
 
     }
+    
+     /**
+     * Test of testSetBinLimit method, of class RFBuilder. Test
+     * check for positive integers
+     */
 
     @Test
     public void testSetBinLimitPass() {
@@ -262,14 +327,19 @@ public class RFBuilderTest {
         assertEquals(expResult, result);
 
     }
-     @Test
+     /**
+     * Test of testSetBinLimit method, of class RFBuilder. Test
+     * throw exception if wrong value is passed to method or negative value
+     */
+
+    @Test
     public void testSetBinLimitFail() {
         System.out.println("testSetBinLimitFail");
         Integer value = -100;
         RFBuilder instance = new RFBuilder("test.hex");
         String expResult = "http://localhost:54321/RF.json?bin_limit=-100&data_key=test.hex";
         try {
-           instance.setBinLimit(value).build(encoder);
+            instance.setBinLimit(value).build(encoder);
 
             fail("expected IllegalArgumentException");
 
@@ -279,6 +349,11 @@ public class RFBuilderTest {
         }
 
     }
+    
+     /**
+     * Test of testSetDepth method, of class RFBuilder. Test
+     * test for positive integers
+     */
 
     @Test
     public void testSetDepthPass() {
@@ -290,14 +365,21 @@ public class RFBuilderTest {
         assertEquals(expResult, result);
 
     }
-     @Test
+    
+     /**
+     * Test of testSetDepth method, of class RFBuilder. 
+     * 
+     * Test to check for negative integers, catches thrown exception.
+     */
+
+    @Test
     public void testSetDepthFail() {
         System.out.println("testSetDepthFail");
         Integer value = -1;
         RFBuilder instance = new RFBuilder("test.hex");
         String expResult = "http://localhost:54321/RF.json?depth=-1&data_key=test.hex";
-         try {
-           instance.setDepth(value).build(encoder);
+        try {
+            instance.setDepth(value).build(encoder);
 
             fail("expected IllegalArgumentException");
 
@@ -306,7 +388,13 @@ public class RFBuilderTest {
             //ignore, this exception is expected.
         }
     }
-     @Test
+    
+    /**
+     * Test of testSetSeed method, of class RFBuilder.
+     * 
+     */
+
+    @Test
     public void testSetSeed() {
         System.out.println("setSeed");
         Integer value = 1;
@@ -316,7 +404,13 @@ public class RFBuilderTest {
         assertEquals(expResult, result);
 
     }
-     @Test
+    
+    /**
+     * Test of testSetParallel method, of class RFBuilder.
+     * tests for false return
+     */
+
+    @Test
     public void testSetParallelFalse() {
         System.out.println("testSetParallelFalse");
         boolean value = false;
@@ -327,6 +421,10 @@ public class RFBuilderTest {
 
     }
 
+    /**
+     * Test of testSetParallel method, of class RFBuilder.
+     * tests for true return
+     */
     @Test
     public void testSetParallelTrue() {
         System.out.println("testSetParallelTrue");
@@ -337,7 +435,13 @@ public class RFBuilderTest {
         assertEquals(expResult, result);
 
     }
-     @Test
+    
+    /**
+     * Test of testSetExclusiveSplitLimit method, of class RFBuilder.
+     * tests for valid input
+     */
+
+    @Test
     public void testSetExclusiveSplitLimitPass() {
         System.out.println("testSetExclusiveSplitLimitPass");
         Integer value = 1;
@@ -347,14 +451,19 @@ public class RFBuilderTest {
         assertEquals(expResult, result);
 
     }
-     @Test
+
+    /**
+     * Test of testSetExclusiveSplitLimit method, of class RFBuilder.
+     * tests methods fail catch
+     */
+    @Test
     public void testSetExclusiveSplitLimitFail() {
         System.out.println("testSetExclusiveSplitLimitFail");
         Integer value = -1;
         RFBuilder instance = new RFBuilder("test.hex");
         String expResult = "http://localhost:54321/RF.json?exclusive_split_limit=-1&data_key=test.hex";
-         try {
-           instance.setExclusiveSplitLimit(value).build(encoder);
+        try {
+            instance.setExclusiveSplitLimit(value).build(encoder);
 
             fail("expected IllegalArgumentException");
 
