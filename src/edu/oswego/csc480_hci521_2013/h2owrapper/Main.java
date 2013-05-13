@@ -1,6 +1,22 @@
+/*
+ * Copyright 2013 State University of New York at Oswego
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License"); 
+ * you may not use this file except in compliance with the License. 
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software 
+ * distributed under the License is distributed on an "AS IS" BASIS, 
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. 
+ * See the License for the specific language governing permissions and 
+ * limitations under the License.
+ */
 package edu.oswego.csc480_hci521_2013.h2owrapper;
 
 import edu.oswego.csc480_hci521_2013.server.RestHandler;
+import edu.oswego.csc480_hci521_2013.server.ServerUrlEncoder;
 import edu.oswego.csc480_hci521_2013.shared.h2o.json.ImportUrl;
 import edu.oswego.csc480_hci521_2013.shared.h2o.json.Inspect;
 import edu.oswego.csc480_hci521_2013.shared.h2o.json.Parse;
@@ -13,17 +29,21 @@ import edu.oswego.csc480_hci521_2013.shared.h2o.json.StoreView;
 import edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders.ImportUrlBuilder;
 import edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders.InspectBuilder;
 import edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders.ParseBuilder;
-import edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders.ProgressBuilder;
 import edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders.RFBuilder;
+import edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders.RFScoreBuilder;
 import edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders.RFViewBuilder;
 import edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders.RFTreeViewBuilder;
+import edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders.RedirectRequestFactory;
 import edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders.StoreViewBuilder;
+import edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders.UrlEncoder;
 
 /**
  * Examples of usage
  */
 public class Main
 {
+    private static UrlEncoder encoder = new ServerUrlEncoder();
+
     /**
      * @param args the command line arguments
      */
@@ -39,11 +59,12 @@ public class Main
         rfView(rest);
         rfTreeView(rest);
         storeView(rest);
+        rfScore(rest);
     }
 
     private static void importUrl(RestHandler rest) throws Exception
     {
-        String url = new ImportUrlBuilder("https://raw.github.com/0xdata/h2o/master/smalldata/cars.csv").setKey("cars.csv").build();
+        String url = new ImportUrlBuilder("https://raw.github.com/0xdata/h2o/master/smalldata/cars.csv").setKey("cars.csv").build(encoder);
         System.out.println(url);
         String json = rest.fetch(url);
         System.out.println(json);
@@ -53,7 +74,7 @@ public class Main
 
     private static ResponseStatus parse(RestHandler rest) throws Exception
     {
-        String url = new ParseBuilder("cars.csv").setHeader(true).setDestinationKey("cars.hex").build();
+        String url = new ParseBuilder("cars.csv").setHeader(true).setDestinationKey("cars.hex").build(encoder);
         System.out.println(url);
         String json = rest.fetch(url);
         System.out.println(json);
@@ -64,7 +85,7 @@ public class Main
 
     private static void inspect(RestHandler rest) throws Exception
     {
-        String url = new InspectBuilder("cars.hex").build();
+        String url = new InspectBuilder("cars.hex").build(encoder);
         System.out.println(url);
         String json = rest.fetch(url);
         System.out.println(json);
@@ -74,7 +95,7 @@ public class Main
 
     private static void rf(RestHandler rest) throws Exception
     {
-        String url = new RFBuilder("cars.hex").setModelKey("cars.model").setOutOfBagErrorEstimate(false).build();
+        String url = new RFBuilder("cars.hex").setModelKey("cars.model").setOutOfBagErrorEstimate(false).build(encoder);
         System.out.println(url);
         String json = rest.fetch(url);
         System.out.println(json);
@@ -84,7 +105,7 @@ public class Main
 
     private static void storeView(RestHandler rest) throws Exception
     {
-        String url = new StoreViewBuilder().build();
+        String url = new StoreViewBuilder().build(encoder);
         System.out.println(url);
         String json = rest.fetch(url);
         System.out.println(json);
@@ -94,7 +115,7 @@ public class Main
 
     private static void rfView(RestHandler rest) throws Exception
     {
-        String url = new RFViewBuilder("cars.hex", "cars.model").build();
+        String url = new RFViewBuilder("cars.hex", "cars.model").build(encoder);
         System.out.println(url);
 
         for (;;) {
@@ -112,9 +133,20 @@ public class Main
         }
     }
 
+    private static void rfScore(RestHandler rest) throws Exception
+    {
+        String url = new RFScoreBuilder("cars.hex", "cars.model").build(encoder);
+        System.out.println(url);
+
+        String json = rest.fetch(url);
+        System.out.println(json);
+        RFView val = rest.parse(json, RFView.class);
+        System.out.println(val);
+    }
+
     private static void rfTreeView(RestHandler rest) throws Exception
     {
-        String url = new RFTreeViewBuilder("cars.hex", "cars.model").setTreeNumber(15).build();
+        String url = new RFTreeViewBuilder("cars.hex", "cars.model").setTreeNumber(15).build(encoder);
         System.out.println(url);
         String json = rest.fetch(url);
         System.out.println(json);
@@ -129,10 +161,8 @@ public class Main
         if (!status.isRedirect() || !status.getRedirectRequest().equals("Progress")) {
             return;
         }
-        String job = status.getRedirectRequestArgs().get("job");
-        String key = status.getRedirectRequestArgs().get("destination_key");
 
-        String url = new ProgressBuilder(job, key).build();
+        String url = RedirectRequestFactory.getRequest(status).build(encoder);
         System.out.println(url);
         Progress val;
         for (;;) {

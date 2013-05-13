@@ -1,59 +1,94 @@
+/*
+ * Copyright 2013 State University of New York at Oswego
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License"); 
+ * you may not use this file except in compliance with the License. 
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software 
+ * distributed under the License is distributed on an "AS IS" BASIS, 
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. 
+ * See the License for the specific language governing permissions and 
+ * limitations under the License.
+ */
 package edu.oswego.csc480_hci521_2013.shared.h2o.json;
 
+import com.google.gson.annotations.SerializedName;
 import com.google.gwt.user.client.rpc.IsSerializable;
-import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
- *
+ * Represents the H2O StoreView json response.
+ * @see edu.oswego.csc480_hci521_2013.shared.h2o.urlbuilders.StoreViewBuilder
  */
-public class StoreView extends H2OResponse {
+public class StoreView extends AbstractResponse {
 
-    private ArrayList<Row> keys;
-    private int num_keys;
-    private String cloud_name;
-    private String node_name;
+    private Row[] keys = null;
+    private int numKeys = 0;
+    private String cloudName = null;
+    private String nodeName = null;
 
-    public ArrayList<Row> getKeys() {
+    /**
+     * No arg constructor needed for GWT-RPC.
+     */
+    private StoreView() {
+    }
+
+    public Row[] getKeys() {
         return keys;
     }
 
     public int getNumKeys() {
-        return num_keys;
+        return numKeys;
     }
 
     public String getCloudName() {
-        return cloud_name;
+        return cloudName;
     }
 
     public String getNodeName() {
-        return node_name;
+        return nodeName;
     }
 
     @Override
     public String toString() {
-        return "StoreView{" + "keys=" + keys + ", num_keys=" + num_keys + ", cloud_name=" + cloud_name + ", node_name=" + node_name + " " + super.toString() + '}';
+        return "StoreView{" + "keys=" + Arrays.toString(keys)
+                + ", num_keys=" + numKeys + ", cloud_name=" + cloudName
+                + ", node_name=" + nodeName + super.toString() + '}';
     }
 
     public static class Row implements IsSerializable {
 
-        private String key;
-        private int value_size_bytes;
-        private String rows; // not always a number
-        private String cols; // not always a number
-        // TODO: implement this, these are the first 5 columns of the data, for sample display
-        // col_0 { header, min, mean, max }
-        // col_1
-        // col_2
-        // col_3
-        // col_4
-        private String value;
+        private String key = null;
+        private int valueSizeBytes = 0;
+        private String rows = null; // not always a number
+        private String cols = null; // not always a number
+        @SerializedName("col_0")
+        private Column col0 = null;
+        @SerializedName("col_1")
+        private Column col1 = null;
+        @SerializedName("col_2")
+        private Column col2 = null;
+        @SerializedName("col_3")
+        private Column col3 = null;
+        @SerializedName("col_4")
+        private Column col4 = null;
+        private String value = null;
+
+        /**
+         * No arg constructor needed for GWT-RPC.
+         */
+        private Row() {
+        }
 
         public String getKey() {
             return key;
         }
 
         public int getValueSizeBytes() {
-            return value_size_bytes;
+            return valueSizeBytes;
         }
 
         public String getRows() {
@@ -64,13 +99,73 @@ public class StoreView extends H2OResponse {
             return cols;
         }
 
+        public Column getCol0() {
+            return col0;
+        }
+
+        public Column getCol1() {
+            return col1;
+        }
+
+        public Column getCol2() {
+            return col2;
+        }
+
+        public Column getCol3() {
+            return col3;
+        }
+
+        public Column getCol4() {
+            return col4;
+        }
+
         public String getValue() {
             return value;
         }
 
         @Override
         public String toString() {
-            return "Row{" + "key=" + key + ", value_size_bytes=" + value_size_bytes + ", rows=" + rows + ", cols=" + cols + ", value=" + value + '}';
+            return "Row{" + "key=" + key
+                    + ", value_size_bytes=" + valueSizeBytes
+                    + ", rows=" + rows + ", cols=" + cols + ", col_0=" + col0
+                    + ", col_1=" + col1 + ", col_2=" + col2 + ", col_3="
+                    + col3 + ", col_4=" + col4 + ", value=" + value + '}';
+        }
+
+        public static class Column implements IsSerializable {
+
+            private String header = null;
+            private String min = null;
+            private String mean = null;
+            private String max = null;
+
+            /**
+             * No arg constructor needed for GWT-RPC.
+             */
+            private Column() {
+            }
+
+            public String getHeader() {
+                return header;
+            }
+
+            public String getMin() {
+                return min;
+            }
+
+            public String getMean() {
+                return mean;
+            }
+
+            public String getMax() {
+                return max;
+            }
+
+            @Override
+            public String toString() {
+                return "Column{" + "header=" + header + ", min=" + min
+                        + ", mean=" + mean + ", max=" + max + '}';
+            }
         }
     }
 }

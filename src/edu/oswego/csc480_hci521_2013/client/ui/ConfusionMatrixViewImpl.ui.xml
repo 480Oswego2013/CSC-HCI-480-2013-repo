@@ -1,0 +1,139 @@
+<!--
+
+    Copyright 2013 State University of New York at Oswego
+
+    Licensed under the Apache License, Version 2.0 (the "License"); 
+    you may not use this file except in compliance with the License. 
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software 
+    distributed under the License is distributed on an "AS IS" BASIS, 
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. 
+    See the License for the specific language governing permissions and 
+    limitations under the License.
+
+-->
+<!-- ConfusionMatrixViewImpl.ui.xml -->
+
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+    xmlns:gwt='urn:import:com.google.gwt.user.client.ui'>
+
+    <ui:style src="hViewO.css" type='edu.oswego.csc480_hci521_2013.client.ui.ConfusionMatrixView.Style'>
+        .tableHeader {
+            background-color: #e0e0e0;
+            font-weight: bold;
+        }
+        dl.inline dt, dl.inline dd {
+            float: left;
+            margin: 0 0.5em 0 0;
+        }
+        dl.inline dd + dt, dl.inline dd + dd {
+            clear: left
+        }
+        dl.inline dd + dd {
+            float: none
+        }
+        dl.inline dt {
+            font-weight: bold
+        }
+        .cfmatrixHighlight {
+            background-color: #e0ffe0;
+        }
+
+		/* Pop-in panel */
+		.popin_panel {
+			background: #C0C0C0;
+			width: 100%;
+			height: 20px;
+			text-align: right;
+		}
+		.popin_button {
+			background: url("arrow_in.png") #FFFFFF center no-repeat;
+			width: 10px;
+			height: 10px;
+			padding: 4px;
+			margin: 1px 1px 0 0;
+		}
+		.popin_button:hover {
+			border: 1px solid #404040;
+			padding: 3px;
+		}
+    </ui:style>
+
+    <gwt:ScrollPanel width="98.2%" height="92%">
+        <gwt:HTMLPanel>
+            
+            <gwt:HorizontalPanel ui:field='popinPanel' styleName="{style.popin_panel}" horizontalAlignment="ALIGN_RIGHT">    
+		        <gwt:PushButton ui:field='popin' title="Pop-In" styleName="{style.popin_button}" ></gwt:PushButton>
+		    </gwt:HorizontalPanel>
+
+            <gwt:MenuBar ui:field='visbar' vertical="false">
+                <gwt:MenuItem ui:field='trees' enabled="false">Trees<span class="{style.tick}"></span>
+                    <gwt:MenuBar ui:field='treebar' vertical="true" styleName="{style.scrolling_menu}">
+                    </gwt:MenuBar>
+                </gwt:MenuItem>
+            </gwt:MenuBar>
+            
+            <progress ui:field='progress' value="0" max="100"/>
+
+            <h2>Confusion Matrix - <span ui:field='type'/></h2>
+            <dl class="{style.inline}">
+                <dt>Confusion Matrix Identifier:</dt>
+                <dd ui:field='matrixIdentifier'/>
+            </dl>
+            <div style="clear: left;"/>
+            <dl class="{style.inline}">
+                <dt>Classification Variable:</dt>
+                <dd ui:field='responseVariable'/>
+                <dt>Number of Trees:</dt>
+                <dd ui:field='ntree'/>
+                <dt>mtry:</dt>
+                <dd ui:field='mtry'/>
+                <dt>Rows Used/Skipped:</dt>
+                <dd>
+                    <span ui:field='rows' />/<span ui:field='rowsSkipped' />
+                </dd>
+                <dt>Classification Error:</dt>
+                <dd ui:field='classificationError'/>
+            </dl>
+            <div style="clear: left;"/>
+            <gwt:FlexTable ui:field='matrixTable'/>
+
+            <h2>Trees</h2>
+            <dl class="{style.inline}">
+                <dt>Trees Generated:</dt>
+                <dd ui:field='treesGenerated'/>
+            </dl>
+            <div style="clear: left;"/>
+            <gwt:Grid ui:field='treesTable'>
+                <gwt:row>
+                    <gwt:cell></gwt:cell>
+                    <gwt:cell styleName='{style.tableHeader}'>Min</gwt:cell>
+                    <gwt:cell styleName='{style.tableHeader}'>Mean</gwt:cell>
+                    <gwt:cell styleName='{style.tableHeader}'>Max</gwt:cell>
+                </gwt:row>
+                <gwt:row>
+                    <gwt:cell styleName='{style.tableHeader}'>Leaves</gwt:cell>
+                    <gwt:cell><dd ui:field='leavesMin'/></gwt:cell>
+                    <gwt:cell><dd ui:field='leavesMean'/></gwt:cell>
+                    <gwt:cell><dd ui:field='leavesMax'/></gwt:cell>
+                </gwt:row>
+                <gwt:row>
+                    <gwt:cell styleName='{style.tableHeader}'>Depth</gwt:cell>
+                    <gwt:cell><dd ui:field='depthMin'/></gwt:cell>
+                    <gwt:cell><dd ui:field='depthMean'/></gwt:cell>
+                    <gwt:cell><dd ui:field='depthMax'/></gwt:cell>
+                </gwt:row>
+            </gwt:Grid>
+            <h2>Parameters Used</h2>
+            <dl class="{style.inline}">
+                <dt>Ignored:</dt>
+                <dd ui:field='ignoredUsed'/>
+                <dt>Class Weights:</dt>
+                <dd ui:field='classWeightsUsed'/>
+            </dl>
+        </gwt:HTMLPanel>
+    </gwt:ScrollPanel>
+</ui:UiBinder>

@@ -1,3 +1,18 @@
+/*
+ * Copyright 2013 State University of New York at Oswego
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License"); 
+ * you may not use this file except in compliance with the License. 
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software 
+ * distributed under the License is distributed on an "AS IS" BASIS, 
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. 
+ * See the License for the specific language governing permissions and 
+ * limitations under the License.
+ */
 function init(canvas, json, depth, leaves) {
   // Instanciate sigma.js and customize rendering :
   console.log("canvas id: " + canvas);
@@ -11,6 +26,7 @@ function init(canvas, json, depth, leaves) {
   var lth = 0;
 
   if(depth <= 10){
+	console.log("depth <= 10");
     minNS = .5;
     maxNS = 3;
     maxR = 16
@@ -33,7 +49,7 @@ function init(canvas, json, depth, leaves) {
     edgeColor: '000',
     labelThreshold: lth,
     //defaultEdgeType: 'curve',
-    defaultLabelColor: '#fff'
+    defaultLabelColor: '#000'
   }).graphProperties({
     minNodeSize: minNS,
     maxNodeSize: maxNS,
@@ -59,6 +75,21 @@ function init(canvas, json, depth, leaves) {
       console.log(node.field + " " + node.condition + " " + node.value);
     }
 
+    var nodeColor = '#000';
+
+    //Set color of node
+    if(parent == null){
+      nodeColor = '#facd4a';
+    }
+    else if (node.label != null){
+      nodeColor = '#9de24f';
+    }
+    else{
+      nodeColor = '#5ac3b6';
+    }
+
+    console.log("Color: "+nodeColor);
+
     //Create node (leaf)
     if (node.label !== null){
       //Construct ID, increment leafCount
@@ -67,12 +98,13 @@ function init(canvas, json, depth, leaves) {
       //Add node
       sigInst.addNode(leafID, {
         label: node.label,
-        x: node.indexDispX*nodeScale,
-        y: node.levelDispY*nodeScale,
-        color: '#9de24f'
+        y: node.indexDispX*nodeScale,
+        x: node.levelDispY*nodeScale*(depth/2),
+        color: nodeColor
       });
       console.log(leafID);
     }
+
     //Create node (internal)
     else {
       //Construct ID
@@ -80,9 +112,9 @@ function init(canvas, json, depth, leaves) {
       //Add node
       sigInst.addNode( nodeID, {
         label: node.field + " " + node.condition + " " + node.value,
-        x: node.indexDispX*nodeScale,
-        y: node.levelDispY*nodeScale,
-        color: '#5ac3b6'
+        y: node.indexDispX*nodeScale,
+        x: node.levelDispY*nodeScale*(depth/2),
+        color: nodeColor
       });
       console.log(nodeID);
     }
